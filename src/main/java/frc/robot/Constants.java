@@ -16,4 +16,7 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+  //TODO: Change to real values
+  public static final double swerveDriveGearRatio = 8.41;
+  public static final double swerveTurnGearRatio = 0;
 }
