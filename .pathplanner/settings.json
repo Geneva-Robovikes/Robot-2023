@@ -2,6 +2,6 @@
   "robotWidth": 0.635,
   "robotLength": 0.635,
   "holonomicMode": true,
-  "generateJSON": true,
+  "generateJSON": false,
   "generateCSV": false
 }
