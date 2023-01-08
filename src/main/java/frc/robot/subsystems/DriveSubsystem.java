@@ -4,10 +4,8 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -26,18 +24,18 @@ public class DriveSubsystem extends SubsystemBase {
 
   Gyro gyro;
 
-  SwerveModule frontLeftModule = new SwerveModule(new WPI_TalonFX(0), new WPI_TalonFX(1));
-  SwerveModule frontRightModule = new SwerveModule(new WPI_TalonFX(2), new WPI_TalonFX(3));
-  SwerveModule backLeftModule = new SwerveModule(new WPI_TalonFX(4), new WPI_TalonFX(5));
-  SwerveModule backRightModule = new SwerveModule(new WPI_TalonFX(6), new WPI_TalonFX(7));
+  SwerveModule frontLeftModule = new SwerveModule(0, 1);
+  SwerveModule frontRightModule = new SwerveModule(2, 3);
+  SwerveModule backLeftModule = new SwerveModule(4, 5);
+  SwerveModule backRightModule = new SwerveModule(6, 7);
 
   // Positions are based of of 25in square robot
-  Translation2d frontleftLocation = new Translation2d(0.318, 0.318);
+  Translation2d frontLeftLocation = new Translation2d(0.318, 0.318);
   Translation2d frontRightLocation = new Translation2d(0.318, -0.318);
-  Translation2d backleftLocation = new Translation2d(-0.318, 0.318);
+  Translation2d backLeftLocation = new Translation2d(-0.318, 0.318);
   Translation2d backRightLocation = new Translation2d(-0.318, -0.318);
 
-  SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontleftLocation, frontRightLocation, backleftLocation, backRightLocation);
+  SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
 
   SwerveDriveOdometry odometry = new SwerveDriveOdometry(
     kinematics, gyro.getRotation2d(), new SwerveModulePosition[] {
@@ -82,7 +80,12 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   void resetOdometry(Pose2d pose) {
-    odometry.resetPosition(gyro.getRotation2d(), null, pose);
+    odometry.resetPosition(gyro.getRotation2d(), new SwerveModulePosition[] {
+      frontRightModule.getPosition(),
+      frontRightModule.getPosition(),
+      backLeftModule.getPosition(), 
+      backRightModule.getPosition()
+    }, pose);
   }
 
   Pose2d getPose() {
@@ -90,6 +93,9 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   void setModuleStates(SwerveModuleState[] moduleStates) {
-    
+    frontLeftModule.setSesiredState(moduleStates[0]);
+    frontRightModule.setSesiredState(moduleStates[1]);
+    backLeftModule.setSesiredState(moduleStates[2]);
+    backRightModule.setSesiredState(moduleStates[3]);
   }
 }
