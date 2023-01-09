@@ -22,12 +22,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
 
+  //TODO: Change to gyro on the robot and add it to the consturctor if needed
   Gyro gyro;
 
-  SwerveModule frontLeftModule = new SwerveModule(0, 1);
-  SwerveModule frontRightModule = new SwerveModule(2, 3);
-  SwerveModule backLeftModule = new SwerveModule(4, 5);
-  SwerveModule backRightModule = new SwerveModule(6, 7);
+  SwerveModule frontLeftModule;
+  SwerveModule frontRightModule;
+  SwerveModule backLeftModule;
+  SwerveModule backRightModule;
 
   // Positions are based of of 25in square robot
   Translation2d frontLeftLocation = new Translation2d(0.318, 0.318);
@@ -47,7 +48,12 @@ public class DriveSubsystem extends SubsystemBase {
     new Pose2d(0, 0, new Rotation2d()));
   Pose2d currenPose2d;
 
-  public DriveSubsystem() {}
+  public DriveSubsystem(int[] motorIndexes) {
+    frontLeftModule = new SwerveModule(motorIndexes[0], motorIndexes[1]);
+    frontRightModule = new SwerveModule(motorIndexes[2], motorIndexes[3]);
+    backLeftModule = new SwerveModule(motorIndexes[4], motorIndexes[5]);
+    backRightModule = new SwerveModule(motorIndexes[6], motorIndexes[7]);
+  }
 
   @Override
   public void periodic() {

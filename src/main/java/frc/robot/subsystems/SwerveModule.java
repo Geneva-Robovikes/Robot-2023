@@ -15,17 +15,17 @@ public class SwerveModule {
     WPI_TalonFX turnMotor;
 
     // TODO: Tune to robot values
-    PIDController drivePID = new PIDController(0, 0, 0);
+    PIDController drivePID = new PIDController(1, 0, 0);
     ProfiledPIDController turnPID = new ProfiledPIDController(
-        0, 
+        1, 
         0,
         0,
         new TrapezoidProfile.Constraints(Constants.moduleMaxAngularVelocity, Constants.moduleMaxAngularAcceleration)
     );
 
     //TODO: Tune to robot values
-    SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(0, 0);
-    SimpleMotorFeedforward turnFeedForward = new SimpleMotorFeedforward(0, 0);
+    SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(1, 3);
+    SimpleMotorFeedforward turnFeedForward = new SimpleMotorFeedforward(1, 0.5);
 
     public SwerveModule(int driveMotorIndex, int turnMotorIndex) {
         driveMotor = new WPI_TalonFX(driveMotorIndex);
