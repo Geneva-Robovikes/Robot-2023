@@ -4,9 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -15,9 +12,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -64,27 +58,6 @@ public class DriveSubsystem extends SubsystemBase {
       });
   }
 
-  public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
-    return new SequentialCommandGroup(
-      new InstantCommand(() -> {
-        // Reset odometry for the first path you run during auto
-        if(isFirstPath){
-          this.resetOdometry(traj.getInitialHolonomicPose());
-        }
-      }),
-        new PPSwerveControllerCommand(
-        traj, 
-        this::getPose, // Pose supplier
-        this.kinematics, // SwerveDriveKinematics
-        new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-        new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
-        new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-        this::setModuleStates, // Module states consumer
-        this // Requires this drive subsystem
-      )
-    );
-  }
-
   void resetOdometry(Pose2d pose) {
     odometry.resetPosition(gyro.getRotation2d(), new SwerveModulePosition[] {
       frontRightModule.getPosition(),
@@ -103,5 +76,9 @@ public class DriveSubsystem extends SubsystemBase {
     frontRightModule.setSesiredState(moduleStates[1]);
     backLeftModule.setSesiredState(moduleStates[2]);
     backRightModule.setSesiredState(moduleStates[3]);
+  }
+
+  void setModuleStatesFromChassisState() {
+
   }
 }
