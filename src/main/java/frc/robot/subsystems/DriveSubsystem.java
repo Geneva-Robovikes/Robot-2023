@@ -56,7 +56,8 @@ public class DriveSubsystem extends SubsystemBase {
       new SwerveModulePosition[] {
         frontLeftModule.getPosition(), frontRightModule.getPosition(),
         backLeftModule.getPosition(), backRightModule.getPosition()
-      });
+      }
+    );
   }
 
   public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity) {
@@ -64,17 +65,23 @@ public class DriveSubsystem extends SubsystemBase {
     setModuleStates(kinematics.toSwerveModuleStates(speeds));
   }
 
-  void resetOdometry(Pose2d pose) {
-    odometry.resetPosition(gyro.getRotation2d(), new SwerveModulePosition[] {
-      frontRightModule.getPosition(),
-      frontRightModule.getPosition(),
-      backLeftModule.getPosition(), 
-      backRightModule.getPosition()
-    }, pose);
+  public void resetOdometry(Pose2d pose) {
+    odometry.resetPosition(gyro.getRotation2d(), 
+      new SwerveModulePosition[] {
+        frontRightModule.getPosition(),
+        frontRightModule.getPosition(),
+        backLeftModule.getPosition(), 
+        backRightModule.getPosition()
+      }, pose
+    );
   }
 
-  Pose2d getPose() {
+  public Pose2d getPose() {
     return odometry.getPoseMeters();
+  }
+
+  public Rotation2d getRotation2d() {
+    return gyro.getRotation2d();
   }
 
   void setModuleStates(SwerveModuleState[] moduleStates) {

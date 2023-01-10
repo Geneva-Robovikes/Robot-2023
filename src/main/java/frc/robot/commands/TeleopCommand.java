@@ -6,30 +6,48 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
-/** An example command that uses an example subsystem. */
 public class TeleopCommand extends CommandBase {
   private final DriveSubsystem driveSubsystem;
+  private final CommandXboxController controller;
 
-  public TeleopCommand(DriveSubsystem driveSubsystem) {
+  //TODO: Test and get good values
+  private final double minSpeedX = 0.1;
+  private final double maxSpeedX = 1;
+  private final double minSpeedY = 0.1;
+  private final double maxSpeedY = 1;
+  private final double minSpeedTheta = Math.PI / 16;
+  private final double maxSpeedTheta = Math.PI / 2;
+
+  public TeleopCommand(DriveSubsystem driveSubsystem, CommandXboxController controller) {
     this.driveSubsystem = driveSubsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
+    this.controller = controller;
     addRequirements(driveSubsystem);
   }
 
-  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void execute() {
+    double x1 = controller.getLeftX();
+    double y1 = controller.getLeftY();
+    double x2 = controller.getRightX();
 
-  // Called every time the scheduler runs while the command is scheduled.
+    double vX = x1 * maxSpeedX;
+    double vY = y1 * maxSpeedY;
+    double vTheta = x2 * maxSpeedTheta;
+
+    if(vX < minSpeedX) vX = 0;
+    if(vY < minSpeedY) vY = 0;
+    if(vTheta < minSpeedTheta) vTheta = 0;
+
+    driveSubsystem.setModuleStatesFromSpeeds(vX, vY, vTheta);
+  }
+
   @Override
-  public void execute() {}
+  public void end(boolean interrupted) {
+    driveSubsystem.setModuleStatesFromSpeeds(0, 0, 0);
+  }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
-
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;
