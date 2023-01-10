@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -58,6 +59,11 @@ public class DriveSubsystem extends SubsystemBase {
       });
   }
 
+  public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity) {
+    ChassisSpeeds speeds = new ChassisSpeeds(xVelocity, yVelocity, angularVelocity);
+    setModuleStates(kinematics.toSwerveModuleStates(speeds));
+  }
+
   void resetOdometry(Pose2d pose) {
     odometry.resetPosition(gyro.getRotation2d(), new SwerveModulePosition[] {
       frontRightModule.getPosition(),
@@ -76,9 +82,5 @@ public class DriveSubsystem extends SubsystemBase {
     frontRightModule.setSesiredState(moduleStates[1]);
     backLeftModule.setSesiredState(moduleStates[2]);
     backRightModule.setSesiredState(moduleStates[3]);
-  }
-
-  void setModuleStatesFromChassisState() {
-
   }
 }
