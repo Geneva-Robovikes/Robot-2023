@@ -61,7 +61,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity) {
-    ChassisSpeeds speeds = new ChassisSpeeds(xVelocity, yVelocity, angularVelocity);
+    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, gyro.getRotation2d());
     setModuleStates(kinematics.toSwerveModuleStates(speeds));
   }
 
