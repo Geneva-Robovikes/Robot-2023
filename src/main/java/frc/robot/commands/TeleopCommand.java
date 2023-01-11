@@ -12,7 +12,7 @@ public class TeleopCommand extends CommandBase {
   private final DriveSubsystem driveSubsystem;
   private final CommandXboxController controller;
 
-  //TODO: Test and get good values
+  //TODO: Test and get good values. All in m/s
   private final double minSpeedX = 0.1;
   private final double maxSpeedX = 1;
   private final double minSpeedY = 0.1;
