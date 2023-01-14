@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.ADIS16448_IMU;
 
 public class DriveSubsystem extends SubsystemBase {
 
-  //TODO: Change to gyro on the robot and add it to the consturctor if needed
   ADIS16448_IMU gyro;
 
   SwerveModule frontLeftModule;
