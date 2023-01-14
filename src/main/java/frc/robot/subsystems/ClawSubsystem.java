@@ -7,28 +7,23 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClawSubsystem extends SubsystemBase {
-    private WPI_TalonFX clawOpen;
-    private WPI_TalonFX clawClose;
+    private WPI_TalonFX clawMotor;
     
     public ClawSubsystem() {
-        clawOpen = new WPI_TalonFX(8);
-        clawClose = new WPI_TalonFX(9);
+        clawMotor = new WPI_TalonFX(8);
 
-        clawOpen.setNeutralMode(NeutralMode.Brake);
-        clawClose.setNeutralMode(NeutralMode.Brake);
+        clawMotor.setNeutralMode(NeutralMode.Brake);
     }
 
-    public void setClimbMotors(double speed) {
-        clawOpen.set(ControlMode.PercentOutput, speed);
-        clawClose.set(ControlMode.PercentOutput, -speed);
+    public void setClawState(double speed) {
+        clawMotor.set(ControlMode.PercentOutput, speed);
     }
 
-    public double getRightClimbEncoder() {
-        return clawClose.getSelectedSensorPosition();
+    public double getClawEncoder() {
+        return clawMotor.getSelectedSensorPosition();
     }
 
-    public void ResetClimbEncoders() {
-        clawClose.setSelectedSensorPosition(0);
-        clawOpen.setSelectedSensorPosition(0);
+    public void ResetClawEncoders() {
+        clawMotor.setSelectedSensorPosition(0);
     }
 }
