@@ -7,9 +7,11 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.TeleopCommand;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.commands.PneumaticsCommand;
+//import frc.robot.commands.TeleopCommand;
+//import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.PneumaticsSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -25,8 +27,12 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final DriveSubsystem driveSubsystem = new DriveSubsystem(new int[] {0, 1, 2, 3, 4, 5, 6, 7});
-  private final TeleopCommand teleopCommand = new TeleopCommand(driveSubsystem, driverController);
+  public final PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
+  //private final DriveSubsystem driveSubsystem = new DriveSubsystem(new int[] {0, 1, 2, 3, 4, 5, 6, 7});
+  //private final TeleopCommand teleopCommand = new TeleopCommand(driveSubsystem, driverController);
+
+  public final PneumaticsCommand pneumaticsCommand = new PneumaticsCommand(pneumaticsSubsystem);
+
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -58,7 +64,7 @@ public class RobotContainer {
     return Autos.exampleAuto(m_exampleSubsystem);
   }
 
-  public Command getTeleopCommand() {
+  /*public Command getTeleopCommand() {
     return teleopCommand;
-  }
+  }*/
 }

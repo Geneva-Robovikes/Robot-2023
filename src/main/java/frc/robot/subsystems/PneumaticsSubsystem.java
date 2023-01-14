@@ -14,9 +14,9 @@ public class PneumaticsSubsystem extends SubsystemBase {
 
     public PneumaticsSubsystem() {
 
-        phCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
-        exampleDoublePH = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 0);
-        exampleDoublePH.set(kReverse);
+        //phCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
+        //exampleDoublePH = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 0);
+        //exampleDoublePH.set(kReverse);
 
     }
 
@@ -31,9 +31,9 @@ public class PneumaticsSubsystem extends SubsystemBase {
         return phCompressor.getCurrent();
     }
 
-    public void setSolenoid(Value value) {
+    /*public void setSolenoid(Value value) {
         exampleDoublePH.set(value);
-    }
+    }*/
 
 
 }
