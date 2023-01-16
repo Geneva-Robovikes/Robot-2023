@@ -11,7 +11,7 @@ Geneva Robovikes code for the 2023 FRC season. I am sorry...
 
 If things get a bit spicy, press space for an emergency stop. To restart the robot after, press the restart button on the roboRIO.
 
-*You do not need to wait to connect, as soon as you hit the button you are good.
+*You do not need to wait to connect, as soon as you hit the button you are good.*
 
 ## **How to Make an Auto Path**
 1) Open PathPlanner.
@@ -29,7 +29,7 @@ If things get a bit spicy, press space for an emergency stop. To restart the rob
 13) Use the Wait Behavior dropdown to customize how the robot's wait works.
 14) Once the path is done, add any new commands used to the event hashmap and add the path to the dropdown on shuffleboard.
 
-*Paths will automatically be added to the robot files. No need to save!
+*Paths will automatically be added to the robot files. No need to save!*
 
 ## **Useful Links**
 1) https://docs.wpilib.org/en/stable/ - Use this website to reasearch topics. It has great turtorials on trjectories, pathfinding, vision, and more if you look deep enough.
