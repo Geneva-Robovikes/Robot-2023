@@ -30,11 +30,11 @@ public class DriveSubsystem extends SubsystemBase {
   SwerveModule backLeftModule;
   SwerveModule backRightModule;
 
-  // Positions are based of of 25in square robot
-  Translation2d frontLeftLocation = new Translation2d(0.318, 0.318);
-  Translation2d frontRightLocation = new Translation2d(0.318, -0.318);
-  Translation2d backLeftLocation = new Translation2d(-0.318, 0.318);
-  Translation2d backRightLocation = new Translation2d(-0.318, -0.318);
+  // Positions are based of of 24in square robot
+  Translation2d frontLeftLocation = new Translation2d(0.3048, 0.3048);
+  Translation2d frontRightLocation = new Translation2d(0.3048, -0.3048);
+  Translation2d backLeftLocation = new Translation2d(-0.3048, 0.3048);
+  Translation2d backRightLocation = new Translation2d(-0.3048, -0.3048);
 
   SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
 
