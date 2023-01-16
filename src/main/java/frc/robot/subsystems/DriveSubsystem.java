@@ -12,9 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-//import com.analog.adis16448.frc.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
 
 public class DriveSubsystem extends SubsystemBase {
