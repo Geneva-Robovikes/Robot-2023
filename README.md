@@ -13,6 +13,24 @@ If things get a bit spicy, press space for an emergency stop. To restart the rob
 
 *You do not need to wait to connect, as soon as you hit the button you are good.
 
+## **How to Make an Auto Path**
+1) Open PathPlanner.
+2) Make sure you have the correct project repository selected.
+3) To make a new path select the new path option in the menu.
+4) Chnge the path by dragging the dots around.
+5) Click on a dot to see finer details.
+6) Use the reversal option when the robot must enter in one direction and return the same way.
+7) Use the stop option when you want the robot to stop and start a command.
+8) The buttons at the bottom are used to edit the path, simulate the path, set markers, measue distances, and view the graph (in that order).
+9) To have other commands run durring the path, go to the marker menu.
+10) Click on one of the purple markers to select it.
+11) In the menu that pops up, type the name of the event you want to execute in the Add new event box.
+12) You can add as many events here as you like, keep note of the Execution Behavior when adding several events.
+13) Use the Wait Behavior dropdown to customize how the robot's wait works.
+14) Once the path is done, add any new commands used to the event hashmap and add the path to the dropdown on shuffleboard.
+
+*Paths will automatically be added to the robot files. No need to save!
+
 ## **Useful Links**
 1) https://docs.wpilib.org/en/stable/ - Use this website to reasearch topics. It has great turtorials on trjectories, pathfinding, vision, and more if you look deep enough.
 2) https://first.wpi.edu/wpilib/allwpilib/docs/release/java/index.html - Use this website when reasearching specific classes or methods, it gives a more code-sided descriptions.
