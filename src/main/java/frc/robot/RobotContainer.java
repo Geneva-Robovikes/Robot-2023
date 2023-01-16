@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -56,21 +57,27 @@ public class RobotContainer {
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
 
-  public Command getAutonomousCommand() {
+  public Command getAutonomousCommand(String pathName) {
+    PathPlannerTrajectory trajectory;
+    if(!pathName.equals("One Object")) {
+      //TODO: Add path selection to shuffleboard
+      trajectory = PathPlanner.loadPath(pathName,  new PathConstraints(4,3));
+      
+      HashMap<String, Command> eventMap = new HashMap<>();
+      //eventMap.put("Intake", IntakeCommand());    <-- Uncomment when these commands exist
+      //eventMap.put("Outtake", OuttakeCommand());  <--
+      //eventMap.put("Balance", BalanceCommand());  <--
+      
+      FollowPathWithEvents command = new FollowPathWithEvents(
+        driveSubsystem.followTrajectoryCommand(trajectory, true),
+        trajectory.getMarkers(),
+        eventMap
+        );
+      
+        return command;
+    }
 
-    //TODO: Add path selection to shuffleboard
-    PathPlannerTrajectory trajectory = PathPlanner.loadPath("Test Path 1",  new PathConstraints(4,3));
- 
-    HashMap<String, Command> eventMap = new HashMap<>();
-    //eventMap.put("Intake", IntakeCommand());    <-- Uncomment when these commands exist
-    //eventMap.put("Outtake", OuttakeCommand());  <--
- 
-    FollowPathWithEvents command = new FollowPathWithEvents(
-      driveSubsystem.followTrajectoryCommand(trajectory, true),
-      trajectory.getMarkers(),
-      eventMap
-    );
-
-    return command;
+    //TODO: set to outtake command, maybe back onto the scale too
+    return Autos.exampleAuto(m_exampleSubsystem);
   }
 }

@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -18,6 +20,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  private SendableChooser<String> pathChooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -28,6 +31,17 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    //TODO: Make color based off of FMS info
+    pathChooser.setDefaultOption("One Object", "One Object");
+    pathChooser.addOption("Test Path", "Test Path");
+    pathChooser.addOption("Blue Top 2", "Blue Top 2");
+    pathChooser.addOption("Blue Top 3", "Blue Top 3");
+    pathChooser.addOption("Blue Bottom 2", "Blue Bottom 2");
+    pathChooser.addOption("Red Top 2", "Red Top 2");
+    pathChooser.addOption("Red Top 3", "Red Top 3");
+    pathChooser.addOption("Red Bottom 2", "Red Bottom 2");
+    SmartDashboard.putData(pathChooser);
   }
 
   /**
@@ -56,7 +70,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand(pathChooser.getSelected());
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
