@@ -16,6 +16,10 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     public static final double controllerDeadzone = 0.125;
+
+    //not real values either
+    public static final double pGain = 0;
+    public static final double dGain = 0;
   }
 
   public static final int falconEncoderResolution = 2048;

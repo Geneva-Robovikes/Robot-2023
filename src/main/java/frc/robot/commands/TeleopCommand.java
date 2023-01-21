@@ -39,6 +39,7 @@ public class TeleopCommand extends CommandBase {
     double vY = y1 * maxSpeedY;
     double vTheta = x2 * maxSpeedTheta;
 
+    //how to move robot
     driveSubsystem.setModuleStatesFromSpeeds(vX, vY, vTheta);
   }
 

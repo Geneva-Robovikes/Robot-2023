@@ -53,7 +53,15 @@ public class CameraSubsystem extends SubsystemBase {
    */
   public boolean hasTargets() {
     return result.hasTargets();
+    //result.getBestTarget().getSkew();
   }
+
+  //added by alex
+  public double getTargetSkew() {
+    return result.getBestTarget().getSkew();
+  }
+
+  
 
   /**
    * Sets the camera's pipeline to the index's corresponding pipeline.
