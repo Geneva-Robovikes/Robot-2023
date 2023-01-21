@@ -4,19 +4,22 @@
 
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
 
 public class DriveSubsystem extends SubsystemBase {
-
   ADIS16448_IMU gyro;
 
   SwerveModule frontLeftModule;
@@ -32,7 +35,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
 
-  SwerveDriveOdometry odometry = new SwerveDriveOdometry(
+  SwerveDrivePoseEstimator odometry = new SwerveDrivePoseEstimator(
     kinematics, new Rotation2d(gyro.getGyroAngleZ()), new SwerveModulePosition[] {
       frontRightModule.getPosition(),
       frontRightModule.getPosition(),
@@ -77,11 +80,15 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public Pose2d getPose() {
-    return odometry.getPoseMeters();
+    return odometry.getEstimatedPosition();
   }
 
   public Rotation2d getRotation2d() {
     return new Rotation2d(gyro.getGyroAngleZ());
+  }
+  
+  public void addCameraToOdometry(Optional<EstimatedRobotPose> estimatedPose, double timestamp) {
+    odometry.addVisionMeasurement(currenPose2d, timestamp);
   }
 
   void setModuleStates(SwerveModuleState[] moduleStates) {
@@ -90,4 +97,5 @@ public class DriveSubsystem extends SubsystemBase {
     backLeftModule.setSesiredState(moduleStates[2]);
     backRightModule.setSesiredState(moduleStates[3]);
   }
+
 }
