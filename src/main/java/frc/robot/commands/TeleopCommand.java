@@ -4,7 +4,9 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -13,11 +15,8 @@ public class TeleopCommand extends CommandBase {
   private final CommandXboxController controller;
 
   //TODO: Test and get good values. All in m/s
-  private final double minSpeedX = 0.1;
   private final double maxSpeedX = 1;
-  private final double minSpeedY = 0.1;
   private final double maxSpeedY = 1;
-  private final double minSpeedTheta = Math.PI / 16;
   private final double maxSpeedTheta = Math.PI / 2;
 
   public TeleopCommand(DriveSubsystem driveSubsystem, CommandXboxController controller) {
@@ -32,13 +31,13 @@ public class TeleopCommand extends CommandBase {
     double y1 = controller.getLeftY();
     double x2 = controller.getRightX();
 
+    x1 = MathUtil.applyDeadband(x1, OperatorConstants.controllerDeadzone);
+    y1 = MathUtil.applyDeadband(x1, OperatorConstants.controllerDeadzone);
+    x2 = MathUtil.applyDeadband(x1, OperatorConstants.controllerDeadzone);
+
     double vX = x1 * maxSpeedX;
     double vY = y1 * maxSpeedY;
     double vTheta = x2 * maxSpeedTheta;
-
-    if(vX < minSpeedX) vX = 0;
-    if(vY < minSpeedY) vY = 0;
-    if(vTheta < minSpeedTheta) vTheta = 0;
 
     driveSubsystem.setModuleStatesFromSpeeds(vX, vY, vTheta);
   }

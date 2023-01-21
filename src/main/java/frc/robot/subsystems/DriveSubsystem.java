@@ -12,13 +12,12 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.ADIS16448_IMU;
 
 public class DriveSubsystem extends SubsystemBase {
 
-  //TODO: Change to gyro on the robot and add it to the consturctor if needed
-  Gyro gyro;
+  ADIS16448_IMU gyro;
 
   SwerveModule frontLeftModule;
   SwerveModule frontRightModule;
@@ -34,7 +33,7 @@ public class DriveSubsystem extends SubsystemBase {
   SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
 
   SwerveDriveOdometry odometry = new SwerveDriveOdometry(
-    kinematics, gyro.getRotation2d(), new SwerveModulePosition[] {
+    kinematics, new Rotation2d(gyro.getGyroAngleZ()), new SwerveModulePosition[] {
       frontRightModule.getPosition(),
       frontRightModule.getPosition(),
       backLeftModule.getPosition(), 
@@ -44,6 +43,7 @@ public class DriveSubsystem extends SubsystemBase {
   Pose2d currenPose2d;
 
   public DriveSubsystem(int[] motorIndexes) {
+    
     frontLeftModule = new SwerveModule(motorIndexes[0], motorIndexes[1]);
     frontRightModule = new SwerveModule(motorIndexes[2], motorIndexes[3]);
     backLeftModule = new SwerveModule(motorIndexes[4], motorIndexes[5]);
@@ -52,7 +52,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    odometry.update(gyro.getRotation2d(),
+    odometry.update(new Rotation2d(gyro.getGyroAngleZ()),
       new SwerveModulePosition[] {
         frontLeftModule.getPosition(), frontRightModule.getPosition(),
         backLeftModule.getPosition(), backRightModule.getPosition()
@@ -61,12 +61,12 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity) {
-    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, gyro.getRotation2d());
+    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, new Rotation2d(gyro.getGyroAngleZ()));
     setModuleStates(kinematics.toSwerveModuleStates(speeds));
   }
 
   public void resetOdometry(Pose2d pose) {
-    odometry.resetPosition(gyro.getRotation2d(), 
+    odometry.resetPosition(new Rotation2d(gyro.getGyroAngleZ()), 
       new SwerveModulePosition[] {
         frontRightModule.getPosition(),
         frontRightModule.getPosition(),
@@ -81,7 +81,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public Rotation2d getRotation2d() {
-    return gyro.getRotation2d();
+    return new Rotation2d(gyro.getGyroAngleZ());
   }
 
   void setModuleStates(SwerveModuleState[] moduleStates) {
