@@ -10,13 +10,11 @@ import frc.robot.subsystems.ElevatorSubsystem;
 /** An example command that uses an example subsystem. */
 public class ElevatorDownCommand extends CommandBase {
   private final ElevatorSubsystem elevatorSubsystem;
+
+  //TODO: change from encoder units to meters
   private double maxHeight = 307200;
-  //private final DriveSubsystem driveSubsystem;
-   /*
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
+
+  //TODO: add height argument to constructor
   public ElevatorDownCommand(ElevatorSubsystem subsystem) {
     elevatorSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -30,10 +28,12 @@ public class ElevatorDownCommand extends CommandBase {
   }
 
   // Called every time the scheduler runs while the command is scheduled.
+  //TODO: Set the motor from exectute when using PID
   @Override
   public void execute() {}
 
   // Returns true when the command should end.
+  //TODO: change statement to check if PID controller is at the setpoint
   @Override
   public boolean isFinished() {
     if(elevatorSubsystem.getelevatorEncoder() > maxHeight) {return true;}

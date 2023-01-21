@@ -11,11 +11,8 @@ import frc.robot.subsystems.ElevatorSubsystem;
 public class ElevatorUpCommand extends CommandBase {
   private final ElevatorSubsystem ElevatorSubsystem;
   //private final DriveSubsystem driveSubsystem;
-   /*
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
+
+  //TODO: Add elevator length to contructor
   public ElevatorUpCommand(ElevatorSubsystem subsystem) {
     ElevatorSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -29,10 +26,12 @@ public class ElevatorUpCommand extends CommandBase {
   }
 
   // Called every time the scheduler runs while the command is scheduled.
+  //TODO: set motor using PID in execute
   @Override
   public void execute() {}
 
   // Returns true when the command should end.
+  //TODO: Add finish condition
   @Override
   public boolean isFinished() {
     return false;
