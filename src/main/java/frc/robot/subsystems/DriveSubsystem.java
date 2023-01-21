@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.ADIS16448_IMU;
 
 public class DriveSubsystem extends SubsystemBase {
   ADIS16448_IMU gyro;
+  CameraSubsystem[] cameras;
 
   SwerveModule frontLeftModule;
   SwerveModule frontRightModule;
@@ -45,8 +46,8 @@ public class DriveSubsystem extends SubsystemBase {
     new Pose2d(0, 0, new Rotation2d()));
   Pose2d currenPose2d;
 
-  public DriveSubsystem(int[] motorIndexes) {
-    
+  public DriveSubsystem(int[] motorIndexes, CameraSubsystem[] cameras) {
+    this.cameras = cameras;
     frontLeftModule = new SwerveModule(motorIndexes[0], motorIndexes[1]);
     frontRightModule = new SwerveModule(motorIndexes[2], motorIndexes[3]);
     backLeftModule = new SwerveModule(motorIndexes[4], motorIndexes[5]);
@@ -61,6 +62,12 @@ public class DriveSubsystem extends SubsystemBase {
         backLeftModule.getPosition(), backRightModule.getPosition()
       }
     );
+
+    for (CameraSubsystem cam : cameras) {
+      Optional<EstimatedRobotPose> result = cam.getEstimatedGlobalPose(odometry.getEstimatedPosition());
+      EstimatedRobotPose camPose = result.get();
+      odometry.addVisionMeasurement(camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
+    }
   }
 
   public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity) {

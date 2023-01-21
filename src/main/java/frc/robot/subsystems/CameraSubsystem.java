@@ -4,9 +4,7 @@
 
 package frc.robot.subsystems;
 
-import java.io.IOException;
 import java.util.Optional;
-
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -22,7 +20,6 @@ public class CameraSubsystem extends SubsystemBase {
   AprilTagFieldLayout tagLayout;
   PhotonCamera camera;
   Transform3d cameraPosition;
-  double cameraPitch;
   PhotonPipelineResult result;
   PhotonPoseEstimator poseEstimator;
 
@@ -32,13 +29,16 @@ public class CameraSubsystem extends SubsystemBase {
    * @param cameraPosition Position of the camera from robot center.
    * @param cameraPitch
    */
-  public CameraSubsystem(String cameraName, Transform3d cameraPosition, double cameraPitch) throws IOException {
+  public CameraSubsystem(String cameraName, Transform3d cameraPosition) {
     camera = new PhotonCamera(cameraName);
     result = camera.getLatestResult();
     this.cameraPosition = cameraPosition;
-    this.cameraPitch = cameraPitch;
 
-    tagLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.kDefaultField.m_resourceFile);
+    try {
+      tagLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.kDefaultField.m_resourceFile);
+    } catch (Exception e) {
+      System.err.println("File cannot be loaded");
+    }
     poseEstimator = new PhotonPoseEstimator(tagLayout, PoseStrategy.LOWEST_AMBIGUITY, camera, cameraPosition);
   }
 
@@ -57,7 +57,7 @@ public class CameraSubsystem extends SubsystemBase {
 
   /**
    * Sets the camera's pipeline to the index's corresponding pipeline.
-   * @return The index of the pipeline. 0 = Tag, 1 = Cone, 2 = Cube, 3 = Tape
+   * @return The index of the pipeline. 0 = Cone, 1 = Cube, 2 = Tag, 3 = Tape
    */
   public int getPipelineIndex() {
     return camera.getPipelineIndex();
@@ -65,7 +65,7 @@ public class CameraSubsystem extends SubsystemBase {
 
   /**
    * Sets the camera's pipeline to the index's corresponding pipeline.
-   * @param index The index of the pipeline. 0 = Tag, 1 = Cone, 2 = Cube, 3 = Tape
+   * @param index The index of the pipeline. 0 = Cone, 1 = Cube, 2 = Tag, 3 = Tape
    */
   public void setPipeline(int index) {
     camera.setPipelineIndex(index);
