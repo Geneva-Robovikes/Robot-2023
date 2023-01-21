@@ -27,17 +27,17 @@ public class RobotContainer {
   private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   // The robot's subsystems and commands are defined here...
-  CameraSubsystem[] cameras = {new CameraSubsystem("Front Cam",
-                                new Transform3d(
-                                  new Pose3d(.0, .0, .0, new Rotation3d()),
-                                  //TODO: Set to real pose
-                                  new Pose3d(.0, .0, .0, new Rotation3d())
-                                )),
-                               new CameraSubsystem("Back Cam",
-                                new Transform3d(
-                                  //TODO: Set to real pose
-                                  new Pose3d(.0, .0, .0, new Rotation3d()),
-                                  new Pose3d(.0, .0, .0, new Rotation3d(new Quaternion(1, 0, 0, 0)))
+  CameraSubsystem[] cameras = { new CameraSubsystem("Front Cam",
+                                  new Transform3d(
+                                    new Pose3d(.0, .0, .0, new Rotation3d()),
+                                    //TODO: Set to real pose
+                                    new Pose3d(.0, .0, .0, new Rotation3d())
+                                  )),
+                                new CameraSubsystem("Back Cam",
+                                  new Transform3d(
+                                    new Pose3d(.0, .0, .0, new Rotation3d()),
+                                    //TODO: Set to real pose
+                                    new Pose3d(.0, .0, .0, new Rotation3d(new Quaternion(1, 0, 0, 0)))
                                 ))};
   private final DriveSubsystem driveSubsystem = new DriveSubsystem(new int[] {0, 1, 2, 3, 4, 5, 6, 7}, cameras);
   private final TeleopCommand teleopCommand = new TeleopCommand(driveSubsystem, driverController);
