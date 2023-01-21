@@ -26,7 +26,7 @@ public class RobotContainer {
   private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public final PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
   //private final DriveSubsystem driveSubsystem = new DriveSubsystem(new int[] {0, 1, 2, 3, 4, 5, 6, 7});
   //private final TeleopCommand teleopCommand = new TeleopCommand(driveSubsystem, driverController);
@@ -52,18 +52,18 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+    //new Trigger(m_exampleSubsystem::exampleCondition)
+    //    .onTrue(new ExampleCommand(m_exampleSubsystem));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    //driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     driverController.a().whileTrue(pneumaticsCommand);
   }
 
-  public Command getAutonomousCommand() {
+  /*public Command getAutonomousCommand() {
     return Autos.exampleAuto(m_exampleSubsystem);
-  }
+  }*/
 
   /*public Command getTeleopCommand() {
     return teleopCommand;
