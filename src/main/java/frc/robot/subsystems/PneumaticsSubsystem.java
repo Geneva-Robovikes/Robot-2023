@@ -6,34 +6,23 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
-import edu.wpi.first.wpilibj.PneumaticHub;
 
 public class PneumaticsSubsystem extends SubsystemBase {
     Compressor phCompressor;
     DoubleSolenoid exampleDoublePH;
 
     public PneumaticsSubsystem() {
-
-        //phCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
-        //exampleDoublePH = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 0);
-        //exampleDoublePH.set(kReverse);
-
+        phCompressor = new Compressor(0, PneumaticsModuleType.REVPH);
+        exampleDoublePH = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 0);
+        exampleDoublePH.set(kReverse);
     }
 
     
     public boolean getPressureSwitch() {
         return phCompressor.getPressureSwitchValue();
-
     }
 
-    
-    public double getCurrent() {
-        return phCompressor.getCurrent();
-    }
-
-    /*public void setSolenoid(Value value) {
+    public void setSolenoid(Value value) {
         exampleDoublePH.set(value);
-    }*/
-
-
+    }
 }
