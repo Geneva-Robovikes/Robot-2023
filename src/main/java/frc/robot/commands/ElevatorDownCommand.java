@@ -14,6 +14,9 @@ public class ElevatorDownCommand extends CommandBase {
   //TODO: change from encoder units to meters
   private double maxHeight = 307200;
 
+
+  
+
   //TODO: add height argument to constructor
   public ElevatorDownCommand(ElevatorSubsystem subsystem) {
     elevatorSubsystem = subsystem;
@@ -24,7 +27,7 @@ public class ElevatorDownCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    elevatorSubsystem.setelevatorMotor(-0.3);
+    elevatorSubsystem.setelevatorMotor(-0.3, 2);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,6 +45,6 @@ public class ElevatorDownCommand extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    elevatorSubsystem.setelevatorMotor(0);
+    elevatorSubsystem.setelevatorMotor(0, 0);
   }
 }

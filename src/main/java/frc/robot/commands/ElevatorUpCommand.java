@@ -13,7 +13,8 @@ public class ElevatorUpCommand extends CommandBase {
   //private final DriveSubsystem driveSubsystem;
 
   //TODO: Add elevator length to contructor
-  public ElevatorUpCommand(ElevatorSubsystem subsystem) {
+  //done??
+  public ElevatorUpCommand(ElevatorSubsystem subsystem, double length) {
     ElevatorSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -22,13 +23,16 @@ public class ElevatorUpCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    ElevatorSubsystem.setelevatorMotor(.35);
+    ElevatorSubsystem.setelevatorMotor(.35, 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   //TODO: set motor using PID in execute
   @Override
-  public void execute() {}
+  public void execute() {
+    ElevatorSubsystem.setelevatorMotor(.35, 0);
+    PIDController pid = new PIDController(kP, kI, kD);
+  }
 
   // Returns true when the command should end.
   //TODO: Add finish condition
@@ -39,6 +43,6 @@ public class ElevatorUpCommand extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    ElevatorSubsystem.setelevatorMotor(0);
+    ElevatorSubsystem.setelevatorMotor(0, 0);
   }
 }

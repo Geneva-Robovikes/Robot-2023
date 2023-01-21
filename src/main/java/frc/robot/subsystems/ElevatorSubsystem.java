@@ -9,14 +9,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElevatorSubsystem extends SubsystemBase {
     private WPI_TalonFX elevatorMotor;
+    private WPI_TalonFX angleMotor;
     private PIDController pid = new PIDController(0, 0, 0);
 
     //TODO: make motor indexes agruments of the constructor
-    public ElevatorSubsystem() {
-        elevatorMotor = new WPI_TalonFX(8);
-
+    public ElevatorSubsystem(int motorIndex, int angleIndex) {
+        elevatorMotor = new WPI_TalonFX(motorIndex);
+        angleMotor = new WPI_TalonFX(angleIndex);
         //TODO: Add motor to change the arm's angle
-
+        angleMotor.setNeutralMode(NeutralMode.Brake);
         elevatorMotor.setNeutralMode(NeutralMode.Brake);
 
     }
@@ -29,6 +30,12 @@ public class ElevatorSubsystem extends SubsystemBase {
         return encoder;
     }
 
+    public double encoderToMeter(int encoder) {
+        final double encoderMeter = 0;
+        double meter = encoder / encoderMeter;
+
+        return meter;
+    }
     //TODO: make method to set the elevator's length in meters
     public void setelevatorMotor(double speed, int pos) {
     
@@ -49,4 +56,21 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     //TODO: Make methods to get angle motor encoder, convert to degrees, and method (using PID control) to set the angle of the arm
+    public double getAngleMotorEncoder(){
+        return angleMotor.getSelectedSensorPosition();
+    }
+
+    public double encoderToDegrees(int encoder){
+        double degrees = 0;
+        double encoderDegree = 5.69;
+
+        degrees = encoder / encoderDegree;
+
+        return degrees;
+    }
+
+    public void setArmAngle(int pos){
+        angleMotor.set(pid.calculate(angleMotor.getSelectedSensorPosition(), degreeToEncoder(pos)));
+    }
+
 }
