@@ -44,7 +44,7 @@ public class SwerveModule {
         );
     }
 
-    public void setSesiredState(SwerveModuleState desiredState) {
+    public void setDesiredState(SwerveModuleState desiredState) {
         SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(getCurrentAngle()));
         double driveOutput = drivePID.calculate(getDriveVelocity(), state.speedMetersPerSecond);
         double driveFeed = driveFeedForward.calculate(state.speedMetersPerSecond);

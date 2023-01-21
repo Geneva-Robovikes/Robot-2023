@@ -85,9 +85,9 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   void setModuleStates(SwerveModuleState[] moduleStates) {
-    frontLeftModule.setSesiredState(moduleStates[0]);
-    frontRightModule.setSesiredState(moduleStates[1]);
-    backLeftModule.setSesiredState(moduleStates[2]);
-    backRightModule.setSesiredState(moduleStates[3]);
+    frontLeftModule.setDesiredState(moduleStates[0]);
+    frontRightModule.setDesiredState(moduleStates[1]);
+    backLeftModule.setDesiredState(moduleStates[2]);
+    backRightModule.setDesiredState(moduleStates[3]);
   }
 }
