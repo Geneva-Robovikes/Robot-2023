@@ -13,18 +13,18 @@ public class PneumaticsCommand extends CommandBase{
         addRequirements(subsystem);
     }
 
-    /*@Override
+    @Override
     public void initialize() {
         pneumaticsSubsystem.setSolenoid(kForward);
-    }*/
+    }
 
     @Override
     public boolean isFinished() {
         return false;
     }
 
-    /*@Override
+    @Override
     public void end(boolean interrupted) {
         pneumaticsSubsystem.setSolenoid(kReverse);
-    }*/
+    }
 }
