@@ -5,9 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import java.util.HashMap;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -25,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveSubsystem driveSubsystem = new DriveSubsystem(new int[] {0, 1, 2, 3, 4, 5, 6, 7});
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -37,30 +34,13 @@ public class RobotContainer {
     configureBindings();
   }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-  }
+  private void configureBindings() {}
 
   public Command getAutonomousCommand(String pathName) {
     PathPlannerTrajectory trajectory;
     if(!pathName.equals("One Object")) {
       //TODO: Add path selection to shuffleboard
-      trajectory = PathPlanner.loadPath(pathName,  new PathConstraints(4,3));
+      trajectory = PathPlanner.loadPath(pathName,  new PathConstraints(1,1));
       
       HashMap<String, Command> eventMap = new HashMap<>();
       //eventMap.put("Intake", IntakeCommand());    <-- Uncomment when these commands exist
@@ -71,9 +51,9 @@ public class RobotContainer {
         driveSubsystem.followTrajectoryCommand(trajectory, true),
         trajectory.getMarkers(),
         eventMap
-        );
-      
-        return command;
+      );
+
+      return command;
     }
 
     //TODO: set to outtake command, maybe back onto the scale too
