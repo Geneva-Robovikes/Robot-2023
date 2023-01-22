@@ -78,7 +78,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   /**
-   * Sets the swerve modules according to the privided chassis speeds.
+   * Sets the swerve modules according to the privided chassis speeds. Use this to drive the robot.
    * @param xVelocity Velocity in the x direction, away from driver station is +x
    * @param yVelocity Velocity in the y direction, left of driver station is +y
    * @param angularVelocity Angular velocity, counter clockwise is +θ
