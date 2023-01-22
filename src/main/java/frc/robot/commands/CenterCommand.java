@@ -1,7 +1,5 @@
 package frc.robot.commands;
 
-import javax.naming.directory.DirContext;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CameraSubsystem;
@@ -43,6 +41,16 @@ public class CenterCommand extends CommandBase{
                 driveSubsystem.setModuleStatesFromSpeeds(0, -yVelocity, 0);
             }
         }
+    }
 
+    @Override
+    public boolean isFinished() {
+        if(controller.atSetpoint()) return true;
+        else return false;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        driveSubsystem.setModuleStatesFromSpeeds(0, 0, 0);
     }
 }
