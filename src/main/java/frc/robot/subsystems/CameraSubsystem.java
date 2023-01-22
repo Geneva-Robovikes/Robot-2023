@@ -39,7 +39,7 @@ public class CameraSubsystem extends SubsystemBase {
     } catch (Exception e) {
       System.err.println("File cannot be loaded");
     }
-    poseEstimator = new PhotonPoseEstimator(tagLayout, PoseStrategy.LOWEST_AMBIGUITY, camera, cameraPosition);
+    poseEstimator = new PhotonPoseEstimator(tagLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera, cameraPosition);
   }
 
   @Override
@@ -56,12 +56,14 @@ public class CameraSubsystem extends SubsystemBase {
     //result.getBestTarget().getSkew();
   }
 
+  /**
+   * Get the best target's skew.
+   * @return Skew angle.
+   */
   //added by alex
   public double getTargetSkew() {
     return result.getBestTarget().getSkew();
   }
-
-  
 
   /**
    * Sets the camera's pipeline to the index's corresponding pipeline.
@@ -79,6 +81,11 @@ public class CameraSubsystem extends SubsystemBase {
     camera.setPipelineIndex(index);
   }
 
+  /**
+   * Gets the estimated pose from an apriltag.
+   * @param prevEstimatedRobotPose The current pose in the odometry.
+   * @return The new pose estimate.
+   */
   public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
     poseEstimator.setReferencePose(prevEstimatedRobotPose);
     return poseEstimator.update();
