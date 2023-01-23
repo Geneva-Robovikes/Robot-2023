@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -103,5 +104,9 @@ public class DriveSubsystem extends SubsystemBase {
     frontRightModule.setSesiredState(moduleStates[1]);
     backLeftModule.setSesiredState(moduleStates[2]);
     backRightModule.setSesiredState(moduleStates[3]);
+  }
+
+  public CommandBase resetOdometryCommand() {
+    return runOnce(() -> resetOdometry(new Pose2d(odometry.getPoseMeters().getTranslation(), new Rotation2d())));
   }
 }
