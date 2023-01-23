@@ -13,8 +13,7 @@ public class PneumaticsSubsystem extends SubsystemBase {
 
     public PneumaticsSubsystem() {
         phCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
-        phCompressor.disable();
-        exampleDoublePH = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 0);
+        exampleDoublePH = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
         exampleDoublePH.set(kReverse);
     }
 
