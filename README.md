@@ -32,7 +32,7 @@ Geneva Robovikes code for the 2023 FRC season. I am sorry...
 *Paths will automatically be added to the robot files. No need to save!*
 
 ## **Useful Links**
-1) https://docs.wpilib.org/en/stable/ - Use this website to reasearch topics. It has great turtorials on trjectories, pathfinding, vision, and more if you look deep enough.
-2) https://first.wpi.edu/wpilib/allwpilib/docs/release/java/index.html - Use this website when reasearching specific classes or methods, it gives a more code-sided descriptions.
+1) https://docs.wpilib.org/en/stable/ - Use this website to reasearch topics. It has great tutorials on trjectories, pathfinding, vision, and more if you look deep enough.
+2) https://first.wpi.edu/wpilib/allwpilib/docs/release/java/index.html - Use this website when reasearching specific classes or methods, it gives code-sided descriptions.
 3) https://www.chiefdelphi.com/ - Stack Overflow like website that focuses on FRC problems. Post a problem if in need!
 4) http://discord.gg/frc - Unofficial FRC discord server. Lots of people willing to help with issues.
