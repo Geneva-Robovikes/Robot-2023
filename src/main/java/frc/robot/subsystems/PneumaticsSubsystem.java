@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -10,6 +11,7 @@ import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 public class PneumaticsSubsystem extends SubsystemBase {
     Compressor phCompressor;
     DoubleSolenoid exampleDoublePH;
+    boolean cubeMode;
 
     public PneumaticsSubsystem() {
         phCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
@@ -24,5 +26,26 @@ public class PneumaticsSubsystem extends SubsystemBase {
 
     public void setSolenoid(Value value) {
         exampleDoublePH.set(value);
+    }
+
+    public void switchMode() {
+        if (cubeMode) {
+            cubeMode = false;
+        } else {
+            cubeMode = true;
+        }
+    }
+
+    public boolean getMode() {
+        return cubeMode;
+    }
+
+    public void setCubeMode(boolean cubeMode) {
+        this.cubeMode = cubeMode;
+    }
+
+
+    public CommandBase setCubeModeCommand() {
+        return runOnce(() -> switchMode());
     }
 }

@@ -31,7 +31,7 @@ public class RobotContainer {
   //private final DriveSubsystem driveSubsystem = new DriveSubsystem(new int[] {0, 1, 2, 3, 4, 5, 6, 7});
   //private final TeleopCommand teleopCommand = new TeleopCommand(driveSubsystem, driverController);
 
-  public final PneumaticsCommand pneumaticsCommand = new PneumaticsCommand(pneumaticsSubsystem);
+  public final PneumaticsCommand pneumaticsCommand = new PneumaticsCommand(pneumaticsSubsystem, false);
 
 
 
@@ -59,6 +59,9 @@ public class RobotContainer {
     // cancelling on release.
     //driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     driverController.a().whileTrue(pneumaticsCommand);
+    driverController.y().onTrue(pneumaticsSubsystem.setCubeModeCommand());
+    //driverController.y().toggleOnTrue();
+
   }
 
   /*public Command getAutonomousCommand() {

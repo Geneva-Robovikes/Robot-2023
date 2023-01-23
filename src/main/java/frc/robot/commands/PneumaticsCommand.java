@@ -8,9 +8,10 @@ public class PneumaticsCommand extends CommandBase{
 
     private final PneumaticsSubsystem pneumaticsSubsystem;
     
-    public PneumaticsCommand(PneumaticsSubsystem subsystem) {
+    public PneumaticsCommand(PneumaticsSubsystem subsystem, boolean cubeMode) {
         pneumaticsSubsystem = subsystem;
         addRequirements(subsystem);
+        pneumaticsSubsystem.setCubeMode(cubeMode);
     }
 
     @Override
