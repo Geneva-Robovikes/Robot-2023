@@ -40,7 +40,9 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {}
+  private void configureBindings() {
+    driverController.y().onTrue(driveSubsystem.resetOdometryCommand());
+  }
 
   public Command getAutonomousCommand() {
     return null;

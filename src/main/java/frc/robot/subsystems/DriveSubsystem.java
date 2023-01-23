@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
 
@@ -89,5 +90,9 @@ public class DriveSubsystem extends SubsystemBase {
     frontRightModule.setDesiredState(moduleStates[1]);
     backLeftModule.setDesiredState(moduleStates[2]);
     backRightModule.setDesiredState(moduleStates[3]);
+  }
+
+  public CommandBase resetOdometryCommand() {
+    return runOnce(() -> resetOdometry(new Pose2d(odometry.getPoseMeters().getTranslation(), new Rotation2d())));
   }
 }
