@@ -48,8 +48,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-
-    //TODO: Add path selection to shuffleboard
     PathPlannerTrajectory trajectory = PathPlanner.loadPath("Test Path 1",  new PathConstraints(4,3));
  
     HashMap<String, Command> eventMap = new HashMap<>();
