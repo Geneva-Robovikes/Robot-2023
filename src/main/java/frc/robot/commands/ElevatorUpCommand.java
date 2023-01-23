@@ -9,40 +9,45 @@ import frc.robot.subsystems.ElevatorSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class ElevatorUpCommand extends CommandBase {
-  private final ElevatorSubsystem ElevatorSubsystem;
+  private final ElevatorSubsystem elevatorSubsystem;
   //private final DriveSubsystem driveSubsystem;
 
-  //TODO: Add elevator length to contructor
-  //done??
+  //TODO: Add elevator length to contructor-done
+  double length;
+  
+
   public ElevatorUpCommand(ElevatorSubsystem subsystem, double length) {
-    ElevatorSubsystem = subsystem;
+    elevatorSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
+    this.length = length;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    ElevatorSubsystem.setelevatorMotor(.35, 0);
+    elevatorSubsystem.setelevatorLength(length);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
-  //TODO: set motor using PID in execute
+  //TODO: set motor using PID in execute done?
   @Override
   public void execute() {
-    ElevatorSubsystem.setelevatorMotor(.35, 0);
-    PIDController pid = new PIDController(kP, kI, kD);
+    elevatorSubsystem.setelevatorLength(length);
+  
   }
 
   // Returns true when the command should end.
-  //TODO: Add finish condition
+  //TODO: Add finish condition done?
+  
   @Override
   public boolean isFinished() {
-    return false;
+    if(elevatorSubsystem.atSetPoint()) {return true;}
+    else {return false;}
   }
 
   @Override
   public void end(boolean interrupted) {
-    ElevatorSubsystem.setelevatorMotor(0, 0);
+    elevatorSubsystem.setelevatorMotor(0);
   }
 }

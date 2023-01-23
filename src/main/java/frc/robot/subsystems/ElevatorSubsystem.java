@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.math.controller.PIDController;
@@ -30,22 +30,28 @@ public class ElevatorSubsystem extends SubsystemBase {
         return encoder;
     }
 
-    public double encoderToMeter(int encoder) {
+    public double encoderToMeter(double encoder) {
         final double encoderMeter = 0;
         double meter = encoder / encoderMeter;
 
         return meter;
     }
     //TODO: make method to set the elevator's length in meters
-    public void setelevatorMotor(double speed, int pos) {
+    public void setelevatorLength(double length) {
     
-        elevatorMotor.set(ControlMode.PercentOutput, speed);
-        //should work
-        //TODO: pass in the current langth in meters and the goal length
-        elevatorMotor.set(pid.calculate(elevatorMotor.getSelectedSensorPosition(), degreeToEncoder(pos)));
-          
+        
+        
+        elevatorMotor.set(pid.calculate(encoderToMeter(elevatorMotor.getSelectedSensorPosition()), length));
+        
     }
 
+    public boolean atSetPoint() {
+        return pid.atSetpoint();
+
+    }
+    public void setelevatorMotor(double volts){
+        elevatorMotor.setVoltage(volts);
+    }
     public double getelevatorEncoder() {
         return elevatorMotor.getSelectedSensorPosition();
     }

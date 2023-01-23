@@ -5,6 +5,9 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ElevatorDownCommand;
+import frc.robot.commands.ElevatorUpCommand;
+import frc.robot.subsystems.ElevatorSubsystem;
 //import frc.robot.commands.Autos;
 //import frc.robot.commands.ExampleCommand;
 //import frc.robot.subsystems.ExampleSubsystem;
@@ -22,10 +25,14 @@ public class RobotContainer {
   //TODO: Add Sybsystems and commands to robot container
   // The robot's subsystems and commands are defined here...
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(0, 0);
+  private final ElevatorDownCommand elevatorDownCommand = new ElevatorDownCommand(elevatorSubsystem, 0);
+  private final ElevatorUpCommand elevatorUpCommand = new ElevatorUpCommand(elevatorSubsystem, 0);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
+  private final CommandXboxController m_driverController = 
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+      
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -49,7 +56,9 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+
+    m_driverController.b().whileTrue(elevatorUpCommand);
+    m_driverController.b().whileFalse(elevatorDownCommand);
   }
 
   /**
