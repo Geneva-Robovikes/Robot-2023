@@ -2,21 +2,23 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 0.0,
-        "y": 0.0
+        "x": 1.802758381903169,
+        "y": 0.487571923265493
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.0,
-        "y": 0.0
+        "x": 2.691860124328478,
+        "y": 0.8460806903724735
       },
-      "holonomicAngle": 0,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
+        "names": [
+          "Outtake"
+        ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
@@ -24,24 +26,26 @@
     },
     {
       "anchorPoint": {
-        "x": 2.0,
-        "y": 2.0
+        "x": 6.434691652925345,
+        "y": 0.9464631451624268
       },
       "prevControl": {
-        "x": 2.0,
-        "y": 1.0
+        "x": 4.9146144803917515,
+        "y": 0.7456982355825191
       },
       "nextControl": {
-        "x": 2.0,
-        "y": 1.0
+        "x": 4.9146144803917515,
+        "y": 0.7456982355825191
       },
       "holonomicAngle": 0,
       "isReversal": true,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": false,
+      "isStopPoint": true,
       "stopEvent": {
-        "names": [],
+        "names": [
+          "Intake"
+        ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
@@ -49,12 +53,12 @@
     },
     {
       "anchorPoint": {
-        "x": 4.0,
-        "y": 0.0
+        "x": 1.802758381903169,
+        "y": 1.0611859506366614
       },
       "prevControl": {
-        "x": 3.0,
-        "y": 0.0
+        "x": 2.376372409274336,
+        "y": 0.7887192876353561
       },
       "nextControl": null,
       "holonomicAngle": 180.0,
@@ -63,7 +67,9 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
+        "names": [
+          "Outtake"
+        ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
