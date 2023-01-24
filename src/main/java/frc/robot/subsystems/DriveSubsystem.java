@@ -4,9 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -15,10 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -37,7 +31,7 @@ public class DriveSubsystem extends SubsystemBase {
   Translation2d backLeftLocation = new Translation2d(-0.318, 0.318);
   Translation2d backRightLocation = new Translation2d(-0.318, -0.318);
 
-  SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
+  public SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
 
   SwerveDriveOdometry odometry = new SwerveDriveOdometry(
     kinematics, gyro.getRotation2d(), new SwerveModulePosition[] {
@@ -65,12 +59,13 @@ public class DriveSubsystem extends SubsystemBase {
       });
   }
 
+  /* Uncomment if the autobuilder doesn't work properly
   public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
     return new SequentialCommandGroup(
       new InstantCommand(() -> {
         // Reset odometry for the first path you run during auto
         if(isFirstPath){
-          this.resetOdometry(traj.getInitialHolonomicPose());
+          this.resetPose(traj.getInitialHolonomicPose());
         }
       }),
         new PPSwerveControllerCommand(
@@ -85,8 +80,9 @@ public class DriveSubsystem extends SubsystemBase {
       )
     );
   }
+  */
 
-  void resetOdometry(Pose2d pose) {
+  public void resetPose(Pose2d pose) {
     odometry.resetPosition(gyro.getRotation2d(), new SwerveModulePosition[] {
       frontRightModule.getPosition(),
       frontRightModule.getPosition(),
@@ -95,11 +91,11 @@ public class DriveSubsystem extends SubsystemBase {
     }, pose);
   }
 
-  Pose2d getPose() {
+  public Pose2d getPose() {
     return odometry.getPoseMeters();
   }
 
-  void setModuleStates(SwerveModuleState[] moduleStates) {
+  public void setModuleStates(SwerveModuleState[] moduleStates) {
     frontLeftModule.setSesiredState(moduleStates[0]);
     frontRightModule.setSesiredState(moduleStates[1]);
     backLeftModule.setSesiredState(moduleStates[2]);
@@ -107,6 +103,6 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public CommandBase resetOdometryCommand() {
-    return runOnce(() -> resetOdometry(new Pose2d(odometry.getPoseMeters().getTranslation(), new Rotation2d())));
+    return runOnce(() -> resetPose(new Pose2d(odometry.getPoseMeters().getTranslation(), new Rotation2d())));
   }
 }

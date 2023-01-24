@@ -10,10 +10,12 @@ import java.util.HashMap;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.FollowPathWithEvents;
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
+
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,29 +27,58 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveSubsystem = new DriveSubsystem(new int[] {0, 1, 2, 3, 4, 5, 6, 7});
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
+  SendableChooser<String> autoChooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    // Add new path to this chooser to select them from shuffleboard.
+    autoChooser.setDefaultOption("Outtake 1", "Outtake 1");
+    autoChooser.addOption("Top 2 Object Scale", "T2S");
+    autoChooser.addOption("Top 2 Object", "T2");
+    autoChooser.addOption("Top 3 Object", "T3");
+    autoChooser.addOption("Bottom 2 Object Scale", "B2S");
+    autoChooser.addOption("Bottom 2 Object", "B2");
+    autoChooser.addOption("Test Path 1", "Test Path 1");
+    autoChooser.addOption("Test Path 2", "Test Path 2");
+
     // Configure the trigger bindings
     configureBindings();
   }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
   private void configureBindings() {
     m_driverController.y().onTrue(driveSubsystem.resetOdometryCommand());
   }
 
   public Command getAutonomousCommand() {
+    if(!autoChooser.getSelected().equals("Outtake 1")) {
+      PathPlannerTrajectory path = PathPlanner.loadPath("Test Path 1", new PathConstraints(1,1));
+
+      HashMap<String, Command> eventMap = new HashMap<>();
+      //eventMap.put("Intake", IntakeCommand());    <-- Uncomment when these commands exist
+      //eventMap.put("Outtake", OuttakeCommand());  <--
+  
+      SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
+        driveSubsystem::getPose, // Pose2d supplier
+        driveSubsystem::resetPose, // Pose2d consumer, used to reset odometry at the beginning of auto
+        driveSubsystem.kinematics, // SwerveDriveKinematics
+        new PIDConstants(5.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
+        new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
+        driveSubsystem::setModuleStates, // Module states consumer used to output to the drive subsystem
+        eventMap,
+        true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+        driveSubsystem // The drive subsystem. Used to properly set the requirements of path following commands
+      );
+  
+      return autoBuilder.fullAuto(path); 
+    }
+
+    // Replace with outtake command.
+    return null;
+
+    /* Uncomment if autobuilder does not work properly.
     PathPlannerTrajectory trajectory = PathPlanner.loadPath("Test Path 1",  new PathConstraints(4,3));
  
     HashMap<String, Command> eventMap = new HashMap<>();
@@ -61,5 +92,6 @@ public class RobotContainer {
     );
 
     return command;
+     */
   }
 }
