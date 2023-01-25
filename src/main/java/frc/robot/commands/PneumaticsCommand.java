@@ -15,8 +15,11 @@ public class PneumaticsCommand extends CommandBase{
     }
 
     @Override
-    public void initialize() {
-        pneumaticsSubsystem.setSolenoid(kForward);
+    public void initialize() {}
+
+    public void execute() {
+        double dist = pneumaticsSubsystem.getDistance();
+        if(dist < 200) pneumaticsSubsystem.setSolenoid(kForward);
     }
 
     @Override
