@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.ADIS16448_IMU;
 public class DriveSubsystem extends SubsystemBase {
 
   ADIS16448_IMU gyro;
+  boolean isFieldCentric = true;
 
   SwerveModule frontLeftModule;
   SwerveModule frontRightModule;
@@ -61,8 +62,17 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
+  void setFieldCentricDrive (boolean enabled) {
+    isFieldCentric = enabled;
+  }
+
   public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity) {
-    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, new Rotation2d(gyro.getGyroAngleZ()));
+    ChassisSpeeds speeds;
+    if(isFieldCentric) {
+      speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, new Rotation2d(gyro.getGyroAngleZ()));
+    } else {
+      speeds = new ChassisSpeeds(xVelocity, yVelocity, angularVelocity);
+    }
     setModuleStates(kinematics.toSwerveModuleStates(speeds));
   }
 
@@ -94,5 +104,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   public CommandBase resetOdometryCommand() {
     return runOnce(() -> resetOdometry(new Pose2d(odometry.getPoseMeters().getTranslation(), new Rotation2d())));
+  }
+
+  public CommandBase setDriveModeCommand() {
+    return runEnd(() -> setFieldCentricDrive(true), () -> setFieldCentricDrive(false));
   }
 }

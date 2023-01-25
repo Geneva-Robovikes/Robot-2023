@@ -42,6 +42,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     driverController.y().onTrue(driveSubsystem.resetOdometryCommand());
+    driverController.rightTrigger().onTrue(driveSubsystem.setDriveModeCommand());
   }
 
   public Command getAutonomousCommand() {
