@@ -4,13 +4,16 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class BalanceCommand extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem driveSubsystem;
+
+  //Set to robot values
+  private PIDController balancePID = new PIDController(0, 0, 0);
 
   /**
    * Creates a new ExampleCommand.
@@ -27,6 +30,7 @@ public class BalanceCommand extends CommandBase {
   @Override
   public void execute() {
     double angle = driveSubsystem.getAngleAroundFieldY();
+    double result = balancePID.calculate(angle, 0);
   }
 
   // Called once the command ends or is interrupted.
