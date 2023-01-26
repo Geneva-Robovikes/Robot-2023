@@ -31,6 +31,7 @@ public class BalanceCommand extends CommandBase {
   public void execute() {
     double angle = driveSubsystem.getAngleAroundFieldY();
     double result = balancePID.calculate(angle, 0);
+    driveSubsystem.setModuleStatesFromSpeeds(result, 0, 0);
   }
 
   // Called once the command ends or is interrupted.

@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -42,6 +43,7 @@ public class DriveSubsystem extends SubsystemBase {
     }, 
     new Pose2d(0, 0, new Rotation2d()));
   Pose2d currenPose2d;
+  boolean isFieldCentric = true;
 
   public DriveSubsystem(int[] motorIndexes) {
     frontLeftModule = new SwerveModule(motorIndexes[0], motorIndexes[1]);
@@ -81,6 +83,16 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
   */
+
+  public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity) {
+    ChassisSpeeds speeds;
+    if(isFieldCentric) {
+      speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, new Rotation2d(gyro.getGyroAngleZ()));
+    } else {
+      speeds = new ChassisSpeeds(xVelocity, yVelocity, angularVelocity);
+    }
+    setModuleStates(kinematics.toSwerveModuleStates(speeds));
+  }
 
   public double getAngleAroundFieldY() {
     double robotXAngle = gyro.getGyroAngleX();
