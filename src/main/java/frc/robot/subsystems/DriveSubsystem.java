@@ -11,14 +11,14 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
 
   //TODO: Change to gyro on the robot and add it to the consturctor if needed
-  Gyro gyro;
+  ADIS16448_IMU gyro;
 
   SwerveModule frontLeftModule;
   SwerveModule frontRightModule;
@@ -34,7 +34,7 @@ public class DriveSubsystem extends SubsystemBase {
   public SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
 
   SwerveDriveOdometry odometry = new SwerveDriveOdometry(
-    kinematics, gyro.getRotation2d(), new SwerveModulePosition[] {
+    kinematics, new Rotation2d(gyro.getGyroAngleZ()), new SwerveModulePosition[] {
       frontRightModule.getPosition(),
       frontRightModule.getPosition(),
       backLeftModule.getPosition(), 
@@ -52,7 +52,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    odometry.update(gyro.getRotation2d(),
+    odometry.update(new Rotation2d(gyro.getGyroAngleZ()),
       new SwerveModulePosition[] {
         frontLeftModule.getPosition(), frontRightModule.getPosition(),
         backLeftModule.getPosition(), backRightModule.getPosition()
@@ -82,12 +82,18 @@ public class DriveSubsystem extends SubsystemBase {
   }
   */
 
-  public Rotation3d getRotation() {
-    return 
+  public double getAngleAroundFieldY() {
+    double robotXAngle = gyro.getGyroAngleX();
+    double robotYAngle = gyro.getGyroAngleY();
+    double robotZAngle = gyro.getGyroAngleZ() % 360;
+
+    double angleAroundFieldY = robotYAngle * Math.sin(robotZAngle) + robotXAngle * Math.cos(robotZAngle);
+
+    return angleAroundFieldY;
   }
 
   public void resetPose(Pose2d pose) {
-    odometry.resetPosition(gyro.getRotation2d(), new SwerveModulePosition[] {
+    odometry.resetPosition(new Rotation2d(gyro.getGyroAngleZ()), new SwerveModulePosition[] {
       frontRightModule.getPosition(),
       frontRightModule.getPosition(),
       backLeftModule.getPosition(), 
