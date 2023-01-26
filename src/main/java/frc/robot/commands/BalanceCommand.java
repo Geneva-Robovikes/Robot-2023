@@ -10,7 +10,7 @@ import frc.robot.subsystems.DriveSubsystem;
 /** An example command that uses an example subsystem. */
 public class BalanceCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final DriveSubsystem m_subsystem;
+  private final DriveSubsystem driveSubsystem;
 
   /**
    * Creates a new ExampleCommand.
@@ -18,7 +18,7 @@ public class BalanceCommand extends CommandBase {
    * @param subsystem The subsystem used by this command.
    */
   public BalanceCommand(DriveSubsystem subsystem) {
-    m_subsystem = subsystem;
+    driveSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }

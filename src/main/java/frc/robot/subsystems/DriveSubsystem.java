@@ -82,6 +82,10 @@ public class DriveSubsystem extends SubsystemBase {
   }
   */
 
+  public Rotation3d getRotation() {
+    return 
+  }
+
   public void resetPose(Pose2d pose) {
     odometry.resetPosition(gyro.getRotation2d(), new SwerveModulePosition[] {
       frontRightModule.getPosition(),
