@@ -1,9 +1,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -14,8 +11,8 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.robot.Constants;
 
 public class SwerveModule {
-    CANSparkMax driveMotor;
-    CANSparkMax turnMotor;
+    WPI_TalonFX driveMotor;
+    WPI_TalonFX turnMotor;
 
     // TODO: Tune to robot values
     PIDController drivePID = new PIDController(1, 0, 0);
@@ -31,8 +28,8 @@ public class SwerveModule {
     SimpleMotorFeedforward turnFeedForward = new SimpleMotorFeedforward(1, 0.5);
 
     public SwerveModule(int driveMotorIndex, int turnMotorIndex) {
-        driveMotor = new CANSparkMax(driveMotorIndex, MotorType.kBrushless);
-        turnMotor = new CANSparkMax(turnMotorIndex, MotorType.kBrushless);
+        driveMotor = new WPI_TalonFX(driveMotorIndex);
+        turnMotor = new WPI_TalonFX(turnMotorIndex);
         turnPID.enableContinuousInput(-Math.PI, Math.PI);
     }
 
@@ -55,15 +52,15 @@ public class SwerveModule {
     }
 
     private double getDriveVelocity() {
-        return driveMotor.getEncoder().getVelocity() * Constants.swerveDriveGearRatio / Constants.falconEncoderResolution * 2 * Math.PI * Constants.swerveWheelRadius;
+        return driveMotor.getSelectedSensorPosition() * Constants.swerveDriveGearRatio / Constants.falconEncoderResolution * 2 * Math.PI * Constants.swerveWheelRadius;
     }
 
     private double getDriveDistance() {
-        return driveMotor.getEncoder().getPosition() * Constants.swerveDriveGearRatio / Constants.falconEncoderResolution * 2 * Math.PI * Constants.swerveWheelRadius;
+        return driveMotor.getSelectedSensorPosition() * Constants.swerveDriveGearRatio / Constants.falconEncoderResolution * 2 * Math.PI * Constants.swerveWheelRadius;
     }
 
     private double getCurrentAngle() {
-        double angle = turnMotor.getEncoder().getPosition() * Constants.swerveTurnGearRatio / Constants.falconEncoderResolution * 2 * Math.PI;
+        double angle = turnMotor.getSelectedSensorPosition() * Constants.swerveTurnGearRatio / Constants.falconEncoderResolution * 2 * Math.PI;
         double multiple = (int) (angle / (2 * Math.PI));
         return angle - (2 * Math.PI * multiple);
     }
