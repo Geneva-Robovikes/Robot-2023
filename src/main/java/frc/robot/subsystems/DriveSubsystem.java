@@ -45,11 +45,11 @@ public class DriveSubsystem extends SubsystemBase {
   Pose2d currenPose2d;
 
   public DriveSubsystem(int[] motorIndexes) {
-    
     frontLeftModule = new SwerveModule(motorIndexes[0], motorIndexes[1]);
     frontRightModule = new SwerveModule(motorIndexes[2], motorIndexes[3]);
     backLeftModule = new SwerveModule(motorIndexes[4], motorIndexes[5]);
     backRightModule = new SwerveModule(motorIndexes[6], motorIndexes[7]);
+    gyro.calibrate();
   }
 
   @Override
