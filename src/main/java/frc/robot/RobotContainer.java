@@ -21,7 +21,7 @@ public class RobotContainer {
   private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   // The robot's subsystems and commands are defined here...
-  private final DriveSubsystem driveSubsystem = new DriveSubsystem(new int[] {0, 1, 2, 3, 4, 5, 6, 7});
+  private final DriveSubsystem driveSubsystem = new DriveSubsystem(new int[] {2, 3, 4, 5, 6, 7, 8, 9});
   private final TeleopCommand teleopCommand = new TeleopCommand(driveSubsystem, driverController);
 
 
@@ -51,5 +51,9 @@ public class RobotContainer {
 
   public Command getTeleopCommand() {
     return teleopCommand;
+  }
+
+  public void updateOdometry() {
+    driveSubsystem.updateOdometry();
   }
 }

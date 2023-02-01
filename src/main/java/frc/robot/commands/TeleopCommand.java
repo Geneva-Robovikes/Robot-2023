@@ -35,9 +35,11 @@ public class TeleopCommand extends CommandBase {
     y1 = MathUtil.applyDeadband(x1, OperatorConstants.controllerDeadzone);
     x2 = MathUtil.applyDeadband(x1, OperatorConstants.controllerDeadzone);
 
-    double vX = x1 * maxSpeedX;
-    double vY = y1 * maxSpeedY;
+    double vX = y1 * maxSpeedX;
+    double vY = x1 * maxSpeedY;
     double vTheta = x2 * maxSpeedTheta;
+
+    System.out.println(x2);
 
     driveSubsystem.setModuleStatesFromSpeeds(vX, vY, vTheta);
   }

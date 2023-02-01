@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.ADIS16448_IMU;
 
 public class DriveSubsystem extends SubsystemBase {
 
-  ADIS16448_IMU gyro;
+  ADIS16448_IMU gyro = new ADIS16448_IMU();
   boolean isFieldCentric = true;
 
   SwerveModule frontLeftModule;
@@ -33,15 +33,7 @@ public class DriveSubsystem extends SubsystemBase {
   Translation2d backRightLocation = new Translation2d(-0.318, -0.318);
 
   SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
-
-  SwerveDriveOdometry odometry = new SwerveDriveOdometry(
-    kinematics, new Rotation2d(gyro.getGyroAngleZ()), new SwerveModulePosition[] {
-      frontRightModule.getPosition(),
-      frontRightModule.getPosition(),
-      backLeftModule.getPosition(), 
-      backRightModule.getPosition()
-    }, 
-    new Pose2d(0, 0, new Rotation2d()));
+  SwerveDriveOdometry odometry;
   Pose2d currenPose2d;
 
   public DriveSubsystem(int[] motorIndexes) {
@@ -50,16 +42,24 @@ public class DriveSubsystem extends SubsystemBase {
     backLeftModule = new SwerveModule(motorIndexes[4], motorIndexes[5]);
     backRightModule = new SwerveModule(motorIndexes[6], motorIndexes[7]);
     gyro.calibrate();
+
+    odometry = new SwerveDriveOdometry(
+      kinematics, new Rotation2d(0), new SwerveModulePosition[] {
+        frontLeftModule.getPosition(),
+        frontRightModule.getPosition(),
+        backLeftModule.getPosition(), 
+        backRightModule.getPosition()
+      }, 
+      new Pose2d(0, 0, new Rotation2d()));
   }
 
-  @Override
-  public void periodic() {
+  public void updateOdometry() {
     odometry.update(new Rotation2d(gyro.getGyroAngleZ()),
-      new SwerveModulePosition[] {
-        frontLeftModule.getPosition(), frontRightModule.getPosition(),
-        backLeftModule.getPosition(), backRightModule.getPosition()
-      }
-    );
+    new SwerveModulePosition[] {
+      frontLeftModule.getPosition(), frontRightModule.getPosition(),
+      backLeftModule.getPosition(), backRightModule.getPosition()
+    }
+  );
   }
 
   void setFieldCentricDrive (boolean enabled) {
@@ -73,7 +73,8 @@ public class DriveSubsystem extends SubsystemBase {
     } else {
       speeds = new ChassisSpeeds(xVelocity, yVelocity, angularVelocity);
     }
-    setModuleStates(kinematics.toSwerveModuleStates(speeds));
+    //System.out.println(speeds);
+    //setModuleStates(kinematics.toSwerveModuleStates(speeds));
   }
 
   public void resetOdometry(Pose2d pose) {
