@@ -15,9 +15,9 @@ public class TeleopCommand extends CommandBase {
   private final CommandXboxController controller;
 
   //TODO: Test and get good values. All in m/s
-  private final double maxSpeedX = 1;
-  private final double maxSpeedY = 1;
-  private final double maxSpeedTheta = Math.PI / 2;
+  private final double maxSpeedX = 2;
+  private final double maxSpeedY = 2;
+  private final double maxSpeedTheta = Math.PI;
 
   public TeleopCommand(DriveSubsystem driveSubsystem, CommandXboxController controller) {
     this.driveSubsystem = driveSubsystem;
@@ -32,14 +32,12 @@ public class TeleopCommand extends CommandBase {
     double x2 = controller.getRightX();
 
     x1 = MathUtil.applyDeadband(x1, OperatorConstants.controllerDeadzone);
-    y1 = MathUtil.applyDeadband(x1, OperatorConstants.controllerDeadzone);
-    x2 = MathUtil.applyDeadband(x1, OperatorConstants.controllerDeadzone);
+    y1 = MathUtil.applyDeadband(y1, OperatorConstants.controllerDeadzone);
+    x2 = MathUtil.applyDeadband(x2, OperatorConstants.controllerDeadzone);
 
     double vX = y1 * maxSpeedX;
     double vY = x1 * maxSpeedY;
     double vTheta = x2 * maxSpeedTheta;
-
-    System.out.println(x2);
 
     driveSubsystem.setModuleStatesFromSpeeds(vX, vY, vTheta);
   }

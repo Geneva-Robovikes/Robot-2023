@@ -27,20 +27,20 @@ public class DriveSubsystem extends SubsystemBase {
   SwerveModule backRightModule;
 
   // Positions are based of of 25in square robot
-  Translation2d frontLeftLocation = new Translation2d(0.318, 0.318);
-  Translation2d frontRightLocation = new Translation2d(0.318, -0.318);
-  Translation2d backLeftLocation = new Translation2d(-0.318, 0.318);
-  Translation2d backRightLocation = new Translation2d(-0.318, -0.318);
+  Translation2d frontLeftLocation = new Translation2d(0.3048, 0.3048);
+  Translation2d frontRightLocation = new Translation2d(0.3048, -0.3048);
+  Translation2d backLeftLocation = new Translation2d(-0.3048, 0.3048);
+  Translation2d backRightLocation = new Translation2d(-0.3048, -0.3048);
 
   SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
   SwerveDriveOdometry odometry;
   Pose2d currenPose2d;
 
   public DriveSubsystem(int[] motorIndexes) {
-    frontLeftModule = new SwerveModule(motorIndexes[0], motorIndexes[1]);
-    frontRightModule = new SwerveModule(motorIndexes[2], motorIndexes[3]);
-    backLeftModule = new SwerveModule(motorIndexes[4], motorIndexes[5]);
-    backRightModule = new SwerveModule(motorIndexes[6], motorIndexes[7]);
+    frontLeftModule = new SwerveModule(motorIndexes[0], motorIndexes[1], true);
+    frontRightModule = new SwerveModule(motorIndexes[2], motorIndexes[3], false);
+    backLeftModule = new SwerveModule(motorIndexes[4], motorIndexes[5], true);
+    backRightModule = new SwerveModule(motorIndexes[6], motorIndexes[7], false);
     gyro.calibrate();
 
     odometry = new SwerveDriveOdometry(
@@ -68,13 +68,13 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity) {
     ChassisSpeeds speeds;
-    if(isFieldCentric) {
-      speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, new Rotation2d(gyro.getGyroAngleZ()));
+    speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, new Rotation2d(gyro.getGyroAngleZ()));
+    /*if(isFieldCentric) {
     } else {
       speeds = new ChassisSpeeds(xVelocity, yVelocity, angularVelocity);
-    }
+    }*/
     //System.out.println(speeds);
-    //setModuleStates(kinematics.toSwerveModuleStates(speeds));
+    setModuleStates(kinematics.toSwerveModuleStates(speeds));
   }
 
   public void resetOdometry(Pose2d pose) {

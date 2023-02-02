@@ -19,9 +19,7 @@ public final class Constants {
   }
 
   public static final int falconEncoderResolution = 2048;
-
-  //TODO: Change to real values
-  public static final double swerveWheelRadius = 3.95;
+  public static final double swerveWheelRadius = 0.10033;
   public static final double swerveDriveGearRatio = 6.75;
   public static final double swerveTurnGearRatio = 150.0 / 7.0;
   public static final double moduleMaxAngularVelocity = Math.PI;

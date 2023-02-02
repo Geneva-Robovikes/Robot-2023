@@ -24,13 +24,14 @@ public class SwerveModule {
     );
 
     //TODO: Tune to robot values
-    SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(1, 3);
-    SimpleMotorFeedforward turnFeedForward = new SimpleMotorFeedforward(1, 0.5);
+    SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(0, 0);
+    SimpleMotorFeedforward turnFeedForward = new SimpleMotorFeedforward(0, 0);
 
-    public SwerveModule(int driveMotorIndex, int turnMotorIndex) {
+    public SwerveModule(int driveMotorIndex, int turnMotorIndex, boolean inverted) {
         driveMotor = new WPI_TalonFX(driveMotorIndex);
         turnMotor = new WPI_TalonFX(turnMotorIndex);
         turnPID.enableContinuousInput(-Math.PI, Math.PI);
+        driveMotor.setInverted(inverted);
     }
 
     public SwerveModulePosition getPosition() {
@@ -52,15 +53,15 @@ public class SwerveModule {
     }
 
     private double getDriveVelocity() {
-        return driveMotor.getSelectedSensorPosition() * Constants.swerveDriveGearRatio / Constants.falconEncoderResolution * 2 * Math.PI * Constants.swerveWheelRadius;
+        return driveMotor.getSelectedSensorVelocity() / Constants.falconEncoderResolution / Constants.swerveDriveGearRatio * 2 * Math.PI * Constants.swerveWheelRadius;
     }
 
     private double getDriveDistance() {
-        return driveMotor.getSelectedSensorPosition() * Constants.swerveDriveGearRatio / Constants.falconEncoderResolution * 2 * Math.PI * Constants.swerveWheelRadius;
+        return driveMotor.getSelectedSensorPosition() / Constants.swerveDriveGearRatio / Constants.falconEncoderResolution * 2 * Math.PI * Constants.swerveWheelRadius;
     }
 
     private double getCurrentAngle() {
-        double angle = turnMotor.getSelectedSensorPosition() * Constants.swerveTurnGearRatio / Constants.falconEncoderResolution * 2 * Math.PI;
+        double angle = turnMotor.getSelectedSensorPosition() / Constants.swerveTurnGearRatio / Constants.falconEncoderResolution * 2 * Math.PI;
         double multiple = (int) (angle / (2 * Math.PI));
         return angle - (2 * Math.PI * multiple);
     }
