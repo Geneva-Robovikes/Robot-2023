@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import org.opencv.objdetect.FaceDetectorYN;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -35,8 +33,15 @@ public class DriveSubsystem extends SubsystemBase {
   Translation2d backRightLocation = new Translation2d(-0.3048, -0.3048);
 
   SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
-  SwerveDriveOdometry odometry;
-  Pose2d currenPose2d;
+  SwerveDriveOdometry odometry = new SwerveDriveOdometry(
+    kinematics, new Rotation2d(gyro.getGyroAngleZ()), new SwerveModulePosition[] {
+      frontLeftModule.getPosition(),
+      frontRightModule.getPosition(),
+      backLeftModule.getPosition(), 
+      backRightModule.getPosition()
+    }, 
+    new Pose2d(0, 0, new Rotation2d())
+  );
 
   public DriveSubsystem(int[] motorIndexes) {
     frontLeftModule = new SwerveModule(motorIndexes[0], motorIndexes[1], false, true);
@@ -44,15 +49,6 @@ public class DriveSubsystem extends SubsystemBase {
     backLeftModule = new SwerveModule(motorIndexes[4], motorIndexes[5], true, true);
     backRightModule = new SwerveModule(motorIndexes[6], motorIndexes[7], true, true);
     gyro.calibrate();
-
-    odometry = new SwerveDriveOdometry(
-      kinematics, new Rotation2d(gyro.getGyroAngleZ()), new SwerveModulePosition[] {
-        frontLeftModule.getPosition(),
-        frontRightModule.getPosition(),
-        backLeftModule.getPosition(), 
-        backRightModule.getPosition()
-      }, 
-      new Pose2d(0, 0, new Rotation2d()));
   }
 
   public void updateOdometry() {
