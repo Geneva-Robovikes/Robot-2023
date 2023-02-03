@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import org.opencv.objdetect.FaceDetectorYN;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -37,14 +39,14 @@ public class DriveSubsystem extends SubsystemBase {
   Pose2d currenPose2d;
 
   public DriveSubsystem(int[] motorIndexes) {
-    frontLeftModule = new SwerveModule(motorIndexes[0], motorIndexes[1], true);
-    frontRightModule = new SwerveModule(motorIndexes[2], motorIndexes[3], false);
-    backLeftModule = new SwerveModule(motorIndexes[4], motorIndexes[5], true);
-    backRightModule = new SwerveModule(motorIndexes[6], motorIndexes[7], false);
+    frontLeftModule = new SwerveModule(motorIndexes[0], motorIndexes[1], false, true);
+    frontRightModule = new SwerveModule(motorIndexes[2], motorIndexes[3], false, true);
+    backLeftModule = new SwerveModule(motorIndexes[4], motorIndexes[5], true, true);
+    backRightModule = new SwerveModule(motorIndexes[6], motorIndexes[7], true, true);
     gyro.calibrate();
 
     odometry = new SwerveDriveOdometry(
-      kinematics, new Rotation2d(0), new SwerveModulePosition[] {
+      kinematics, new Rotation2d(gyro.getGyroAngleZ()), new SwerveModulePosition[] {
         frontLeftModule.getPosition(),
         frontRightModule.getPosition(),
         backLeftModule.getPosition(), 
@@ -55,11 +57,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void updateOdometry() {
     odometry.update(new Rotation2d(gyro.getGyroAngleZ()),
-    new SwerveModulePosition[] {
-      frontLeftModule.getPosition(), frontRightModule.getPosition(),
-      backLeftModule.getPosition(), backRightModule.getPosition()
-    }
-  );
+      new SwerveModulePosition[] {
+        frontLeftModule.getPosition(), frontRightModule.getPosition(),
+        backLeftModule.getPosition(), backRightModule.getPosition()
+      }
+    );
   }
 
   void setFieldCentricDrive (boolean enabled) {
@@ -68,10 +70,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity) {
     ChassisSpeeds speeds;
-    speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, new Rotation2d(gyro.getGyroAngleZ()));
+    //speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, new Rotation2d(gyro.getGyroAngleZ()));
+    speeds = new ChassisSpeeds(xVelocity, yVelocity, angularVelocity);
     /*if(isFieldCentric) {
     } else {
-      speeds = new ChassisSpeeds(xVelocity, yVelocity, angularVelocity);
     }*/
     //System.out.println(speeds);
     setModuleStates(kinematics.toSwerveModuleStates(speeds));

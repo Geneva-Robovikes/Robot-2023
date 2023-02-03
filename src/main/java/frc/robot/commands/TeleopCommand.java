@@ -15,8 +15,8 @@ public class TeleopCommand extends CommandBase {
   private final CommandXboxController controller;
 
   //TODO: Test and get good values. All in m/s
-  private final double maxSpeedX = 2;
-  private final double maxSpeedY = 2;
+  private final double maxSpeedX = 1;
+  private final double maxSpeedY = 1;
   private final double maxSpeedTheta = Math.PI;
 
   public TeleopCommand(DriveSubsystem driveSubsystem, CommandXboxController controller) {

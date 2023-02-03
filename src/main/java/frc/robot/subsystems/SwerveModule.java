@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,23 +14,29 @@ public class SwerveModule {
     WPI_TalonFX turnMotor;
 
     // TODO: Tune to robot values
-    PIDController drivePID = new PIDController(1, 0, 0);
+    ProfiledPIDController drivePID = new ProfiledPIDController(
+        8, 
+        28, 
+        0.2, 
+        new TrapezoidProfile.Constraints(6, 6)
+    );
     ProfiledPIDController turnPID = new ProfiledPIDController(
-        1, 
+        8, 
+        5,
         0,
-        0,
-        new TrapezoidProfile.Constraints(Constants.moduleMaxAngularVelocity, Constants.moduleMaxAngularAcceleration)
+        new TrapezoidProfile.Constraints(Math.PI * 4, Math.PI)
     );
 
     //TODO: Tune to robot values
-    SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(0, 0);
-    SimpleMotorFeedforward turnFeedForward = new SimpleMotorFeedforward(0, 0);
+    SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(0.5, 0.5);
+    SimpleMotorFeedforward turnFeedForward = new SimpleMotorFeedforward(0.5, 0.5);
 
-    public SwerveModule(int driveMotorIndex, int turnMotorIndex, boolean inverted) {
+    public SwerveModule(int driveMotorIndex, int turnMotorIndex, boolean driveInverted, boolean turnInverted) {
         driveMotor = new WPI_TalonFX(driveMotorIndex);
         turnMotor = new WPI_TalonFX(turnMotorIndex);
         turnPID.enableContinuousInput(-Math.PI, Math.PI);
-        driveMotor.setInverted(inverted);
+        driveMotor.setInverted(driveInverted);
+        turnMotor.setInverted(turnInverted);
     }
 
     public SwerveModulePosition getPosition() {
@@ -47,13 +52,22 @@ public class SwerveModule {
         double driveFeed = driveFeedForward.calculate(state.speedMetersPerSecond);
         double turnOutput = turnPID.calculate(getCurrentAngle(), state.angle.getRadians());
         double turnFeed = turnFeedForward.calculate(turnPID.getSetpoint().velocity);
-
-        driveMotor.setVoltage(driveOutput + driveFeed);
-        turnMotor.setVoltage(turnOutput + turnFeed);
+        
+        if(Math.abs(driveOutput + driveFeed) > 1) {
+            driveMotor.setVoltage(driveOutput + driveFeed);
+        } else {
+            driveMotor.setVoltage(0);
+        }
+        
+        if(Math.abs(turnOutput + turnFeed) > 1) {
+            turnMotor.setVoltage(turnOutput + turnFeed);
+        } else {
+            turnMotor.setVoltage(0);
+        }
     }
 
     private double getDriveVelocity() {
-        return driveMotor.getSelectedSensorVelocity() / Constants.falconEncoderResolution / Constants.swerveDriveGearRatio * 2 * Math.PI * Constants.swerveWheelRadius;
+        return driveMotor.getSelectedSensorVelocity() / Constants.swerveDriveGearRatio / Constants.falconEncoderResolution * 2 * Math.PI * Constants.swerveWheelRadius;
     }
 
     private double getDriveDistance() {
@@ -61,8 +75,6 @@ public class SwerveModule {
     }
 
     private double getCurrentAngle() {
-        double angle = turnMotor.getSelectedSensorPosition() / Constants.swerveTurnGearRatio / Constants.falconEncoderResolution * 2 * Math.PI;
-        double multiple = (int) (angle / (2 * Math.PI));
-        return angle - (2 * Math.PI * multiple);
+        return turnMotor.getSelectedSensorPosition() / Constants.swerveTurnGearRatio / Constants.falconEncoderResolution * 2 * Math.PI;
     }
 }
