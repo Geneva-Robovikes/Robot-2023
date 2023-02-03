@@ -75,6 +75,6 @@ public class SwerveModule {
     }
 
     private double getCurrentAngle() {
-        return turnMotor.getSelectedSensorPosition() / Constants.swerveTurnGearRatio / Constants.falconEncoderResolution * 2 * Math.PI;
+        return -turnMotor.getSelectedSensorPosition() / Constants.swerveTurnGearRatio / Constants.falconEncoderResolution * 2 * Math.PI;
     }
 }
