@@ -27,9 +27,9 @@ public class TeleopCommand extends CommandBase {
 
   @Override
   public void execute() {
-    double x1 = controller.getLeftX();
-    double y1 = controller.getLeftY();
-    double x2 = controller.getRightX();
+    double x1 = -controller.getLeftX();
+    double y1 = -controller.getLeftY();
+    double x2 = -controller.getRightX();
 
     x1 = MathUtil.applyDeadband(x1, OperatorConstants.controllerDeadzone);
     y1 = MathUtil.applyDeadband(y1, OperatorConstants.controllerDeadzone);
