@@ -44,10 +44,10 @@ public class DriveSubsystem extends SubsystemBase {
   );
 
   public DriveSubsystem(int[] motorIndexes) {
-    frontLeftModule = new SwerveModule(motorIndexes[0], motorIndexes[1], false, true);
-    frontRightModule = new SwerveModule(motorIndexes[2], motorIndexes[3], false, true);
-    backLeftModule = new SwerveModule(motorIndexes[4], motorIndexes[5], true, true);
-    backRightModule = new SwerveModule(motorIndexes[6], motorIndexes[7], true, true);
+    frontLeftModule = new SwerveModule(motorIndexes[0], motorIndexes[1], false, false);
+    frontRightModule = new SwerveModule(motorIndexes[2], motorIndexes[3], false, false);
+    backLeftModule = new SwerveModule(motorIndexes[4], motorIndexes[5], false, false);
+    backRightModule = new SwerveModule(motorIndexes[6], motorIndexes[7], false, false);
     gyro.calibrate();
   }
 
