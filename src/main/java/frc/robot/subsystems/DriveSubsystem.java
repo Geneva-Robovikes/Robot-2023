@@ -21,16 +21,16 @@ public class DriveSubsystem extends SubsystemBase {
   ADIS16448_IMU gyro = new ADIS16448_IMU();
   boolean isFieldCentric = true;
 
-  SwerveModule frontLeftModule;
-  SwerveModule frontRightModule;
-  SwerveModule backLeftModule;
-  SwerveModule backRightModule;
-
   // Positions are based of of 25in square robot
   Translation2d frontLeftLocation = new Translation2d(0.3048, 0.3048);
   Translation2d frontRightLocation = new Translation2d(0.3048, -0.3048);
   Translation2d backLeftLocation = new Translation2d(-0.3048, 0.3048);
   Translation2d backRightLocation = new Translation2d(-0.3048, -0.3048);
+
+  SwerveModule frontLeftModule = new SwerveModule(0, 1, false, false);
+  SwerveModule frontRightModule = new SwerveModule(2, 3, false, false);
+  SwerveModule backLeftModule = new SwerveModule(4, 5, false, false);
+  SwerveModule backRightModule = new SwerveModule(6, 7, false, false);  
 
   SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
   SwerveDriveOdometry odometry = new SwerveDriveOdometry(
@@ -43,11 +43,7 @@ public class DriveSubsystem extends SubsystemBase {
     new Pose2d(0, 0, new Rotation2d())
   );
 
-  public DriveSubsystem(int[] motorIndexes) {
-    frontLeftModule = new SwerveModule(motorIndexes[0], motorIndexes[1], false, false);
-    frontRightModule = new SwerveModule(motorIndexes[2], motorIndexes[3], false, false);
-    backLeftModule = new SwerveModule(motorIndexes[4], motorIndexes[5], false, false);
-    backRightModule = new SwerveModule(motorIndexes[6], motorIndexes[7], false, false);
+  public DriveSubsystem() {
     gyro.calibrate();
   }
 
@@ -72,7 +68,9 @@ public class DriveSubsystem extends SubsystemBase {
     } else {
     }*/
     //System.out.println(speeds);
-    setModuleStates(kinematics.toSwerveModuleStates(speeds));
+    SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, 0.25);
+    setModuleStates(states);
   }
 
   public void resetOdometry(Pose2d pose) {
