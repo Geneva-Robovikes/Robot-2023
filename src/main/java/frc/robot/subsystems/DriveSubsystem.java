@@ -34,7 +34,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
   SwerveDriveOdometry odometry = new SwerveDriveOdometry(
-    kinematics, new Rotation2d(gyro.getGyroAngleZ()), new SwerveModulePosition[] {
+    kinematics, getRotation2d(), new SwerveModulePosition[] {
       frontLeftModule.getPosition(),
       frontRightModule.getPosition(),
       backLeftModule.getPosition(), 
@@ -48,7 +48,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void updateOdometry() {
-    odometry.update(new Rotation2d(gyro.getGyroAngleZ()),
+    odometry.update(getRotation2d(),
       new SwerveModulePosition[] {
         frontLeftModule.getPosition(), frontRightModule.getPosition(),
         backLeftModule.getPosition(), backRightModule.getPosition()
@@ -62,7 +62,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity) {
     ChassisSpeeds speeds;
-    //speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, new Rotation2d(gyro.getGyroAngleZ()));
+    //speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, getRotation2d());
     speeds = new ChassisSpeeds(xVelocity, yVelocity, angularVelocity);
     /*if(isFieldCentric) {
     } else {
@@ -74,7 +74,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void resetOdometry(Pose2d pose) {
-    odometry.resetPosition(new Rotation2d(gyro.getGyroAngleZ()), 
+    odometry.resetPosition(getRotation2d(), 
       new SwerveModulePosition[] {
         frontRightModule.getPosition(),
         frontRightModule.getPosition(),
@@ -89,7 +89,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public Rotation2d getRotation2d() {
-    return new Rotation2d(gyro.getGyroAngleZ());
+    return new Rotation2d(gyro.getGyroAngleZ() / 57.295779513);
   }
 
   void setModuleStates(SwerveModuleState[] moduleStates) {
