@@ -27,10 +27,10 @@ public class DriveSubsystem extends SubsystemBase {
   Translation2d backLeftLocation = new Translation2d(-0.3048, 0.3048);
   Translation2d backRightLocation = new Translation2d(-0.3048, -0.3048);
 
-  SwerveModule frontLeftModule = new SwerveModule(0, 1, false, false);
-  SwerveModule frontRightModule = new SwerveModule(2, 3, false, false);
-  SwerveModule backLeftModule = new SwerveModule(4, 5, false, false);
-  SwerveModule backRightModule = new SwerveModule(6, 7, false, false);  
+  SwerveModule frontLeftModule = new SwerveModule(0, 1, false, true);
+  SwerveModule frontRightModule = new SwerveModule(2, 3, false, true);
+  SwerveModule backLeftModule = new SwerveModule(4, 5, false, true);
+  SwerveModule backRightModule = new SwerveModule(6, 7, false, true);  
 
   SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
   SwerveDriveOdometry odometry = new SwerveDriveOdometry(
@@ -69,7 +69,7 @@ public class DriveSubsystem extends SubsystemBase {
     }*/
     //System.out.println(speeds);
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
-    SwerveDriveKinematics.desaturateWheelSpeeds(states, 0.25);
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, 0.5);
     setModuleStates(states);
   }
 
