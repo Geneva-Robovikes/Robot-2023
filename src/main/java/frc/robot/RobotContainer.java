@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.TeleopCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import java.util.HashMap;
 import com.pathplanner.lib.PathConstraints;
@@ -24,8 +25,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
   // The robot's subsystems and commands are defined here...
-  private final DriveSubsystem driveSubsystem = new DriveSubsystem(new int[] {0, 1, 2, 3, 4, 5, 6, 7});
+  private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  private final TeleopCommand teleopCommand = new TeleopCommand(driveSubsystem, driverController);
 
   private final CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
@@ -49,7 +53,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    m_driverController.y().onTrue(driveSubsystem.resetOdometryCommand());
+    
   }
 
   public Command getAutonomousCommand() {
