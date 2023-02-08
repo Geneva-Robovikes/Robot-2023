@@ -31,7 +31,7 @@ public class DriveSubsystem extends SubsystemBase {
   SwerveModule backLeftModule = new SwerveModule(4, 5, false, true);
   SwerveModule backRightModule = new SwerveModule(6, 7, false, true);  
 
-  SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
+  public SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
   SwerveDriveOdometry odometry = new SwerveDriveOdometry(
     kinematics, getRotation2d(), new SwerveModulePosition[] {
       frontLeftModule.getPosition(),
@@ -122,7 +122,7 @@ public class DriveSubsystem extends SubsystemBase {
     return new Rotation2d(-gyro.getGyroAngleZ() / 57.295779513);
   }
 
-  void setModuleStates(SwerveModuleState[] moduleStates) {
+  public void setModuleStates(SwerveModuleState[] moduleStates) {
     frontLeftModule.setDesiredState(moduleStates[0]);
     frontRightModule.setDesiredState(moduleStates[1]);
     backLeftModule.setDesiredState(moduleStates[2]);

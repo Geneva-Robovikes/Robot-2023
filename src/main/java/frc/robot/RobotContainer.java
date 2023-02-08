@@ -74,7 +74,7 @@ public class RobotContainer {
   
       SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
         driveSubsystem::getPose, // Pose2d supplier
-        driveSubsystem::resetPose, // Pose2d consumer, used to reset odometry at the beginning of auto
+        driveSubsystem::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
         driveSubsystem.kinematics, // SwerveDriveKinematics
         new PIDConstants(5.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
         new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
