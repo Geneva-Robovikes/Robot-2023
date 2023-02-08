@@ -15,5 +15,13 @@ package frc.robot;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final double controllerDeadzone = 0.2;
   }
+
+  public static final int falconEncoderResolution = 2048;
+  public static final double swerveWheelRadius = 0.10033;
+  public static final double swerveDriveGearRatio = 6.75;
+  public static final double swerveTurnGearRatio = 150.0 / 7.0;
+  public static final double moduleMaxAngularVelocity = Math.PI;
+  public static final double moduleMaxAngularAcceleration = 2 * Math.PI;
 }
