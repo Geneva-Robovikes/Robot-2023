@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.ADIS16448_IMU;
 public class DriveSubsystem extends SubsystemBase {
 
   ADIS16448_IMU gyro = new ADIS16448_IMU();
-  boolean isFieldCentric = true;
 
   // Positions are based of of 25in square robot
   Translation2d frontLeftLocation = new Translation2d(0.3048, 0.3048);
@@ -56,21 +55,20 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
-  void setFieldCentricDrive (boolean enabled) {
-    isFieldCentric = enabled;
+  public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity, boolean isFieldCentric) {
+    ChassisSpeeds speeds;
+    if(isFieldCentric) {
+      speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, getRotation2d());
+    } else {
+      speeds = new ChassisSpeeds(xVelocity, yVelocity, angularVelocity);
+    }
+    SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, 3);
+    setModuleStates(states);
   }
 
-  public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity) {
-    ChassisSpeeds speeds;
-    //speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, getRotation2d());
-    speeds = new ChassisSpeeds(xVelocity, yVelocity, angularVelocity);
-    /*if(isFieldCentric) {
-    } else {
-    }*/
-    //System.out.println(speeds);
-    SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
-    SwerveDriveKinematics.desaturateWheelSpeeds(states, 0.5);
-    setModuleStates(states);
+  public void resetGyro() {
+    gyro.reset();
   }
 
   public void resetOdometry(Pose2d pose) {
@@ -89,7 +87,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public Rotation2d getRotation2d() {
-    return new Rotation2d(gyro.getGyroAngleZ() / 57.295779513);
+    return new Rotation2d(-gyro.getGyroAngleZ() / 57.295779513);
   }
 
   void setModuleStates(SwerveModuleState[] moduleStates) {
@@ -97,13 +95,5 @@ public class DriveSubsystem extends SubsystemBase {
     frontRightModule.setDesiredState(moduleStates[1]);
     backLeftModule.setDesiredState(moduleStates[2]);
     backRightModule.setDesiredState(moduleStates[3]);
-  }
-
-  public CommandBase resetOdometryCommand() {
-    return runOnce(() -> resetOdometry(new Pose2d(odometry.getPoseMeters().getTranslation(), new Rotation2d())));
-  }
-
-  public CommandBase setDriveModeCommand() {
-    return runEnd(() -> setFieldCentricDrive(true), () -> setFieldCentricDrive(false));
   }
 }
