@@ -69,7 +69,7 @@ public class DriveSubsystem extends SubsystemBase {
     }*/
     //System.out.println(speeds);
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
-    SwerveDriveKinematics.desaturateWheelSpeeds(states, 0.5);
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, 3);
     setModuleStates(states);
   }
 
