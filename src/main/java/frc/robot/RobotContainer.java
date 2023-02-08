@@ -56,6 +56,14 @@ public class RobotContainer {
     
   }
 
+  public void updateOdometry() {
+    driveSubsystem.updateOdometry();
+  }
+
+  public Command getTeleopCommand() {
+    return teleopCommand;
+  }
+
   public Command getAutonomousCommand() {
     if(!autoChooser.getSelected().equals("Outtake 1")) {
       PathPlannerTrajectory path = PathPlanner.loadPath("Test Path 1", new PathConstraints(1,1));

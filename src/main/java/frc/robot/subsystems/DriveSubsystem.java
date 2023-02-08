@@ -77,16 +77,6 @@ public class DriveSubsystem extends SubsystemBase {
   }
   */
 
-  public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity) {
-    ChassisSpeeds speeds;
-    if(isFieldCentric) {
-      speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, new Rotation2d(gyro.getGyroAngleZ()));
-    } else {
-      speeds = new ChassisSpeeds(xVelocity, yVelocity, angularVelocity);
-    }
-    setModuleStates(kinematics.toSwerveModuleStates(speeds));
-  }
-
   public double getAngleAroundFieldY() {
     double robotXAngle = gyro.getGyroAngleX();
     double robotYAngle = gyro.getGyroAngleY();
@@ -137,9 +127,5 @@ public class DriveSubsystem extends SubsystemBase {
     frontRightModule.setDesiredState(moduleStates[1]);
     backLeftModule.setDesiredState(moduleStates[2]);
     backRightModule.setDesiredState(moduleStates[3]);
-  }
-
-  public CommandBase resetOdometryCommand() {
-    return runOnce(() -> resetPose(new Pose2d(odometry.getPoseMeters().getTranslation(), new Rotation2d())));
   }
 }
