@@ -85,7 +85,6 @@ public class SwerveModule {
     }
 
     private double getCurrentAngle() {
-        SmartDashboard.putNumber("" + turnMotor.getDeviceID(), -turnMotor.getSelectedSensorPosition() / Constants.swerveTurnGearRatio / Constants.falconEncoderResolution * 2 * Math.PI);
         return turnMotor.getSelectedSensorPosition() / Constants.swerveTurnGearRatio / Constants.falconEncoderResolution * 2 * Math.PI;
     }
 }

@@ -15,6 +15,7 @@ import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -37,7 +38,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
+    
     // Add new path to this chooser to select them from shuffleboard.
     autoChooser.setDefaultOption("Outtake 1", "Outtake 1");
     autoChooser.addOption("Top 2 Object Scale", "T2S");
@@ -47,6 +48,7 @@ public class RobotContainer {
     autoChooser.addOption("Bottom 2 Object", "B2");
     autoChooser.addOption("Test Path 1", "Test Path 1");
     autoChooser.addOption("Test Path 2", "Test Path 2");
+    SmartDashboard.putData("Path Chooser", autoChooser);
 
     // Configure the trigger bindings
     configureBindings();
@@ -66,7 +68,7 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     if(!autoChooser.getSelected().equals("Outtake 1")) {
-      PathPlannerTrajectory path = PathPlanner.loadPath("Test Path 1", new PathConstraints(1,1));
+      PathPlannerTrajectory path = PathPlanner.loadPath(autoChooser.getSelected(), new PathConstraints(0.5,0.5));
 
       HashMap<String, Command> eventMap = new HashMap<>();
       //eventMap.put("Intake", IntakeCommand());    <-- Uncomment when these commands exist
@@ -76,14 +78,14 @@ public class RobotContainer {
         driveSubsystem::getPose, // Pose2d supplier
         driveSubsystem::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
         driveSubsystem.kinematics, // SwerveDriveKinematics
-        new PIDConstants(5.0, 0.0, 0.0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
-        new PIDConstants(0.5, 0.0, 0.0), // PID constants to correct for rotation error (used to create the rotation controller)
+        new PIDConstants(0.0005, 0, 0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
+        new PIDConstants(2, 0, 0), // PID constants to correct for rotation error (used to create the rotation controller)
         driveSubsystem::setModuleStates, // Module states consumer used to output to the drive subsystem
         eventMap,
         true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
         driveSubsystem // The drive subsystem. Used to properly set the requirements of path following commands
       );
-  
+      System.out.println("Path returned");
       return autoBuilder.fullAuto(path); 
     }
 
