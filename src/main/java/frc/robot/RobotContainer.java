@@ -32,8 +32,6 @@ public class RobotContainer {
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final TeleopCommand teleopCommand = new TeleopCommand(driveSubsystem, driverController);
 
-  private final CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
-
   SendableChooser<String> autoChooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -59,7 +57,7 @@ public class RobotContainer {
   }
 
   public void updateOdometry() {
-    driveSubsystem.updateOdometry();
+    //driveSubsystem.updateOdometry();
   }
 
   public Command getTeleopCommand() {
@@ -78,14 +76,13 @@ public class RobotContainer {
         driveSubsystem::getPose, // Pose2d supplier
         driveSubsystem::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
         driveSubsystem.kinematics, // SwerveDriveKinematics
-        new PIDConstants(0.0005, 0, 0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
-        new PIDConstants(2, 0, 0), // PID constants to correct for rotation error (used to create the rotation controller)
+        new PIDConstants(0.01085, 0, 0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
+        new PIDConstants(0, 0, 0), // PID constants to correct for rotation error (used to create the rotation controller)
         driveSubsystem::setModuleStates, // Module states consumer used to output to the drive subsystem
         eventMap,
         true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
         driveSubsystem // The drive subsystem. Used to properly set the requirements of path following commands
       );
-      System.out.println("Path returned");
       return autoBuilder.fullAuto(path); 
     }
 

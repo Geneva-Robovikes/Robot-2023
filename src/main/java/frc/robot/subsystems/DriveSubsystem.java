@@ -12,9 +12,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveSubsystem extends SubsystemBase {
 
@@ -46,12 +46,27 @@ public class DriveSubsystem extends SubsystemBase {
     gyro.calibrate();
   }
 
+  /*
   public void updateOdometry() {
     odometry.update(getRotation2d(),
-      new SwerveModulePosition[] {
-        frontLeftModule.getPosition(), frontRightModule.getPosition(),
-        backLeftModule.getPosition(), backRightModule.getPosition()
-      });
+    new SwerveModulePosition[] {
+      frontLeftModule.getPosition(), frontRightModule.getPosition(),
+      backLeftModule.getPosition(), backRightModule.getPosition()
+    });
+  }
+  */
+  
+  @Override
+  public void periodic() {
+    odometry.update(getRotation2d(),
+    new SwerveModulePosition[] {
+      frontLeftModule.getPosition(), frontRightModule.getPosition(),
+      backLeftModule.getPosition(), backRightModule.getPosition()
+    });
+
+    SmartDashboard.putNumber("X", odometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("Y", odometry.getPoseMeters().getY());
+    SmartDashboard.putNumber("Angle", odometry.getPoseMeters().getRotation().getDegrees());
   }
 
   /* Uncomment if the autobuilder doesn't work properly
@@ -104,6 +119,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void resetOdometry(Pose2d pose) {
+    System.out.println(pose);
     odometry.resetPosition(getRotation2d(), 
       new SwerveModulePosition[] {
         frontRightModule.getPosition(),
@@ -115,6 +131,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public Pose2d getPose() {
+    SmartDashboard.putNumber("Pose X", odometry.getPoseMeters().getX());
     return odometry.getPoseMeters();
   }
 
