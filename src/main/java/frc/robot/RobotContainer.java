@@ -46,6 +46,7 @@ public class RobotContainer {
     autoChooser.addOption("Bottom 2 Object", "B2");
     autoChooser.addOption("Test Path 1", "Test Path 1");
     autoChooser.addOption("Test Path 2", "Test Path 2");
+    autoChooser.addOption("180", "Test Path 3");
     SmartDashboard.putData("Path Chooser", autoChooser);
 
     // Configure the trigger bindings

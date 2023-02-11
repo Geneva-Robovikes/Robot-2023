@@ -15,11 +15,21 @@ public class SwerveModule {
     WPI_TalonFX turnMotor;
 
     //TODO: Tune to robot values
-    PIDController drivePID = new PIDController(3.1679, 0, 0);
+    //PIDController drivePID = new PIDController(3.1679, 0, 0);
+    //works with auto, teleop eh
+    PIDController drivePID = new PIDController(.285, 0, 0);
+    
     //PIDController turnPID = new PIDController(4.1692, 0, 0.23252);
     PIDController turnPID = new PIDController(3.5945, 0, 0.1507);
+
+    //very scary it only works with auto!!!
+    //I think we might need separate auto/teleop ones? idk
+    //PIDController turnPID = new PIDController(4.3, 1.1, .5);
+
     SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(-0.095829, 2.7601, 0.71108);
     SimpleMotorFeedforward turnFeedForward = new SimpleMotorFeedforward(0.24959, 0.3754, 0.0068821);
+    //SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(0, 0, 0);
+    //SimpleMotorFeedforward turnFeedForward = new SimpleMotorFeedforward(0, 0, 0);
 
     public SwerveModule(int driveMotorIndex, int turnMotorIndex, boolean driveInverted, boolean turnInverted) {
         driveMotor = new WPI_TalonFX(driveMotorIndex);
