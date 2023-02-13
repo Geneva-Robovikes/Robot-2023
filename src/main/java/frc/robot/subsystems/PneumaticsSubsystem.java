@@ -27,7 +27,7 @@ public class PneumaticsSubsystem extends SubsystemBase {
         exampleDoublePH.set(kReverse);
         //distSensor = new Rev2mDistanceSensor(Port.kOnboard);
         //distSensor.setDistanceUnits(Unit.kMillimeters);
-        setSensorMode(true);
+        //setSensorMode(true);
     }
 /*
     public double getDistance() {
