@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems;
 
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -12,8 +16,12 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -44,6 +52,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   public DriveSubsystem() {
     gyro.calibrate();
+    SmartDashboard.putNumber("Path kP", 6);
+    SmartDashboard.putNumber("Rotational Path kP", .05);
+    SmartDashboard.putNumber("Rotational Path kD", .05);
   }
 
   /*
@@ -69,28 +80,28 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Angle", odometry.getPoseMeters().getRotation().getDegrees());
   }
 
-  /* Uncomment if the autobuilder doesn't work properly
+  // Uncomment if the autobuilder doesn't work properly
   public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
     return new SequentialCommandGroup(
       new InstantCommand(() -> {
         // Reset odometry for the first path you run during auto
         if(isFirstPath){
-          this.resetPose(traj.getInitialHolonomicPose());
+          this.resetOdometry(traj.getInitialHolonomicPose());
         }
       }),
         new PPSwerveControllerCommand(
         traj, 
         this::getPose, // Pose supplier
         this.kinematics, // SwerveDriveKinematics
-        new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-        new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
-        new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+        new PIDController(SmartDashboard.getNumber("Path kP", 6), 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+        new PIDController(SmartDashboard.getNumber("Path kP", 6), 0, 0), // Y controller (usually the same values as X controller)
+        /*new PIDController(0, 0, 0),*/
+        new PIDController(SmartDashboard.getNumber("Rotational Path kP", .05), 0, SmartDashboard.getNumber("Rotational Path kD", .05)), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
         this::setModuleStates, // Module states consumer
         this // Requires this drive subsystem
       )
     );
   }
-  */
 
   public double getAngleAroundFieldY() {
     double robotXAngle = gyro.getGyroAngleX();
@@ -119,7 +130,8 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void resetOdometry(Pose2d pose) {
-    System.out.println(pose);
+    System.out.println(pose + "first print");
+
     odometry.resetPosition(getRotation2d(), 
       new SwerveModulePosition[] {
         frontRightModule.getPosition(),
@@ -128,10 +140,10 @@ public class DriveSubsystem extends SubsystemBase {
         backRightModule.getPosition()
       }, pose
     );
+    SmartDashboard.putString("Reset Pose", odometry.getPoseMeters().getTranslation().toString());
   }
 
   public Pose2d getPose() {
-    SmartDashboard.putNumber("Pose X", odometry.getPoseMeters().getX());
     return odometry.getPoseMeters();
   }
 

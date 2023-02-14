@@ -13,6 +13,7 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -57,15 +58,12 @@ public class RobotContainer {
     
   }
 
-  public void updateOdometry() {
-    //driveSubsystem.updateOdometry();
-  }
-
   public Command getTeleopCommand() {
     return teleopCommand;
   }
 
   public Command getAutonomousCommand() {
+    /*
     if(!autoChooser.getSelected().equals("Outtake 1")) {
       PathPlannerTrajectory path = PathPlanner.loadPath(autoChooser.getSelected(), new PathConstraints(0.5,0.5));
 
@@ -89,9 +87,9 @@ public class RobotContainer {
 
     // Replace with outtake command.
     return null;
-
-    /* Uncomment if autobuilder does not work properly.
-    PathPlannerTrajectory trajectory = PathPlanner.loadPath("Test Path 1",  new PathConstraints(4,3));
+*/
+    // Uncomment if autobuilder does not work properly.
+    PathPlannerTrajectory trajectory = PathPlanner.loadPath(autoChooser.getSelected(),  new PathConstraints(0.5,0.5));
  
     HashMap<String, Command> eventMap = new HashMap<>();
     //eventMap.put("Intake", IntakeCommand());    <-- Uncomment when these commands exist
@@ -104,6 +102,5 @@ public class RobotContainer {
     );
 
     return command;
-     */
   }
 }

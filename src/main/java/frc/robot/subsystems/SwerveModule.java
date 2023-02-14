@@ -14,10 +14,11 @@ public class SwerveModule {
     WPI_TalonFX driveMotor;
     WPI_TalonFX turnMotor;
 
+
     //TODO: Tune to robot values
     //PIDController drivePID = new PIDController(3.1679, 0, 0);
     //works with auto, teleop eh
-    PIDController drivePID = new PIDController(.285, 0, 0);
+    PIDController drivePID = new PIDController(.285, .5, 0);
     
     //PIDController turnPID = new PIDController(4.1692, 0, 0.23252);
     PIDController turnPID = new PIDController(3.5945, 0, 0.1507);
@@ -37,6 +38,7 @@ public class SwerveModule {
         turnPID.enableContinuousInput(-Math.PI, Math.PI);
         driveMotor.setInverted(driveInverted);
         turnMotor.setInverted(turnInverted);
+        resetModule();
         //driveMotor.setNeutralMode(NeutralMode.Brake);
         //turnMotor.setNeutralMode(NeutralMode.Brake);
     }
@@ -46,6 +48,11 @@ public class SwerveModule {
             getDriveDistance(),
             new Rotation2d(getCurrentAngle())
         );
+    }
+
+    public void resetModule() {
+        driveMotor.setSelectedSensorPosition(0);
+        turnMotor.setSelectedSensorPosition(0);
     }
 
     public void setDesiredState(SwerveModuleState desiredState) {
@@ -62,6 +69,7 @@ public class SwerveModule {
         }
         
         SmartDashboard.putNumber("Motor " + turnMotor.getDeviceID(), turnOutput);
+        SmartDashboard.putNumber("Motor " + driveMotor.getDeviceID(), getDriveDistance());
         if(Math.abs(turnOutput) > 0.75) {
             turnMotor.setVoltage(turnOutput);
         } else {
