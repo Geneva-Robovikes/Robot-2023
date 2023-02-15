@@ -52,9 +52,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   public DriveSubsystem() {
     gyro.calibrate();
+    //gyro.reset();
     SmartDashboard.putNumber("Path kP", 6);
-    SmartDashboard.putNumber("Rotational Path kP", .05);
-    SmartDashboard.putNumber("Rotational Path kD", .05);
+    SmartDashboard.putNumber("Rotational Path kP", .87);
+    SmartDashboard.putNumber("Rotational Path kI", .015);
+    SmartDashboard.putNumber("Rotational Path kD", .004);
   }
 
   /*
@@ -82,6 +84,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   // Uncomment if the autobuilder doesn't work properly
   public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
+    /*gyro.reset();
+    frontLeftModule.resetModule();
+    frontRightModule.resetModule();
+    backLeftModule.resetModule();
+    backRightModule.resetModule();*/
     return new SequentialCommandGroup(
       new InstantCommand(() -> {
         // Reset odometry for the first path you run during auto
@@ -96,7 +103,7 @@ public class DriveSubsystem extends SubsystemBase {
         new PIDController(SmartDashboard.getNumber("Path kP", 6), 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
         new PIDController(SmartDashboard.getNumber("Path kP", 6), 0, 0), // Y controller (usually the same values as X controller)
         /*new PIDController(0, 0, 0),*/
-        new PIDController(SmartDashboard.getNumber("Rotational Path kP", .05), 0, SmartDashboard.getNumber("Rotational Path kD", .05)), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+        new PIDController(SmartDashboard.getNumber("Rotational Path kP", .87), SmartDashboard.getNumber("Rotational Path kI", .015), SmartDashboard.getNumber("Rotational Path kD", .004)), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
         this::setModuleStates, // Module states consumer
         this // Requires this drive subsystem
       )
@@ -134,7 +141,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     odometry.resetPosition(getRotation2d(), 
       new SwerveModulePosition[] {
-        frontRightModule.getPosition(),
+        frontLeftModule.getPosition(),
         frontRightModule.getPosition(),
         backLeftModule.getPosition(), 
         backRightModule.getPosition()

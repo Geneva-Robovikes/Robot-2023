@@ -89,7 +89,7 @@ public class RobotContainer {
     return null;
 */
     // Uncomment if autobuilder does not work properly.
-    PathPlannerTrajectory trajectory = PathPlanner.loadPath(autoChooser.getSelected(),  new PathConstraints(0.5,0.5));
+    PathPlannerTrajectory trajectory = PathPlanner.loadPath(autoChooser.getSelected(),  new PathConstraints(1,1));
  
     HashMap<String, Command> eventMap = new HashMap<>();
     //eventMap.put("Intake", IntakeCommand());    <-- Uncomment when these commands exist
