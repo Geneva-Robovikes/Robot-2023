@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveSubsystem extends SubsystemBase {
 
@@ -62,8 +63,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity) {
     ChassisSpeeds speeds;
-    //speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, getRotation2d());
-    speeds = new ChassisSpeeds(xVelocity, yVelocity, angularVelocity);
+    speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, getRotation2d());
+    //speeds = new ChassisSpeeds(xVelocity, yVelocity, angularVelocity);
     /*if(isFieldCentric) {
     } else {
     }*/
@@ -89,6 +90,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public Rotation2d getRotation2d() {
+    SmartDashboard.putNumber("Angle", gyro.getGyroAngleZ());
     return new Rotation2d(gyro.getGyroAngleZ() / 57.295779513);
   }
 

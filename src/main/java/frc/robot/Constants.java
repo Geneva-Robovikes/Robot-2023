@@ -15,7 +15,7 @@ package frc.robot;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
-    public static final double controllerDeadzone = 0.2;
+    public static final double controllerDeadzone = 0.125;
   }
 
   public static final int falconEncoderResolution = 2048;
