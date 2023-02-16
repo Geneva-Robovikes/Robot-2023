@@ -7,9 +7,14 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.music.Orchestra;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -17,12 +22,23 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-public class RobotContainer {
-  private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+public class RobotContainer extends TimedRobot {
+  public WPI_TalonFX motor0;
+  public WPI_TalonFX motor1;
+  public WPI_TalonFX motor2;
+  public WPI_TalonFX motor3;
+  public WPI_TalonFX motor4;
+  public WPI_TalonFX motor5;
+  public WPI_TalonFX motor6;
+  public WPI_TalonFX motor7;
+  public Orchestra orchestra;
+  public XboxController xboxController;
+  public int songselection;
+  public String[] songList;
+  public int btn;
+  public int lastButton; 
+  public int song
 
-  // The robot's subsystems and commands are defined here...
-  private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  private final TeleopCommand teleopCommand = new TeleopCommand(driveSubsystem, driverController);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
