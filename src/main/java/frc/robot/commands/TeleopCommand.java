@@ -18,6 +18,7 @@ public class TeleopCommand extends CommandBase {
   private final double maxSpeedX = 1;
   private final double maxSpeedY = 1;
   private final double maxSpeedTheta = Math.PI;
+  boolean isFieldCentric = true;
 
   public TeleopCommand(DriveSubsystem driveSubsystem, CommandXboxController controller) {
     this.driveSubsystem = driveSubsystem;
@@ -30,6 +31,17 @@ public class TeleopCommand extends CommandBase {
     double x1 = -Math.signum(controller.getLeftX()) * Math.pow(controller.getLeftX(), 2);
     double y1 = -Math.signum(controller.getLeftY()) * Math.pow(controller.getLeftY(), 2);
     double x2 = -Math.signum(controller.getRightX()) * Math.pow(controller.getRightX(), 2);
+    double rightTrigger = controller.getRightTriggerAxis();
+
+    if(rightTrigger > 0.5) {
+      isFieldCentric = false;
+    } else {
+      isFieldCentric = true;
+    }
+
+    if(controller.y().getAsBoolean()) {
+      driveSubsystem.resetGyro();
+    }
 
     x1 = MathUtil.applyDeadband(x1, OperatorConstants.controllerDeadzone);
     y1 = MathUtil.applyDeadband(y1, OperatorConstants.controllerDeadzone);
@@ -39,12 +51,12 @@ public class TeleopCommand extends CommandBase {
     double vY = x1 * maxSpeedY;
     double vTheta = x2 * maxSpeedTheta;
 
-    driveSubsystem.setModuleStatesFromSpeeds(vX, vY, vTheta);
+    driveSubsystem.setModuleStatesFromSpeeds(vX, vY, vTheta, isFieldCentric);
   }
 
   @Override
   public void end(boolean interrupted) {
-    driveSubsystem.setModuleStatesFromSpeeds(0, 0, 0);
+    driveSubsystem.setModuleStatesFromSpeeds(0, 0, 0, isFieldCentric);
   }
 
   @Override
