@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.StopCommand;
 
 public class DriveSubsystem extends SubsystemBase {
 
@@ -57,6 +58,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Rotational Path kP", .87);
     SmartDashboard.putNumber("Rotational Path kI", .015);
     SmartDashboard.putNumber("Rotational Path kD", .004);
+    setDefaultCommand(new StopCommand(this));
   }
 
   /*
@@ -104,6 +106,8 @@ public class DriveSubsystem extends SubsystemBase {
         new PIDController(SmartDashboard.getNumber("Path kP", 6), 0, 0), // Y controller (usually the same values as X controller)
         /*new PIDController(0, 0, 0),*/
         new PIDController(SmartDashboard.getNumber("Rotational Path kP", .87), SmartDashboard.getNumber("Rotational Path kI", .015), SmartDashboard.getNumber("Rotational Path kD", .004)), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+        //new PIDController(SmartDashboard.getNumber("Rotational Path kP", 3.7), SmartDashboard.getNumber("Rotational Path kI", 0), SmartDashboard.getNumber("Rotational Path kD", 0)), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+
         this::setModuleStates, // Module states consumer
         this // Requires this drive subsystem
       )
@@ -164,4 +168,5 @@ public class DriveSubsystem extends SubsystemBase {
     backLeftModule.setDesiredState(moduleStates[2]);
     backRightModule.setDesiredState(moduleStates[3]);
   }
+
 }

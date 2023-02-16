@@ -48,6 +48,7 @@ public class RobotContainer {
     autoChooser.addOption("Test Path 1", "Test Path 1");
     autoChooser.addOption("Test Path 2", "Test Path 2");
     autoChooser.addOption("180", "Test Path 3");
+    autoChooser.addOption("Just 180", "Just 180");
     SmartDashboard.putData("Path Chooser", autoChooser);
 
     // Configure the trigger bindings
@@ -89,7 +90,7 @@ public class RobotContainer {
     return null;
 */
     // Uncomment if autobuilder does not work properly.
-    PathPlannerTrajectory trajectory = PathPlanner.loadPath(autoChooser.getSelected(),  new PathConstraints(1,1));
+    PathPlannerTrajectory trajectory = PathPlanner.loadPath(autoChooser.getSelected(),  new PathConstraints(.2,1));
  
     HashMap<String, Command> eventMap = new HashMap<>();
     //eventMap.put("Intake", IntakeCommand());    <-- Uncomment when these commands exist
