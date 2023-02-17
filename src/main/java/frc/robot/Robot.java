@@ -56,9 +56,19 @@ public class Robot extends TimedRobot {
     motor6 = new WPI_TalonFX(6);
     motor7 = new WPI_TalonFX(7);
     
+    motor0.setSafetyEnabled(false);
+    motor1.setSafetyEnabled(false);
+    motor2.setSafetyEnabled(false);
+    motor3.setSafetyEnabled(false);
+    motor4.setSafetyEnabled(false);
+    motor5.setSafetyEnabled(false);
+    motor6.setSafetyEnabled(false);
+    motor7.setSafetyEnabled(false);
+    
 
     //10 song max
     songList = new String[] {
+      "ThroughTheFireAndFlames.chrp",
       "auuugh.chrp"
     };
     songselection = 0;
@@ -75,7 +85,7 @@ public class Robot extends TimedRobot {
     orchestra.loadMusic(songList[songselection]);
     System.out.println(songList[songselection]);
   }
-/**  int getButton() {
+int getButton() {
     for (int i = 1; i < 10; ++i) {
       if (xboxController.getRawButton(i)) {
       selectedsong = i-1;
@@ -83,7 +93,6 @@ public class Robot extends TimedRobot {
    }
    return(selectedsong);
   }
-*/
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
@@ -96,8 +105,10 @@ public class Robot extends TimedRobot {
 
   
   public void robotInit() {
-    orchestra.loadMusic("auuugh.chrp");
- 
+    orchestra.loadMusic("ThroughTheFireAndFlames.chrp");
+    orchestra.stop();
+    
+    orchestra.stop();
     orchestra.addInstrument(motor0);
     orchestra.addInstrument(motor1);
     orchestra.addInstrument(motor2);
@@ -117,7 +128,18 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    btn = getButton();
+
+    if (lastButton != btn) {
+      //System.out.println(btn);
+      orchestra.stop();
+      lastButton = btn;
+      LoadMusicSelection(btn);
+      orchestra.play();
+    }
+  }
+  }
 
   /** This function is called once when the robot is first started up. */
   @Override
