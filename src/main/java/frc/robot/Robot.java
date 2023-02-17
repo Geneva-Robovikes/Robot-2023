@@ -85,7 +85,7 @@ public class Robot extends TimedRobot {
     orchestra.loadMusic(songList[songselection]);
     System.out.println(songList[songselection]);
   }
-int getButton() {
+  int getButton() {
     for (int i = 1; i < 10; ++i) {
       if (xboxController.getRawButton(i)) {
       selectedsong = i-1;
@@ -139,7 +139,7 @@ int getButton() {
       orchestra.play();
     }
   }
-  }
+
 
   /** This function is called once when the robot is first started up. */
   @Override
@@ -149,3 +149,4 @@ int getButton() {
   @Override
   public void simulationPeriodic() {}
 }
+
