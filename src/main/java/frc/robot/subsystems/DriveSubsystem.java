@@ -55,8 +55,8 @@ public class DriveSubsystem extends SubsystemBase {
     gyro.calibrate();
     //gyro.reset();
     SmartDashboard.putNumber("Path kP", 6);
-    SmartDashboard.putNumber("Rotational Path kP", .87);
-    SmartDashboard.putNumber("Rotational Path kI", .015);
+    SmartDashboard.putNumber("Rotational Path kP", 2.55);
+    SmartDashboard.putNumber("Rotational Path kI", .01374);
     SmartDashboard.putNumber("Rotational Path kD", .004);
     setDefaultCommand(new StopCommand(this));
   }
@@ -105,7 +105,7 @@ public class DriveSubsystem extends SubsystemBase {
         new PIDController(SmartDashboard.getNumber("Path kP", 6), 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
         new PIDController(SmartDashboard.getNumber("Path kP", 6), 0, 0), // Y controller (usually the same values as X controller)
         /*new PIDController(0, 0, 0),*/
-        new PIDController(SmartDashboard.getNumber("Rotational Path kP", .87), SmartDashboard.getNumber("Rotational Path kI", .015), SmartDashboard.getNumber("Rotational Path kD", .004)), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+        new PIDController(SmartDashboard.getNumber("Rotational Path kP", 2.55), SmartDashboard.getNumber("Rotational Path kI", .01374), SmartDashboard.getNumber("Rotational Path kD", .004)), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
         //new PIDController(SmartDashboard.getNumber("Rotational Path kP", 3.7), SmartDashboard.getNumber("Rotational Path kI", 0), SmartDashboard.getNumber("Rotational Path kD", 0)), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
 
         this::setModuleStates, // Module states consumer
