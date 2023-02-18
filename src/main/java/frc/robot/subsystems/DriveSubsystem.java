@@ -55,6 +55,8 @@ public class DriveSubsystem extends SubsystemBase {
     gyro.calibrate();
     //gyro.reset();
     SmartDashboard.putNumber("Path kP", 6);
+    SmartDashboard.putNumber("Path kI", 0);
+    SmartDashboard.putNumber("Path kD", 0);
     SmartDashboard.putNumber("Rotational Path kP", 2.55);
     SmartDashboard.putNumber("Rotational Path kI", .01374);
     SmartDashboard.putNumber("Rotational Path kD", .004);
@@ -102,8 +104,8 @@ public class DriveSubsystem extends SubsystemBase {
         traj, 
         this::getPose, // Pose supplier
         this.kinematics, // SwerveDriveKinematics
-        new PIDController(SmartDashboard.getNumber("Path kP", 6), 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-        new PIDController(SmartDashboard.getNumber("Path kP", 6), 0, 0), // Y controller (usually the same values as X controller)
+        new PIDController(SmartDashboard.getNumber("Path kP", 6), SmartDashboard.getNumber("Path kI", 0), SmartDashboard.getNumber("Path kD", 0)), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+        new PIDController(SmartDashboard.getNumber("Path kP", 6), SmartDashboard.getNumber("Path kI", 0), SmartDashboard.getNumber("path kD", 0)), // Y controller (usually the same values as X controller)
         /*new PIDController(0, 0, 0),*/
         new PIDController(SmartDashboard.getNumber("Rotational Path kP", 2.55), SmartDashboard.getNumber("Rotational Path kI", .01374), SmartDashboard.getNumber("Rotational Path kD", .004)), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
         //new PIDController(SmartDashboard.getNumber("Rotational Path kP", 3.7), SmartDashboard.getNumber("Rotational Path kI", 0), SmartDashboard.getNumber("Rotational Path kD", 0)), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
@@ -167,6 +169,20 @@ public class DriveSubsystem extends SubsystemBase {
     frontRightModule.setDesiredState(moduleStates[1]);
     backLeftModule.setDesiredState(moduleStates[2]);
     backRightModule.setDesiredState(moduleStates[3]);
+  }
+
+  public void stop() {
+    frontLeftModule.stopModule();
+    frontRightModule.stopModule();
+    backLeftModule.stopModule();
+    backRightModule.stopModule();
+  }
+
+  public void setModules(double driveVolts, double turnVolts) {
+    frontLeftModule.setModule(driveVolts, turnVolts);
+    frontRightModule.setModule(driveVolts, turnVolts);
+    backLeftModule.setModule(driveVolts, turnVolts);
+    backRightModule.setModule(driveVolts, turnVolts);
   }
 
 }

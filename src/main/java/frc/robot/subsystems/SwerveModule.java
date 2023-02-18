@@ -43,6 +43,16 @@ public class SwerveModule {
         //turnMotor.setNeutralMode(NeutralMode.Brake);
     }
 
+    public void stopModule() {
+        driveMotor.setVoltage(0);
+        turnMotor.setVoltage(0);
+    }
+
+    public void setModule(double driveVolts, double turnVolts) {
+        driveMotor.setVoltage(driveVolts);
+        turnMotor.setVoltage(turnVolts);
+    }
+
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
             getDriveDistance(),
@@ -79,11 +89,11 @@ public class SwerveModule {
     }
 
     private double getDriveVelocity() {
-        return driveMotor.getSelectedSensorVelocity() / Constants.swerveDriveGearRatio / Constants.falconEncoderResolution * Math.PI * Constants.swerveWheelRadius;
+        return driveMotor.getSelectedSensorVelocity() / Constants.swerveDriveGearRatio / Constants.falconEncoderResolution * Math.PI * Constants.swerveWheelDiameter;
     }
 
     private double getDriveDistance() {
-        return driveMotor.getSelectedSensorPosition() / Constants.swerveDriveGearRatio / Constants.falconEncoderResolution * Math.PI * Constants.swerveWheelRadius;
+        return driveMotor.getSelectedSensorPosition() / Constants.swerveDriveGearRatio / Constants.falconEncoderResolution * Math.PI * Constants.swerveWheelDiameter;
     }
 
     private double getCurrentAngle() {

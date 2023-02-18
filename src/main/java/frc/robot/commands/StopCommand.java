@@ -13,6 +13,7 @@ public class StopCommand extends CommandBase {
     
     @Override
     public void execute() {
-        driveSubsystem.setModuleStatesFromSpeeds(0, 0, 0, true);
+        driveSubsystem.stop();
+        System.out.println("Stopping");
     }
 }
