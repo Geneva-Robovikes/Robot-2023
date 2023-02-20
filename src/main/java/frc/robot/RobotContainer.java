@@ -6,9 +6,20 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AutoDistance;
+
+import frc.robot.commands.ArmDownCommand;
+import frc.robot.commands.ArmUpCommand;
+import frc.robot.commands.ClawBackCommand;
+import frc.robot.commands.ClawForwardCommand;
+import frc.robot.commands.PivotBackCommand;
+import frc.robot.commands.PivotForwardCommand;
 import frc.robot.commands.StopCommand;
 import frc.robot.commands.TeleopCommand;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.PivotSubsystem;
+
 import java.util.HashMap;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -21,6 +32,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -36,6 +48,21 @@ public class RobotContainer {
   private final TeleopCommand teleopCommand = new TeleopCommand(driveSubsystem, driverController);
   private final StopCommand stopCommand = new StopCommand(driveSubsystem);
   private final AutoDistance autoDistance = new AutoDistance(driveSubsystem);
+
+  private final ArmSubsystem armSubsystem = new ArmSubsystem();
+  private final PivotSubsystem pivotSubsystem = new PivotSubsystem();
+  private final ClawSubsystem clawSubsystem = new ClawSubsystem();
+
+  private final ArmUpCommand armUpCommand = new ArmUpCommand(armSubsystem, .2);
+  private final ArmDownCommand armDownCommand = new ArmDownCommand(armSubsystem, -.2);
+
+  private final PivotForwardCommand pivotForwardCommand = new PivotForwardCommand(pivotSubsystem, .2);
+  private final PivotBackCommand pivotBackCommand = new PivotBackCommand(pivotSubsystem, -.2);
+
+  private final ClawForwardCommand clawForwardCommand = new ClawForwardCommand(clawSubsystem, .2);
+  private final ClawBackCommand clawBackCommand = new ClawBackCommand(clawSubsystem, -.2);
+
+
 
   SendableChooser<String> autoChooser = new SendableChooser<>();
 
@@ -62,7 +89,13 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    
+    driverController.rightBumper().whileTrue(pivotForwardCommand);
+    driverController.leftBumper().whileTrue(pivotBackCommand);
+
+    driverController.povUp().whileTrue(armUpCommand);
+    driverController.povDown().whileTrue(armDownCommand);
+    driverController.povRight().whileTrue(clawForwardCommand);
+    driverController.povLeft().whileTrue(clawBackCommand);
   }
 
   public Command getTeleopCommand() {
