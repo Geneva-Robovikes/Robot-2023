@@ -5,16 +5,17 @@ import frc.robot.subsystems.PivotSubsystem;
 
 public class PivotBackCommand extends CommandBase{
     private PivotSubsystem pivotSubsystem;
-    private double speed;
+    private double pivotSpeed;
 
     public PivotBackCommand (PivotSubsystem subsystem, double speed) {
         pivotSubsystem = subsystem;
-        this.speed = speed;
+        pivotSpeed = speed;
     }
 
     @Override
     public void initialize() {
-        pivotSubsystem.setPivotMotor(speed);
+        System.out.println("hereback");
+        pivotSubsystem.setPivotMotor(pivotSpeed);
     }
 
     @Override

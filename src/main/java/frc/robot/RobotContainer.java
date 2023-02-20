@@ -53,14 +53,14 @@ public class RobotContainer {
   private final PivotSubsystem pivotSubsystem = new PivotSubsystem();
   private final ClawSubsystem clawSubsystem = new ClawSubsystem();
 
-  private final ArmUpCommand armUpCommand = new ArmUpCommand(armSubsystem, .2);
-  private final ArmDownCommand armDownCommand = new ArmDownCommand(armSubsystem, -.2);
+  private final ArmUpCommand armUpCommand = new ArmUpCommand(armSubsystem, .0001);
+  private final ArmDownCommand armDownCommand = new ArmDownCommand(armSubsystem, -.0001);
 
-  private final PivotForwardCommand pivotForwardCommand = new PivotForwardCommand(pivotSubsystem, .2);
-  private final PivotBackCommand pivotBackCommand = new PivotBackCommand(pivotSubsystem, -.2);
+  private final PivotForwardCommand pivotForwardCommand = new PivotForwardCommand(pivotSubsystem, -1);
+  private final PivotBackCommand pivotBackCommand = new PivotBackCommand(pivotSubsystem, 1);
 
-  private final ClawForwardCommand clawForwardCommand = new ClawForwardCommand(clawSubsystem, .2);
-  private final ClawBackCommand clawBackCommand = new ClawBackCommand(clawSubsystem, -.2);
+  private final ClawForwardCommand clawForwardCommand = new ClawForwardCommand(clawSubsystem, .0001);
+  private final ClawBackCommand clawBackCommand = new ClawBackCommand(clawSubsystem, -.0001);
 
 
 
@@ -96,6 +96,7 @@ public class RobotContainer {
     driverController.povDown().whileTrue(armDownCommand);
     driverController.povRight().whileTrue(clawForwardCommand);
     driverController.povLeft().whileTrue(clawBackCommand);
+    System.out.println("here1");
   }
 
   public Command getTeleopCommand() {
