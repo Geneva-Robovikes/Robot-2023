@@ -53,14 +53,17 @@ public class RobotContainer {
   private final PivotSubsystem pivotSubsystem = new PivotSubsystem();
   private final ClawSubsystem clawSubsystem = new ClawSubsystem();
 
-  private final ArmUpCommand armUpCommand = new ArmUpCommand(armSubsystem, .0001);
-  private final ArmDownCommand armDownCommand = new ArmDownCommand(armSubsystem, -.0001);
+  private final ArmUpCommand armUpCommand = new ArmUpCommand(armSubsystem, .1, false);
+  //private final ArmDownCommand armDownCommand = new ArmDownCommand(armSubsystem, -.1);
+  private final ArmUpCommand armDownCommand = new ArmUpCommand(armSubsystem, -.1, false);
 
-  private final PivotForwardCommand pivotForwardCommand = new PivotForwardCommand(pivotSubsystem, -1);
-  private final PivotBackCommand pivotBackCommand = new PivotBackCommand(pivotSubsystem, 1);
+  private final PivotForwardCommand pivotForwardCommand = new PivotForwardCommand(pivotSubsystem, -.1, false);
+  //private final PivotBackCommand pivotBackCommand = new PivotBackCommand(pivotSubsystem, .1);
+  private final PivotForwardCommand pivotBackCommand = new PivotForwardCommand(pivotSubsystem, .1, false);
 
-  private final ClawForwardCommand clawForwardCommand = new ClawForwardCommand(clawSubsystem, .0001);
-  private final ClawBackCommand clawBackCommand = new ClawBackCommand(clawSubsystem, -.0001);
+  private final ClawForwardCommand clawForwardCommand = new ClawForwardCommand(clawSubsystem, .1, false);
+  //private final ClawBackCommand clawBackCommand = new ClawBackCommand(clawSubsystem, -.1);
+  private final ClawForwardCommand clawBackCommand = new ClawForwardCommand(clawSubsystem, -.1, false);
 
 
 

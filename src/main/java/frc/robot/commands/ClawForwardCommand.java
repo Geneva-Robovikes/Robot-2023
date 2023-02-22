@@ -6,10 +6,14 @@ import frc.robot.subsystems.ClawSubsystem;
 public class ClawForwardCommand extends CommandBase{
     private ClawSubsystem clawSubsystem;
     private double speed;
+    private boolean isAuto;
+    
 
-    public ClawForwardCommand (ClawSubsystem subsystem, double speed) {
+    public ClawForwardCommand (ClawSubsystem subsystem, double speed, boolean isAuto) {
         clawSubsystem = subsystem;
         this.speed = speed;
+        this.isAuto = isAuto;
+        addRequirements(subsystem);
     }
 
     @Override

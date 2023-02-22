@@ -6,11 +6,14 @@ import frc.robot.subsystems.ArmSubsystem;
 public class ArmUpCommand extends CommandBase {
     private ArmSubsystem armSubsystem;
     private double speed;
+    private boolean isAuto;
 
-    public ArmUpCommand (ArmSubsystem subsystem, double speed) {
+    public ArmUpCommand (ArmSubsystem subsystem, double speed, boolean isAuto) {
         armSubsystem = subsystem;
         this.speed = speed;
+        this.isAuto = isAuto;
         addRequirements(subsystem);
+
     }
 
     @Override

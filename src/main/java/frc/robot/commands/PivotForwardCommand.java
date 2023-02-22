@@ -6,10 +6,13 @@ import frc.robot.subsystems.PivotSubsystem;
 public class PivotForwardCommand extends CommandBase{
     private PivotSubsystem pivotSubsystem;
     private double pivotSpeed;
+    private boolean isAuto;
 
-    public PivotForwardCommand (PivotSubsystem subsystem, double speed) {
+    public PivotForwardCommand (PivotSubsystem subsystem, double speed, boolean isAuto) {
         pivotSubsystem = subsystem;
         pivotSpeed = speed;
+        this.isAuto = isAuto;
+        addRequirements(subsystem);
     }
 
     @Override
