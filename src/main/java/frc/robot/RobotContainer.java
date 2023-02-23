@@ -10,7 +10,6 @@ import frc.robot.commands.AutoDistance;
 import frc.robot.commands.ArmUpCommand;
 import frc.robot.commands.ClawForwardCommand;
 import frc.robot.commands.PivotForwardCommand;
-import frc.robot.commands.StopCommand;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
