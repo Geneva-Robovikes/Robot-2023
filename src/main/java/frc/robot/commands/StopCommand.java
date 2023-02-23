@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class StopCommand extends CommandBase {
@@ -14,6 +13,5 @@ public class StopCommand extends CommandBase {
     @Override
     public void execute() {
         driveSubsystem.stop();
-        System.out.println("Stopping");
     }
 }

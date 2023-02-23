@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.StopCommand;
 
@@ -117,9 +116,9 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public double getAngleAroundFieldY() {
-    double robotXAngle = gyro.getGyroAngleX();
-    double robotYAngle = gyro.getGyroAngleY();
-    double robotZAngle = gyro.getGyroAngleZ() % 360;
+    double robotXAngle = Math.toRadians(gyro.getGyroAngleX());
+    double robotYAngle = Math.toRadians(gyro.getGyroAngleY());
+    double robotZAngle = Math.toRadians(gyro.getGyroAngleZ());
 
     double angleAroundFieldY = robotYAngle * Math.sin(robotZAngle) + robotXAngle * Math.cos(robotZAngle);
 
