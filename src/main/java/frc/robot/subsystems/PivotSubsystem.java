@@ -11,7 +11,7 @@ public class PivotSubsystem extends SubsystemBase{
     private WPI_TalonFX pivotMotor;
 
     public PivotSubsystem () {
-        pivotMotor = new WPI_TalonFX(8);
+        pivotMotor = new WPI_TalonFX(9);
         pivotMotor.setNeutralMode(NeutralMode.Brake);
     }
 

@@ -7,9 +7,9 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AutoDistance;
 
-import frc.robot.commands.ArmUpCommand;
-import frc.robot.commands.ClawForwardCommand;
-import frc.robot.commands.PivotForwardCommand;
+import frc.robot.commands.ArmCommand;
+import frc.robot.commands.ClawCommand;
+import frc.robot.commands.PivotCommand;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
@@ -40,21 +40,21 @@ public class RobotContainer {
   private final TeleopCommand teleopCommand = new TeleopCommand(driveSubsystem, driverController);
   private final AutoDistance autoDistance = new AutoDistance(driveSubsystem);
 
-  private final ArmSubsystem armSubsystem = new ArmSubsystem();
+  //private final ArmSubsystem armSubsystem = new ArmSubsystem();
   private final PivotSubsystem pivotSubsystem = new PivotSubsystem();
-  private final ClawSubsystem clawSubsystem = new ClawSubsystem();
+  //private final ClawSubsystem clawSubsystem = new ClawSubsystem();
 
-  private final ArmUpCommand armUpCommand = new ArmUpCommand(armSubsystem, .1, false);
+  //private final ArmCommand armUpCommand = new ArmCommand(armSubsystem, .1);
   //private final ArmDownCommand armDownCommand = new ArmDownCommand(armSubsystem, -.1);
-  private final ArmUpCommand armDownCommand = new ArmUpCommand(armSubsystem, -.1, false);
+  //private final ArmCommand armDownCommand = new ArmCommand(armSubsystem, -.1);
 
-  private final PivotForwardCommand pivotForwardCommand = new PivotForwardCommand(pivotSubsystem, -.1, false);
+  private final PivotCommand pivotForwardCommand = new PivotCommand(pivotSubsystem, -.2);
   //private final PivotBackCommand pivotBackCommand = new PivotBackCommand(pivotSubsystem, .1);
-  private final PivotForwardCommand pivotBackCommand = new PivotForwardCommand(pivotSubsystem, .1, false);
+  private final PivotCommand pivotBackCommand = new PivotCommand(pivotSubsystem, .2);
 
-  private final ClawForwardCommand clawForwardCommand = new ClawForwardCommand(clawSubsystem, .1, false);
+  //private final ClawCommand clawForwardCommand = new ClawCommand(clawSubsystem, .1);
   //private final ClawBackCommand clawBackCommand = new ClawBackCommand(clawSubsystem, -.1);
-  private final ClawForwardCommand clawBackCommand = new ClawForwardCommand(clawSubsystem, -.1, false);
+  //private final ClawCommand clawBackCommand = new ClawCommand(clawSubsystem, -.1);
 
 
 
@@ -86,10 +86,10 @@ public class RobotContainer {
     driverController.rightBumper().whileTrue(pivotForwardCommand);
     driverController.leftBumper().whileTrue(pivotBackCommand);
 
-    driverController.povUp().whileTrue(armUpCommand);
-    driverController.povDown().whileTrue(armDownCommand);
-    driverController.povRight().whileTrue(clawForwardCommand);
-    driverController.povLeft().whileTrue(clawBackCommand);
+    //driverController.povUp().whileTrue(armUpCommand);
+    //driverController.povDown().whileTrue(armDownCommand);
+    //driverController.povRight().whileTrue(clawForwardCommand);
+    //driverController.povLeft().whileTrue(clawBackCommand);
     System.out.println("here1");
   }
 
