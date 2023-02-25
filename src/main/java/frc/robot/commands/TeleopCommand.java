@@ -23,9 +23,9 @@ public class TeleopCommand extends CommandBase {
 
   @Override
   public void execute() {
-    double x1 = controller.getLeftX();
-    double y1 = controller.getLeftY();
-    double x2 = controller.getRightX();
+    double x1 = -Math.signum(controller.getLeftX()) * Math.pow(controller.getLeftX(), 2);
+    double y1 = -Math.signum(controller.getLeftY()) * Math.pow(controller.getLeftY(), 2);
+    double x2 = -Math.signum(controller.getRightX()) * Math.pow(controller.getRightX(), 2);
 
     x1 = MathUtil.applyDeadband(x1, OperatorConstants.controllerDeadzone);
     y1 = MathUtil.applyDeadband(x1, OperatorConstants.controllerDeadzone);
@@ -36,12 +36,12 @@ public class TeleopCommand extends CommandBase {
     double vTheta = x2 * maxSpeedTheta;
 
     //how to move robot
-    driveSubsystem.setModuleStatesFromSpeeds(vX, vY, vTheta);
+    driveSubsystem.setModuleStatesFromSpeeds(vX, vY, vTheta, false);
   }
 
   @Override
   public void end(boolean interrupted) {
-    driveSubsystem.setModuleStatesFromSpeeds(0, 0, 0);
+    driveSubsystem.setModuleStatesFromSpeeds(0, 0, 0, false);
   }
 
   @Override

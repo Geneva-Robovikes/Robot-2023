@@ -14,20 +14,20 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
 
 public class DriveSubsystem extends SubsystemBase {
-  ADIS16448_IMU gyro;
+  ADIS16448_IMU gyro = new ADIS16448_IMU();
   CameraSubsystem[] cameras;
 
-  SwerveModule frontLeftModule;
-  SwerveModule frontRightModule;
-  SwerveModule backLeftModule;
-  SwerveModule backRightModule;
-
+  SwerveModule frontLeftModule = new SwerveModule(0, 1, false, true);
+  SwerveModule frontRightModule = new SwerveModule(2, 3, false, true);
+  SwerveModule backLeftModule = new SwerveModule(4, 5, false, true);
+  SwerveModule backRightModule= new SwerveModule(6, 7, false, true);
   // Positions are based of of 25in square robot
   Translation2d frontLeftLocation = new Translation2d(0.318, 0.318);
   Translation2d frontRightLocation = new Translation2d(0.318, -0.318);
@@ -37,14 +37,23 @@ public class DriveSubsystem extends SubsystemBase {
   SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
 
   SwerveDrivePoseEstimator odometry = new SwerveDrivePoseEstimator(
-    kinematics, new Rotation2d(gyro.getGyroAngleZ()), new SwerveModulePosition[] {
+    kinematics, getRotation2d(), new SwerveModulePosition[] {
       frontRightModule.getPosition(),
       frontRightModule.getPosition(),
       backLeftModule.getPosition(), 
       backRightModule.getPosition()
     }, 
     new Pose2d(0, 0, new Rotation2d()));
-  Pose2d currenPose2d;
+
+    /*SwerveDriveOdometry odometry = new SwerveDriveOdometry(kinematics, getRotation2d(), 
+                                                            new SwerveModulePosition[] {
+                                                              frontLeftModule.getPosition(),
+                                                              frontRightModule.getPosition(),
+                                                              backLeftModule.getPosition(),
+                                                              backRightModule.getPosition()
+                                                            }, new Pose2d(0, 0, new Rotation2d()));
+    */
+  Pose2d currentPose2d;
 
   /**
    * Creates a DriveSubsystem with the provided motor indexes and cameras.
@@ -53,15 +62,22 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public DriveSubsystem(int[] motorIndexes, CameraSubsystem[] cameras) {
     this.cameras = cameras;
-    frontLeftModule = new SwerveModule(motorIndexes[0], motorIndexes[1]);
+    gyro.calibrate();
+    /*frontLeftModule = new SwerveModule(motorIndexes[0], motorIndexes[1]);
     frontRightModule = new SwerveModule(motorIndexes[2], motorIndexes[3]);
     backLeftModule = new SwerveModule(motorIndexes[4], motorIndexes[5]);
-    backRightModule = new SwerveModule(motorIndexes[6], motorIndexes[7]);
+    backRightModule = new SwerveModule(motorIndexes[6], motorIndexes[7]);*/
   }
+
+  /*public void updateOdometry() {
+    odometry.update(getRotation2d(), new SwerveModulePosition[] {
+      frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition()
+    });
+  }*/
 
   @Override
   public void periodic() {
-    odometry.update(new Rotation2d(gyro.getGyroAngleZ()),
+    odometry.update(getRotation2d(),
       new SwerveModulePosition[] {
         frontLeftModule.getPosition(), frontRightModule.getPosition(),
         backLeftModule.getPosition(), backRightModule.getPosition()
@@ -83,9 +99,21 @@ public class DriveSubsystem extends SubsystemBase {
    * @param yVelocity Velocity in the y direction, left of driver station is +y
    * @param angularVelocity Angular velocity, counter clockwise is +θ
    */
-  public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity) {
-    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, new Rotation2d(gyro.getGyroAngleZ()));
-    setModuleStates(kinematics.toSwerveModuleStates(speeds));
+  public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity, boolean isFieldCentric) {
+    ChassisSpeeds speeds; //= ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, new Rotation2d(gyro.getGyroAngleZ()));
+    if (isFieldCentric) {
+      speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, getRotation2d());
+    } else {
+      speeds = new ChassisSpeeds(xVelocity, yVelocity, angularVelocity);
+    }
+    //setModuleStates(kinematics.toSwerveModuleStates(speeds));
+    SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, 3);
+    setModuleStates(states);
+  }
+
+  public void resetGyro() {
+    gyro.reset();
   }
 
   /**
@@ -93,14 +121,23 @@ public class DriveSubsystem extends SubsystemBase {
    * @param pose The pose to set to.
    */
   public void resetOdometry(Pose2d pose) {
-    odometry.resetPosition(new Rotation2d(gyro.getGyroAngleZ()), 
+    odometry.resetPosition(getRotation2d(), 
       new SwerveModulePosition[] {
-        frontRightModule.getPosition(),
+        frontLeftModule.getPosition(),
         frontRightModule.getPosition(),
         backLeftModule.getPosition(), 
         backRightModule.getPosition()
       }, pose
     );
+  }
+
+  public double getAngleAroundFieldY() {
+    double robotXAngle = gyro.getGyroAngleX();
+    double robotYAngle = gyro.getGyroAngleY();
+    double robotZAngle = gyro.getGyroAngleZ() % 360;
+
+    double angleAroundFieldY = robotYAngle * Math.sin(robotZAngle) + robotXAngle * Math.cos(robotZAngle);
+    return angleAroundFieldY;
   }
 
   /**
@@ -116,7 +153,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return The robot's rotation as Rotation2d
    */
   public Rotation2d getRotation2d() {
-    return new Rotation2d(gyro.getGyroAngleZ());
+    return new Rotation2d(-gyro.getGyroAngleZ() / 57.295779513);
   }
   
   /**
@@ -125,7 +162,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @param timestamp The timestamp the data was taken from.
    */
   void addCameraToOdometry(Optional<EstimatedRobotPose> estimatedPose, double timestamp) {
-    odometry.addVisionMeasurement(currenPose2d, timestamp);
+    odometry.addVisionMeasurement(currentPose2d, timestamp);
   }
 
   /**
@@ -133,10 +170,25 @@ public class DriveSubsystem extends SubsystemBase {
    * @param moduleStates The states to set to.
    */
   void setModuleStates(SwerveModuleState[] moduleStates) {
-    frontLeftModule.setSesiredState(moduleStates[0]);
-    frontRightModule.setSesiredState(moduleStates[1]);
-    backLeftModule.setSesiredState(moduleStates[2]);
-    backRightModule.setSesiredState(moduleStates[3]);
+    frontLeftModule.setDesiredState(moduleStates[0]);
+    frontRightModule.setDesiredState(moduleStates[1]);
+    backLeftModule.setDesiredState(moduleStates[2]);
+    backRightModule.setDesiredState(moduleStates[3]);
+  }
+
+  public void stop() {
+    frontLeftModule.stopModule();
+    frontRightModule.stopModule();
+    backLeftModule.stopModule();
+    backRightModule.stopModule();
+  }
+
+  public void setModules(double driveVolts, double turnVolts) {
+    frontLeftModule.setModule(driveVolts, turnVolts);
+    frontRightModule.setModule(driveVolts, turnVolts);
+    backLeftModule.setModule(driveVolts, turnVolts);
+    frontRightModule.setModule(driveVolts, turnVolts);
+
   }
 
 }

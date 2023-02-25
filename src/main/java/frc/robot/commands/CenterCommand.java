@@ -33,12 +33,12 @@ public class CenterCommand extends CommandBase{
             if (targetSkew > 0) {
                 //move robot one way
                 
-                driveSubsystem.setModuleStatesFromSpeeds(0, -yVelocity, -Math.PI/2);
+                driveSubsystem.setModuleStatesFromSpeeds(0, -yVelocity, -Math.PI/2, false);
             }
 
             if (targetSkew < 0) {
                 //move robot other way
-                driveSubsystem.setModuleStatesFromSpeeds(0, yVelocity, Math.PI/2);
+                driveSubsystem.setModuleStatesFromSpeeds(0, yVelocity, Math.PI/2, false);
             }
         }
     }
@@ -51,6 +51,6 @@ public class CenterCommand extends CommandBase{
 
     @Override
     public void end(boolean interrupted) {
-        driveSubsystem.setModuleStatesFromSpeeds(0, 0, 0);
+        driveSubsystem.setModuleStatesFromSpeeds(0, 0, 0, false);
     }
 }

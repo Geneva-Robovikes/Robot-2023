@@ -31,6 +31,7 @@ public class CameraSubsystem extends SubsystemBase {
    */
   public CameraSubsystem(String cameraName, Transform3d cameraPosition) {
     camera = new PhotonCamera(cameraName);
+    camera.setPipelineIndex(0);
     result = camera.getLatestResult();
     this.cameraPosition = cameraPosition;
 
@@ -44,6 +45,7 @@ public class CameraSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    //System.out.println(camera.getLatestResult());
     result = camera.getLatestResult();
   }
 
