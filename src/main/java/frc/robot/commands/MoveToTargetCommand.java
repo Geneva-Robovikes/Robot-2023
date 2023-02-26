@@ -31,10 +31,10 @@ public class MoveToTargetCommand extends CommandBase{
         if (cameraSubsystem.hasTargets()) {
             System.out.println("target!");
             double range = PhotonUtils.calculateDistanceToTargetMeters(cameraHeight, targetHeight, goalRangeMeters, 0);
-
+            System.out.println(range);
             //it LIED dont make it negative >:(
-            forwardSpeed = - controller.calculate(range, goalRangeMeters);
-            //forwardSpeed = 0;
+            //forwardSpeed = controller.calculate(range, goalRangeMeters);
+            forwardSpeed = 0;
             // System.out.println(controller.calculate(range, goalRangeMeters));
         } else {
             forwardSpeed = 0;

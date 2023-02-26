@@ -94,10 +94,11 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   /**
-   * Sets the swerve modules according to the privided chassis speeds. Use this to drive the robot.
+   * Sets the swerve modules according to the provided chassis speeds. Use this to drive the robot.
    * @param xVelocity Velocity in the x direction, away from driver station is +x
    * @param yVelocity Velocity in the y direction, left of driver station is +y
    * @param angularVelocity Angular velocity, counter clockwise is +θ
+   * @param isFieldCentric Set field- or robot-centric
    */
   public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity, boolean isFieldCentric) {
     ChassisSpeeds speeds; //= ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, new Rotation2d(gyro.getGyroAngleZ()));
