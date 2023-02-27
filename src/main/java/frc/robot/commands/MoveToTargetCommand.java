@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import javax.naming.spi.DirStateFactory.Result;
+
 import org.photonvision.PhotonUtils;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -17,9 +19,9 @@ public class MoveToTargetCommand extends CommandBase{
     
 
     DriveSubsystem drive; 
-    double cameraHeight = Units.inchesToMeters(7.5);
+    double cameraHeight = Units.inchesToMeters(7);
     double targetHeight = Units.inchesToMeters(12.5);
-    double goalRangeMeters = 1;
+    double goalRangeMeters = 0;
     public MoveToTargetCommand(CameraSubsystem cameraSubsystem, DriveSubsystem drive) {
         this.cameraSubsystem = cameraSubsystem;
         this.drive = drive;
@@ -30,7 +32,7 @@ public class MoveToTargetCommand extends CommandBase{
         double forwardSpeed;
         if (cameraSubsystem.hasTargets()) {
             System.out.println("target!");
-            double range = PhotonUtils.calculateDistanceToTargetMeters(cameraHeight, targetHeight, goalRangeMeters, 0);
+            double range = PhotonUtils.calculateDistanceToTargetMeters(cameraHeight, targetHeight, 0, cameraSubsystem.getTargetPitch());
             System.out.println(range);
             //it LIED dont make it negative >:(
             //forwardSpeed = controller.calculate(range, goalRangeMeters);
