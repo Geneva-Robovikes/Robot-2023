@@ -19,9 +19,13 @@ public class SwerveModule {
     //PIDController drivePID = new PIDController(3.1679, 0, 0);
     //works with auto, teleop eh
     PIDController drivePID = new PIDController(.285, .5, 0);
+    //PIDController drivePID = new PIDController(0, 0, 0);
+
     
     //PIDController turnPID = new PIDController(4.1692, 0, 0.23252);
     PIDController turnPID = new PIDController(3.5945, 0, 0.1507);
+    //PIDController turnPID = new PIDController(0, 0, 0);
+
 
     //very scary it only works with auto!!!
     //I think we might need separate auto/teleop ones? idk

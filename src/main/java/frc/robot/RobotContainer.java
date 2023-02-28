@@ -87,7 +87,7 @@ public class RobotContainer {
         //originally 6, 0, 0
         //tried 4.5, 0, .007
         //new PIDConstants(5.7, .003, 0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
-        new PIDConstants(6, .003, 0),
+        new PIDConstants(7, .003, .03),
         new PIDConstants(2.55, .01374, .004), // PID constants to correct for rotation error (used to create the rotation controller)
         driveSubsystem::setModuleStates, // Module states consumer used to output to the drive subsystem
         eventMap,
