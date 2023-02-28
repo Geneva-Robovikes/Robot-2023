@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    robotContainer.updateOdometry();
+    //robotContainer.updateOdometry();
   }
 
   @Override
@@ -79,13 +79,13 @@ public class Robot extends TimedRobot {
       autonomousCommand.cancel();
     }
 
-    robotContainer.getTeleopCommand().schedule();
+    //robotContainer.getTeleopCommand().schedule();
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    robotContainer.updateOdometry();
+    //robotContainer.updateOdometry();
   }
 
   @Override

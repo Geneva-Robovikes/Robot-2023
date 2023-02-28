@@ -37,7 +37,7 @@ public class RobotContainer extends TimedRobot {
   public String[] songList;
   public int btn;
   public int lastButton; 
-  public int song
+  public int song;
 
 
 
@@ -64,11 +64,14 @@ public class RobotContainer extends TimedRobot {
     return null;
   }
 
-  public Command getTeleopCommand() {
-    return teleopCommand;
-  }
+  //public Command getTeleopCommand() {
+    //while there is a class called TeleopCommand, there is not an object being made of it.
+    //therefore, there is no command teleopCommand
+    //return teleopCommand;
+  //}
 
-  public void updateOdometry() {
+  //this doesn't actually exist
+  /*public void updateOdometry() {
     driveSubsystem.updateOdometry();
-  }
+  }*/
 }
