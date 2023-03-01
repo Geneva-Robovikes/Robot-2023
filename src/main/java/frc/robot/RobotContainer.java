@@ -87,8 +87,9 @@ public class RobotContainer {
         //originally 6, 0, 0
         //tried 4.5, 0, .007
         //new PIDConstants(5.7, .003, 0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
-        new PIDConstants(7, .003, .03),
-        new PIDConstants(2.55, .01374, .004), // PID constants to correct for rotation error (used to create the rotation controller)
+        new PIDConstants(6, 0, .05),
+        //d was originally .004 for turn, check that?
+        new PIDConstants(2.55, .01374, .008), // PID constants to correct for rotation error (used to create the rotation controller)
         driveSubsystem::setModuleStates, // Module states consumer used to output to the drive subsystem
         eventMap,
         true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
