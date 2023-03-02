@@ -6,8 +6,13 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AutoDistance;
+import frc.robot.commands.ClawCommand;
+import frc.robot.commands.PivotClawCommand;
 import frc.robot.commands.TeleopCommand;
+import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.PivotClawSubsystem;
+
 import java.util.HashMap;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -32,6 +37,12 @@ public class RobotContainer {
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final TeleopCommand teleopCommand = new TeleopCommand(driveSubsystem, driverController);
   private final AutoDistance autoDistance = new AutoDistance(driveSubsystem);
+
+  private final ClawSubsystem clawSubsystem = new ClawSubsystem();
+  private final ClawCommand clawCommand = new ClawCommand(clawSubsystem, 0);
+
+  private final PivotClawSubsystem pivotClawSubsystem = new PivotClawSubsystem();
+  private final PivotClawCommand pivotClawCommand = new PivotClawCommand(pivotClawSubsystem, 0);
 
   SendableChooser<String> autoChooser = new SendableChooser<>();
 
