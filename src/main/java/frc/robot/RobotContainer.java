@@ -43,16 +43,17 @@ public class RobotContainer {
   private final AutoDistance autoDistance = new AutoDistance(driveSubsystem);
 
   private final ClawSubsystem clawSubsystem = new ClawSubsystem();
-  private final ClawCommand clawCommand = new ClawCommand(clawSubsystem, 0);
+  private final ClawCommand clawCommand = new ClawCommand(clawSubsystem, .3);
+  private final ClawCommand reverseClawCommand = new ClawCommand(clawSubsystem, -.3);
 
-  private final PivotClawSubsystem pivotClawSubsystem = new PivotClawSubsystem();
+  /*private final PivotClawSubsystem pivotClawSubsystem = new PivotClawSubsystem();
   private final PivotClawCommand pivotClawCommand = new PivotClawCommand(pivotClawSubsystem, 0);
 
   private final ArmExtendSubsystem armExtendSubsystem = new ArmExtendSubsystem();
   private final ArmExtendCommand armExtendCommand = new ArmExtendCommand(armExtendSubsystem, 0);
 
   private final UpperArmSubsystem upperArmSubsystem = new UpperArmSubsystem();
-  private final UpperArmCommand upperArmCommand = new UpperArmCommand(upperArmSubsystem, 0);
+  private final UpperArmCommand upperArmCommand = new UpperArmCommand(upperArmSubsystem, 0);*/
 
   SendableChooser<String> autoChooser = new SendableChooser<>(); 
 
@@ -79,7 +80,8 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    
+    driverController.x().whileTrue(clawCommand);
+    driverController.b().whileTrue(reverseClawCommand);
   }
 
   public Command getTeleopCommand() {

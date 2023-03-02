@@ -10,7 +10,7 @@ public class ClawSubsystem extends SubsystemBase {
     private CANSparkMax clawMotor ; 
 
     public ClawSubsystem(){
-        clawMotor = new CANSparkMax(10, MotorType.kBrushless);
+        clawMotor = new CANSparkMax(8, MotorType.kBrushless);
     }
     public void setClawMotor(double value){
         clawMotor.set(value);
