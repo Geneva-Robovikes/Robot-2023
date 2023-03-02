@@ -5,13 +5,17 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ArmExtendCommand;
 import frc.robot.commands.AutoDistance;
 import frc.robot.commands.ClawCommand;
 import frc.robot.commands.PivotClawCommand;
 import frc.robot.commands.TeleopCommand;
+import frc.robot.commands.UpperArmCommand;
+import frc.robot.subsystems.ArmExtendSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PivotClawSubsystem;
+import frc.robot.subsystems.UpperArmSubsystem;
 
 import java.util.HashMap;
 import com.pathplanner.lib.PathConstraints;
@@ -44,7 +48,13 @@ public class RobotContainer {
   private final PivotClawSubsystem pivotClawSubsystem = new PivotClawSubsystem();
   private final PivotClawCommand pivotClawCommand = new PivotClawCommand(pivotClawSubsystem, 0);
 
-  SendableChooser<String> autoChooser = new SendableChooser<>();
+  private final ArmExtendSubsystem armExtendSubsystem = new ArmExtendSubsystem();
+  private final ArmExtendCommand armExtendCommand = new ArmExtendCommand(armExtendSubsystem, 0);
+
+  private final UpperArmSubsystem upperArmSubsystem = new UpperArmSubsystem();
+  private final UpperArmCommand upperArmCommand = new UpperArmCommand(upperArmSubsystem, 0);
+
+  SendableChooser<String> autoChooser = new SendableChooser<>(); 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
