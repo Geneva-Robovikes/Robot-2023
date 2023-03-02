@@ -5,6 +5,7 @@ import javax.naming.spi.DirStateFactory.Result;
 import org.photonvision.PhotonUtils;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -19,8 +20,11 @@ public class MoveToTargetCommand extends CommandBase{
     
 
     DriveSubsystem drive; 
-    double cameraHeight = Units.inchesToMeters(7);
-    double targetHeight = Units.inchesToMeters(12.5);
+    //double cameraHeight = Units.inchesToMeters(7);
+    double cameraHeight = Units.inchesToMeters(30.5);
+    //double targetHeight = Units.inchesToMeters(12.5);
+    double targetHeight = Units.inchesToMeters(25.5);
+
     double goalRangeMeters = 0;
     public MoveToTargetCommand(CameraSubsystem cameraSubsystem, DriveSubsystem drive) {
         this.cameraSubsystem = cameraSubsystem;
@@ -32,7 +36,8 @@ public class MoveToTargetCommand extends CommandBase{
         double forwardSpeed;
         if (cameraSubsystem.hasTargets()) {
             System.out.println("target!");
-            double range = PhotonUtils.calculateDistanceToTargetMeters(cameraHeight, targetHeight, 0, cameraSubsystem.getTargetPitch());
+            //double distane = PhotonUtils.getDistanceToPose(new Pose2d(), new Pose2d());
+            double range = PhotonUtils.calculateDistanceToTargetMeters(cameraHeight, targetHeight, 0, Units.degreesToRadians(cameraSubsystem.getTargetPitch()));
             System.out.println(range);
             //it LIED dont make it negative >:(
             //forwardSpeed = controller.calculate(range, goalRangeMeters);
