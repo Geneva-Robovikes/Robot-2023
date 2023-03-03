@@ -21,9 +21,9 @@ public class MoveToTargetCommand extends CommandBase{
 
     DriveSubsystem drive; 
     //double cameraHeight = Units.inchesToMeters(7);
-    double cameraHeight = Units.inchesToMeters(30.5);
+    double cameraHeight = Units.inchesToMeters(4);
     //double targetHeight = Units.inchesToMeters(12.5);
-    double targetHeight = Units.inchesToMeters(35.3);
+    double targetHeight = Units.inchesToMeters(6);
 
     double goalRangeMeters = 0;
     public MoveToTargetCommand(CameraSubsystem cameraSubsystem, DriveSubsystem drive) {
