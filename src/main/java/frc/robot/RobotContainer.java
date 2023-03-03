@@ -43,8 +43,8 @@ public class RobotContainer {
   private final AutoDistance autoDistance = new AutoDistance(driveSubsystem);
 
   private final ClawSubsystem clawSubsystem = new ClawSubsystem();
-  private final ClawCommand clawCommand = new ClawCommand(clawSubsystem, .75);
-  private final ClawCommand reverseClawCommand = new ClawCommand(clawSubsystem, -.75);
+  private final ClawCommand clawCommand = new ClawCommand(clawSubsystem, .7);
+  private final ClawCommand reverseClawCommand = new ClawCommand(clawSubsystem, -.7);
 
   /*private final PivotClawSubsystem pivotClawSubsystem = new PivotClawSubsystem();
   private final PivotClawCommand pivotClawCommand = new PivotClawCommand(pivotClawSubsystem, 0);
