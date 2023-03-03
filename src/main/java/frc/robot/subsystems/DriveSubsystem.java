@@ -85,7 +85,7 @@ public class DriveSubsystem extends SubsystemBase {
     );
 
     for (CameraSubsystem cam : cameras) {
-      if(cam.getPipelineIndex() == 2) {
+      if(cam.getPipelineIndex() == 3) {
         Optional<EstimatedRobotPose> result = cam.getEstimatedGlobalPose(odometry.getEstimatedPosition());
         EstimatedRobotPose camPose = result.get();
         odometry.addVisionMeasurement(camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);

@@ -23,7 +23,7 @@ public class MoveToTargetCommand extends CommandBase{
     //double cameraHeight = Units.inchesToMeters(7);
     double cameraHeight = Units.inchesToMeters(4);
     //double targetHeight = Units.inchesToMeters(12.5);
-    double targetHeight = Units.inchesToMeters(6);
+    double targetHeight = Units.inchesToMeters(13.5);
 
     double goalRangeMeters = 0;
     public MoveToTargetCommand(CameraSubsystem cameraSubsystem, DriveSubsystem drive) {
@@ -37,7 +37,7 @@ public class MoveToTargetCommand extends CommandBase{
         if (cameraSubsystem.hasTargets()) {
             System.out.println("target!");
             //double distane = PhotonUtils.getDistanceToPose(new Pose2d(), new Pose2d());
-            double range = PhotonUtils.calculateDistanceToTargetMeters(cameraHeight, targetHeight, 0, Units.degreesToRadians(cameraSubsystem.getTargetPitch()));
+            double range = PhotonUtils.calculateDistanceToTargetMeters(cameraHeight, targetHeight, 0, Units.degreesToRadians(cameraSubsystem.getTargetPitch())/*/1.46143445*/);
             System.out.println(range);
             //it LIED dont make it negative >:(
             //forwardSpeed = controller.calculate(range, goalRangeMeters);

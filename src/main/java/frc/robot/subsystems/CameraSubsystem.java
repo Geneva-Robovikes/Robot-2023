@@ -35,7 +35,7 @@ public class CameraSubsystem extends SubsystemBase {
    */
   public CameraSubsystem(String cameraName, Transform3d cameraPosition) {
     camera = new PhotonCamera(cameraName);
-    camera.setPipelineIndex(2);
+    camera.setPipelineIndex(3);
     result = camera.getLatestResult();
     this.cameraPosition = cameraPosition;
 
@@ -81,8 +81,8 @@ public class CameraSubsystem extends SubsystemBase {
   }*/
 
   /**
-   * Sets the camera's pipeline to the index's corresponding pipeline.
-   * @return The index of the pipeline. 0 = Cone, 1 = Cube, 2 = Tag, 3 = Tape
+   * Sets the camera's  to the index's corresponding pipeline.
+   * @return The index of the pipeline. 0 = Cone, 1 = Cube, 2 = Tape, 3 = Tag
    */
   public int getPipelineIndex() {
     return camera.getPipelineIndex();
@@ -90,7 +90,7 @@ public class CameraSubsystem extends SubsystemBase {
 
   /**
    * Sets the camera's pipeline to the index's corresponding pipeline.
-   * @param index The index of the pipeline. 0 = Cone, 1 = Cube, 2 = Tag, 3 = Tape
+   * @param index The index of the pipeline. 0 = Cone, 1 = Cube, 2 = Tape, 3 = Tag
    */
   public void setPipeline(int index) {
     camera.setPipelineIndex(index);
