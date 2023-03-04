@@ -51,8 +51,8 @@ public class RobotContainer {
   //private final ClawCommand inClawCommand = new ClawCommand(clawSubsystem, -.7);
 
   //private final PivotClawSubsystem pivotClawSubsystem = new PivotClawSubsystem();
-  //private final PivotClawCommand pivotClawCommand = new PivotClawCommand(pivotClawSubsystem, .4);
-  //private final PivotClawCommand pivotDownCommand = new PivotClawCommand(pivotClawSubsystem, -.4);
+  //private final PivotClawCommand pivotDownCommand = new PivotClawCommand(pivotClawSubsystem, .1);
+  //private final PivotClawCommand pivotUpCommand = new PivotClawCommand(pivotClawSubsystem, -.1);
 
   //private final ArmExtendSubsystem armExtendSubsystem = new ArmExtendSubsystem();
   //private final ArmExtendCommand armExtendCommand = new ArmExtendCommand(armExtendSubsystem, 0);
@@ -65,9 +65,9 @@ public class RobotContainer {
   //private final RotateArmCommand armForwardCommand = new RotateArmCommand(rotateArmSubsystem, .3);
   //private final RotateArmCommand armBackwardCommand = new RotateArmCommand(rotateArmSubsystem, -.3);
 
-  private final ClawArmPivotSubsystem clawArmPivotSubsystem = new ClawArmPivotSubsystem();
-  private final ClawArmPivotCommand pivotClawArmForward = new ClawArmPivotCommand(clawArmPivotSubsystem, .3);
-  private final ClawArmPivotCommand pivotClawArmBack = new ClawArmPivotCommand(clawArmPivotSubsystem, -.3);
+  //private final ClawArmPivotSubsystem clawArmPivotSubsystem = new ClawArmPivotSubsystem();
+  //private final ClawArmPivotCommand pivotClawArmForward = new ClawArmPivotCommand(clawArmPivotSubsystem, .1);
+  //private final ClawArmPivotCommand pivotClawArmBack = new ClawArmPivotCommand(clawArmPivotSubsystem, -.1);
 
   SendableChooser<String> autoChooser = new SendableChooser<>(); 
 
@@ -88,14 +88,18 @@ public class RobotContainer {
     autoChooser.addOption("To Cone", "To Cone");
     autoChooser.addOption("Long Path", "The Long Path");
     SmartDashboard.putData("Path Chooser", autoChooser);
-
+    
+    //green larson
+    //green larson
     // Configure the trigger bindings
     configureBindings();
   }
 
+  //green larson
   private void configureBindings() {
-    driverController.x().whileTrue(pivotClawArmForward);
-    driverController.b().whileTrue(pivotClawArmBack);
+    //driverController.x().whileTrue(pivotClawArmForward);
+    //driverController.b().whileTrue(pivotClawArmBack);
+    //driverController.
   }
 
   public Command getTeleopCommand() {
@@ -123,9 +127,11 @@ public class RobotContainer {
 
         //originally 6, 0, 0
         //tried 4.5, 0, .007
+        //green larson
         //new PIDConstants(5.7, .003, 0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
         //change this next line only
-        new PIDConstants(6, 0.0025, .01),
+        //p up, i down, d up i guess
+        new PIDConstants(6.5, 0.000, .07),
         //d was originally .004 for turn, check that?
         // IGNORE BELOW
         new PIDConstants(2.55, .01374, .008), // PID constants to correct for rotation error (used to create the rotation controller)

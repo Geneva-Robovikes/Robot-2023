@@ -34,10 +34,16 @@ public class DriveSubsystem extends SubsystemBase {
   Translation2d backLeftLocation = new Translation2d(-0.3048, 0.3048);
   Translation2d backRightLocation = new Translation2d(-0.3048, -0.3048);
 
-  SwerveModule frontLeftModule = new SwerveModule(0, 1, false, true);
-  SwerveModule frontRightModule = new SwerveModule(2, 3, false, true);
-  SwerveModule backLeftModule = new SwerveModule(4, 5, false, true);
-  SwerveModule backRightModule = new SwerveModule(6, 7, false, true);  
+  //SwerveModule frontLeftModule = new SwerveModule(0, 1, false, true);
+  //SwerveModule frontRightModule = new SwerveModule(2, 3, false, true);
+  //SwerveModule backLeftModule = new SwerveModule(4, 5, false, true);
+  //SwerveModule backRightModule = new SwerveModule(6, 7, false, true);  
+
+  SwerveModule frontLeftModule = new SwerveModule(2, 3, false, true);
+  SwerveModule frontRightModule = new SwerveModule(6,7, false, true);
+  SwerveModule backLeftModule = new SwerveModule(0, 1, false, true);
+  SwerveModule backRightModule = new SwerveModule(4, 5, false, true);
+
 
   public SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
   SwerveDriveOdometry odometry = new SwerveDriveOdometry(
@@ -137,7 +143,8 @@ public class DriveSubsystem extends SubsystemBase {
       speeds = new ChassisSpeeds(xVelocity, yVelocity, angularVelocity);
     }
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
-    SwerveDriveKinematics.desaturateWheelSpeeds(states, 3);
+    //Set max speed/max velocity here
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, 1);
     setModuleStates(states);
   }
 

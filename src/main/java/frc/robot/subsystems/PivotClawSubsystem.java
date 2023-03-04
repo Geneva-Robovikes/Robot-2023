@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -12,6 +13,7 @@ public class PivotClawSubsystem extends SubsystemBase {
 
     public PivotClawSubsystem(){
         pivotMotor = new WPI_TalonFX(9);
+        pivotMotor.setNeutralMode(NeutralMode.Brake);
     }
     public void setPivotMotor(double value){
         pivotMotor.set(ControlMode.PercentOutput, value);
