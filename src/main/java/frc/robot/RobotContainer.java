@@ -5,21 +5,21 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.ArmExtendCommand;
+import frc.robot.commands.Stage1Command;
 import frc.robot.commands.AutoDistance;
 import frc.robot.commands.ClawArmPivotCommand;
 import frc.robot.commands.ClawCommand;
 import frc.robot.commands.PivotClawCommand;
 import frc.robot.commands.RotateArmCommand;
 import frc.robot.commands.TeleopCommand;
-import frc.robot.commands.UpperArmCommand;
-import frc.robot.subsystems.ArmExtendSubsystem;
+import frc.robot.commands.Stage2Command;
+import frc.robot.subsystems.Stage1Subsystem;
 import frc.robot.subsystems.ClawArmPivotSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PivotClawSubsystem;
 import frc.robot.subsystems.RotateArmSubsystem;
-import frc.robot.subsystems.UpperArmSubsystem;
+import frc.robot.subsystems.Stage2Subsystem;
 
 import java.util.HashMap;
 import com.pathplanner.lib.PathConstraints;
