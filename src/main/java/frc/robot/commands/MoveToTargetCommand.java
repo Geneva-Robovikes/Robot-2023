@@ -6,6 +6,7 @@ import org.photonvision.PhotonUtils;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -21,9 +22,9 @@ public class MoveToTargetCommand extends CommandBase{
 
     DriveSubsystem drive; 
     //double cameraHeight = Units.inchesToMeters(7);
-    double cameraHeight = Units.inchesToMeters(4);
+    double cameraHeight = Units.inchesToMeters(4.175);
     //double targetHeight = Units.inchesToMeters(12.5);
-    double targetHeight = Units.inchesToMeters(13.5);
+    double targetHeight = Units.inchesToMeters(20.875);
 
     double goalRangeMeters = 0;
     public MoveToTargetCommand(CameraSubsystem cameraSubsystem, DriveSubsystem drive) {
@@ -33,11 +34,17 @@ public class MoveToTargetCommand extends CommandBase{
 
     @Override
     public void execute() {
+
         double forwardSpeed;
+
         if (cameraSubsystem.hasTargets()) {
+
             System.out.println("target!");
             //double distane = PhotonUtils.getDistanceToPose(new Pose2d(), new Pose2d());
-            double range = PhotonUtils.calculateDistanceToTargetMeters(cameraHeight, targetHeight, 0, Units.degreesToRadians(cameraSubsystem.getTargetPitch())/1.4/*/1.46143445*/);
+            double range = PhotonUtils.calculateDistanceToTargetMeters(cameraHeight, targetHeight, 0, Units.degreesToRadians(cameraSubsystem.getTargetPitch()) );
+            
+            //robotTranslation = new Translation2d(range, range)
+
             System.out.println(range);
             //it LIED dont make it negative >:(
             //forwardSpeed = controller.calculate(range, goalRangeMeters);
@@ -63,3 +70,4 @@ public class MoveToTargetCommand extends CommandBase{
     }
     
 }
+ 

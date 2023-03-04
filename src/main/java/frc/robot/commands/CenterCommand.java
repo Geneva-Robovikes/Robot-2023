@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -26,6 +27,7 @@ public class CenterCommand extends CommandBase{
         if (cameraSubsystem.hasTargets()) {
 
             targetSkew = cameraSubsystem.getTargetSkew();
+            //robotTranslation = new Translation2d(targetSkew, angularVelocity)
 
             //TODO: possibly change from 0? find slightly larger value that still works?
             //leave x as 0, only y and angular need to change over time - x is forward and backward;
