@@ -11,7 +11,7 @@ public class PivotClawSubsystem extends SubsystemBase {
     private WPI_TalonFX pivotMotor;
 
     public PivotClawSubsystem(){
-        pivotMotor = new WPI_TalonFX(8);
+        pivotMotor = new WPI_TalonFX(9);
     }
     public void setPivotMotor(double value){
         pivotMotor.set(ControlMode.PercentOutput, value);

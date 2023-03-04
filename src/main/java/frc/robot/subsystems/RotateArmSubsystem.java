@@ -8,7 +8,7 @@ public class RotateArmSubsystem extends SubsystemBase {
     private WPI_TalonFX rotateArmMotor;
 
     public RotateArmSubsystem() {
-        rotateArmMotor = new WPI_TalonFX(0);
+        rotateArmMotor = new WPI_TalonFX(11);
     }
 
     public void setArmRotationMotor(double speed) {

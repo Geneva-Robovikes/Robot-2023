@@ -8,7 +8,7 @@ public class UpperArmSubsystem extends SubsystemBase{
     WPI_TalonFX upperArmMotor;
 
     public UpperArmSubsystem() {
-        upperArmMotor = new WPI_TalonFX(0);
+        upperArmMotor = new WPI_TalonFX(10);
     }
 
     public void setUpperMotor(double speed) {
