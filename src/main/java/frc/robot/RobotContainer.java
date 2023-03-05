@@ -5,14 +5,14 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Stage1Command;
+import frc.robot.commands.StageOneCommand;
 import frc.robot.commands.AutoDistance;
 import frc.robot.commands.ClawArmPivotCommand;
 import frc.robot.commands.ClawCommand;
 import frc.robot.commands.PivotClawCommand;
 import frc.robot.commands.RotateArmCommand;
 import frc.robot.commands.TeleopCommand;
-import frc.robot.commands.Stage2Command;
+import frc.robot.commands.StageTwoCommand;
 import frc.robot.subsystems.StageOneSubsystem;
 import frc.robot.subsystems.ClawArmPivotSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
