@@ -13,13 +13,13 @@ import frc.robot.commands.PivotClawCommand;
 import frc.robot.commands.RotateArmCommand;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.commands.Stage2Command;
-import frc.robot.subsystems.Stage1Subsystem;
+import frc.robot.subsystems.StageOneSubsystem;
 import frc.robot.subsystems.ClawArmPivotSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PivotClawSubsystem;
 import frc.robot.subsystems.RotateArmSubsystem;
-import frc.robot.subsystems.Stage2Subsystem;
+import frc.robot.subsystems.StageTwoSubsystem;
 
 import java.util.HashMap;
 import com.pathplanner.lib.PathConstraints;

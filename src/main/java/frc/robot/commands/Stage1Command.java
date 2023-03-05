@@ -1,22 +1,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Stage1Subsystem;
+import frc.robot.subsystems.StageOneSubsystem;
 
 public class Stage1Command extends CommandBase {
-    private Stage1Subsystem armExtendSubsystem;
+    private StageOneSubsystem stage1Subsystem;
     private double speed; 
     private boolean isAuto;
 
-    public Stage1Command (Stage1Subsystem subsystem, double speed){
-        armExtendSubsystem = subsystem;
+    public Stage1Command (StageOneSubsystem subsystem, double speed){
+        stage1Subsystem = subsystem;
         this.speed = speed;
         addRequirements(subsystem);
     }
     @Override
     public void initialize() {
         // TODO Auto-generated method stub
-        armExtendSubsystem.setarmExtendMotor(speed);
+        stage1Subsystem.setarmExtendMotor(speed);
     }
     @Override
     public boolean isFinished() {
@@ -26,7 +26,7 @@ public class Stage1Command extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         // TODO Auto-generated method stub
-        armExtendSubsystem.setarmExtendMotor(0);
+        stage1Subsystem.setarmExtendMotor(0);
     }
     
 }
