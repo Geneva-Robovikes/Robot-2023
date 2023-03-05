@@ -15,17 +15,14 @@ private boolean isAuto;
     }
     @Override
     public void initialize() {
-        // TODO Auto-generated method stub
         clawSubsystem.setClawMotor(speed);
     }
     @Override
     public boolean isFinished() {
-        // TODO Auto-generated method stub
         return false;
     }
     @Override
     public void end(boolean interrupted) {
-        // TODO Auto-generated method stub
         clawSubsystem.setClawMotor(0);
     }
 }
