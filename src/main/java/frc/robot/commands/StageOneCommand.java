@@ -3,20 +3,19 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.StageOneSubsystem;
 
-public class Stage1Command extends CommandBase {
-    private StageOneSubsystem stage1Subsystem;
+public class StageOneCommand extends CommandBase {
+    private StageOneSubsystem stageOneSubsystem;
     private double speed; 
-    private boolean isAuto;
 
-    public Stage1Command (StageOneSubsystem subsystem, double speed){
-        stage1Subsystem = subsystem;
+    public StageOneCommand (StageOneSubsystem subsystem, double speed){
+        stageOneSubsystem = subsystem;
         this.speed = speed;
         addRequirements(subsystem);
     }
     @Override
     public void initialize() {
         // TODO Auto-generated method stub
-        stage1Subsystem.setarmExtendMotor(speed);
+        stageOneSubsystem.setarmExtendMotor(speed);
     }
     @Override
     public boolean isFinished() {
@@ -26,7 +25,7 @@ public class Stage1Command extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         // TODO Auto-generated method stub
-        stage1Subsystem.setarmExtendMotor(0);
+        stageOneSubsystem.setarmExtendMotor(0);
     }
     
 }

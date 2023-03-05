@@ -3,12 +3,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.StageTwoSubsystem;
 
-public class Stage2Command extends CommandBase {
+public class StageTwoCommand extends CommandBase {
 
     private StageTwoSubsystem upperArmSubsystem;
     private double speed;
 
-    public Stage2Command(StageTwoSubsystem subsystem, double speed) {
+    public StageTwoCommand(StageTwoSubsystem subsystem, double speed) {
         upperArmSubsystem = subsystem;
         this.speed = speed;
         addRequirements(subsystem);
