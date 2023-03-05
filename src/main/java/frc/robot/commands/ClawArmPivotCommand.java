@@ -20,6 +20,9 @@ public class ClawArmPivotCommand extends CommandBase{
 
     @Override
     public boolean isFinished() {
+        if(clawArmPivotSubsystem.getSwitchState()) {
+            return true;
+        }
         return false;
     }
 
