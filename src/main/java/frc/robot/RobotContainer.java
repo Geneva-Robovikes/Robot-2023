@@ -10,7 +10,6 @@ import frc.robot.commands.AutoDistance;
 import frc.robot.commands.ClawArmPivotCommand;
 import frc.robot.commands.ClawCommand;
 import frc.robot.commands.PivotClawCommand;
-import frc.robot.commands.RotateArmCommand;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.commands.StageTwoCommand;
 import frc.robot.subsystems.StageOneSubsystem;
@@ -18,7 +17,6 @@ import frc.robot.subsystems.ClawArmPivotSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PivotClawSubsystem;
-import frc.robot.subsystems.RotateArmSubsystem;
 import frc.robot.subsystems.StageTwoSubsystem;
 
 import java.util.HashMap;
@@ -46,28 +44,31 @@ public class RobotContainer {
   private final TeleopCommand teleopCommand = new TeleopCommand(driveSubsystem, driverController);
   private final AutoDistance autoDistance = new AutoDistance(driveSubsystem);
 
-  //private final ClawSubsystem clawSubsystem = new ClawSubsystem();
-  //private final ClawCommand outClawCommand = new ClawCommand(clawSubsystem, .7);
-  //private final ClawCommand inClawCommand = new ClawCommand(clawSubsystem, -.7);
 
-  //private final PivotClawSubsystem pivotClawSubsystem = new PivotClawSubsystem();
-  //private final PivotClawCommand pivotDownCommand = new PivotClawCommand(pivotClawSubsystem, .1);
-  //private final PivotClawCommand pivotUpCommand = new PivotClawCommand(pivotClawSubsystem, -.1);
+  /* ~~~ Subsystems ~~~ */
+  private final StageOneSubsystem stageOneSubsystem = new StageOneSubsystem();
+  private final StageTwoSubsystem stageTwoSubsystem = new StageTwoSubsystem();
+  private final ClawArmPivotSubsystem clawArmPivotSubsystem = new ClawArmPivotSubsystem();
+  private final PivotClawSubsystem pivotClawSubsystem = new PivotClawSubsystem();
+  private final ClawSubsystem clawSubsystem = new ClawSubsystem();
 
-  //private final ArmExtendSubsystem armExtendSubsystem = new ArmExtendSubsystem();
-  //private final ArmExtendCommand armExtendCommand = new ArmExtendCommand(armExtendSubsystem, 0);
 
-  //private final UpperArmSubsystem upperArmSubsystem = new UpperArmSubsystem();
-  //private final UpperArmCommand upperArmOutCommand = new UpperArmCommand(upperArmSubsystem, .3);
-  //private final UpperArmCommand upperArmDownCommand = new UpperArmCommand(upperArmSubsystem, -.3);
+  /* ~~~~ Commands ~~~~ */
+  //this is a guess. I do not remember the actual direction for this one.
+  private final StageOneCommand stageOneUpCommand = new StageOneCommand(stageOneSubsystem, .1);
+  private final StageOneCommand stageOneDownCommand = new StageOneCommand(stageOneSubsystem, -.1);
 
-  //private final RotateArmSubsystem rotateArmSubsystem = new RotateArmSubsystem();
-  //private final RotateArmCommand armForwardCommand = new RotateArmCommand(rotateArmSubsystem, .3);
-  //private final RotateArmCommand armBackwardCommand = new RotateArmCommand(rotateArmSubsystem, -.3);
+  private final StageTwoCommand stageTwoUpCommand = new StageTwoCommand(stageTwoSubsystem, 0);
+  private final StageTwoCommand stageTwoDownCommand = new StageTwoCommand(stageTwoSubsystem, 0);
 
-  //private final ClawArmPivotSubsystem clawArmPivotSubsystem = new ClawArmPivotSubsystem();
-  //private final ClawArmPivotCommand pivotClawArmForward = new ClawArmPivotCommand(clawArmPivotSubsystem, .1);
-  //private final ClawArmPivotCommand pivotClawArmBack = new ClawArmPivotCommand(clawArmPivotSubsystem, -.1);
+  private final ClawArmPivotCommand clawArmUpCommand = new ClawArmPivotCommand(clawArmPivotSubsystem, -.1);
+  private final ClawArmPivotCommand clawArmDownCommand = new ClawArmPivotCommand(clawArmPivotSubsystem, .1);
+
+  private final PivotClawCommand clawUpCommand = new PivotClawCommand(pivotClawSubsystem, -.1);
+  private final PivotClawCommand clawDownCommand = new PivotClawCommand(pivotClawSubsystem, .1);
+
+  private final ClawCommand clawInCommand = new ClawCommand(clawSubsystem, .1);
+  private final ClawCommand clawOutCommand = new ClawCommand(clawSubsystem, -.1);
 
   SendableChooser<String> autoChooser = new SendableChooser<>(); 
 
@@ -97,8 +98,8 @@ public class RobotContainer {
 
   //green larson
   private void configureBindings() {
-    //driverController.x().whileTrue(pivotClawArmForward);
-    //driverController.b().whileTrue(pivotClawArmBack);
+    driverController.x().whileTrue(stageOneUpCommand);
+    driverController.b().whileTrue(stageOneDownCommand);
     //driverController.
   }
 
