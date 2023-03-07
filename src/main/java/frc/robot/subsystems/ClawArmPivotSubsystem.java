@@ -8,20 +8,29 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClawArmPivotSubsystem extends SubsystemBase {
     private WPI_TalonFX upperArmClawPivotMotorAAAA;
-    DigitalInput clawArmLimitSwitch;
+    DigitalInput clawArmLimitSwitch1;
+    DigitalInput clawArmLimitSwitch2;
     
     public ClawArmPivotSubsystem(){
         //TODO: set to real input
-        clawArmLimitSwitch = new DigitalInput(0);
+        //green larson
+        clawArmLimitSwitch1 = new DigitalInput(0);
+        clawArmLimitSwitch2 = new DigitalInput(1);
         upperArmClawPivotMotorAAAA = new WPI_TalonFX(12);
         upperArmClawPivotMotorAAAA.setNeutralMode(NeutralMode.Brake);
     }
 
-    public void turnArmMotor(double speed) {
+    public void setArmMotor(double speed) {
         upperArmClawPivotMotorAAAA.set(speed);
     }
 
-    public boolean getSwitchState() {
-        return clawArmLimitSwitch.get();
+    public double getArmPosition() {
+        return upperArmClawPivotMotorAAAA.getSelectedSensorPosition();
     }
+
+    public boolean getSwitchState() {
+        return (clawArmLimitSwitch1.get()||clawArmLimitSwitch2.get());
+        
+    }
+
 }

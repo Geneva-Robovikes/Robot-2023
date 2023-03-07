@@ -1,0 +1,8 @@
+{
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Path Chooser": "String Chooser"
+    }
+  }
+}

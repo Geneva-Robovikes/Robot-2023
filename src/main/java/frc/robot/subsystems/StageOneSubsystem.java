@@ -2,19 +2,30 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class StageOneSubsystem extends SubsystemBase { 
     private WPI_TalonFX armExtendMotor;
+    //green larson
+    DigitalInput stageOneLimitSwitchBottom;
+    DigitalInput stageOneLimitSwitchTop;
+
     public StageOneSubsystem () {
         //TODO: fix all of these they're weird. this one is actually incorrect.
+        stageOneLimitSwitchBottom = new DigitalInput(4);
+        stageOneLimitSwitchTop = new DigitalInput(5);
         armExtendMotor = new WPI_TalonFX(13);
         armExtendMotor.setNeutralMode(NeutralMode.Brake);
     }
     public void setarmExtendMotor(double value){
         armExtendMotor.set(ControlMode.PercentOutput, value);
+    }
+// green larson
+// green larson
+    public boolean getSwitchState() {
+        return (stageOneLimitSwitchBottom.get()||stageOneLimitSwitchTop.get());
     }
 }

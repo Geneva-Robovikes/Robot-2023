@@ -7,7 +7,7 @@ public class ClawCommand extends CommandBase  {
 
 private ClawSubsystem clawSubsystem;
 private double speed;
-private boolean isAuto;
+//private boolean isAuto;
     public ClawCommand(ClawSubsystem subsystem, double speed){
         clawSubsystem = subsystem;
         this.speed = speed;
@@ -17,6 +17,8 @@ private boolean isAuto;
     public void initialize() {
         clawSubsystem.setClawMotor(speed);
     }
+    //green larson
+    //green larson
     @Override
     public boolean isFinished() {
         return false;

@@ -9,6 +9,7 @@ import frc.robot.commands.StageOneCommand;
 import frc.robot.commands.AutoDistance;
 import frc.robot.commands.ClawArmPivotCommand;
 import frc.robot.commands.ClawCommand;
+import frc.robot.commands.FullArmCommand;
 import frc.robot.commands.PivotClawCommand;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.commands.StageTwoCommand;
@@ -30,6 +31,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
+//green larson
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -38,6 +40,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
  */
 public class RobotContainer {
   private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  //private final CommandXboxController controlController = new CommandXboxController(OperatorConstants.kControlControllerPort);
 
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
@@ -48,27 +51,32 @@ public class RobotContainer {
   /* ~~~ Subsystems ~~~ */
   private final StageOneSubsystem stageOneSubsystem = new StageOneSubsystem();
   private final StageTwoSubsystem stageTwoSubsystem = new StageTwoSubsystem();
-  private final ClawArmPivotSubsystem clawArmPivotSubsystem = new ClawArmPivotSubsystem();
-  private final PivotClawSubsystem pivotClawSubsystem = new PivotClawSubsystem();
-  private final ClawSubsystem clawSubsystem = new ClawSubsystem();
+  //private final ClawArmPivotSubsystem clawArmPivotSubsystem = new ClawArmPivotSubsystem();
+  //private final PivotClawSubsystem pivotClawSubsystem = new PivotClawSubsystem();
+  //private final ClawSubsystem clawSubsystem = new ClawSubsystem();
 
 
   /* ~~~~ Commands ~~~~ */
   //this is a guess. I do not remember the actual direction for this one.
-  private final StageOneCommand stageOneUpCommand = new StageOneCommand(stageOneSubsystem, .1);
-  private final StageOneCommand stageOneDownCommand = new StageOneCommand(stageOneSubsystem, -.1);
+  //private final StageOneCommand stageOneUpCommand = new StageOneCommand(stageOneSubsystem, -.1);
+  //private final StageOneCommand stageOneDownCommand = new StageOneCommand(stageOneSubsystem, .1);
 
-  private final StageTwoCommand stageTwoUpCommand = new StageTwoCommand(stageTwoSubsystem, 0);
-  private final StageTwoCommand stageTwoDownCommand = new StageTwoCommand(stageTwoSubsystem, 0);
+  //private final StageTwoCommand stageTwoUpCommand = new StageTwoCommand(stageTwoSubsystem, .1);
+  //private final StageTwoCommand stageTwoDownCommand = new StageTwoCommand(stageTwoSubsystem, -.1);
 
-  private final ClawArmPivotCommand clawArmUpCommand = new ClawArmPivotCommand(clawArmPivotSubsystem, -.1);
-  private final ClawArmPivotCommand clawArmDownCommand = new ClawArmPivotCommand(clawArmPivotSubsystem, .1);
+  /*
+  private final ClawArmPivotCommand clawArmUpCommand = new ClawArmPivotCommand(clawArmPivotSubsystem, .2);
+  private final ClawArmPivotCommand clawArmDownCommand = new ClawArmPivotCommand(clawArmPivotSubsystem, -.2);
 
   private final PivotClawCommand clawUpCommand = new PivotClawCommand(pivotClawSubsystem, -.1);
   private final PivotClawCommand clawDownCommand = new PivotClawCommand(pivotClawSubsystem, .1);
 
-  private final ClawCommand clawInCommand = new ClawCommand(clawSubsystem, .1);
-  private final ClawCommand clawOutCommand = new ClawCommand(clawSubsystem, -.1);
+  private final ClawCommand clawInCommand = new ClawCommand(clawSubsystem, .25732);
+  private final ClawCommand clawOutCommand = new ClawCommand(clawSubsystem, -.25732);
+  */
+
+  private final FullArmCommand fullArmUpCommand = new FullArmCommand(stageOneSubsystem, stageTwoSubsystem, -.25, .25);
+  private final FullArmCommand fullArmDownCommand = new FullArmCommand(stageOneSubsystem, stageTwoSubsystem, .25, -.25);
 
   SendableChooser<String> autoChooser = new SendableChooser<>(); 
 
@@ -97,10 +105,16 @@ public class RobotContainer {
   }
 
   //green larson
+  //TODO: finalize button bindings
   private void configureBindings() {
-    driverController.x().whileTrue(stageOneUpCommand);
-    driverController.b().whileTrue(stageOneDownCommand);
-    //driverController.
+    /*controlController.x().whileTrue(fullArmUpCommand);
+    controlController.b().whileTrue(fullArmDownCommand);
+    controlController.rightBumper().whileTrue(clawArmUpCommand);
+    controlController.leftBumper().whileTrue(clawArmDownCommand);
+    driverController.start().whileTrue(clawOutCommand);
+    controlController.back().whileTrue(clawInCommand);
+    controlController.pov(0).whileTrue(clawUpCommand);
+    controlController.pov(180).whileTrue(clawDownCommand);*/
   }
 
   public Command getTeleopCommand() {
@@ -165,3 +179,4 @@ public class RobotContainer {
     */
   }
 }
+//green larson

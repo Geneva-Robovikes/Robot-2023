@@ -28,9 +28,9 @@ public class TeleopCommand extends CommandBase {
 
   @Override
   public void execute() {
-    double x1 = -Math.signum(controller.getLeftX()) * Math.pow(controller.getLeftX(), 2);
-    double y1 = -Math.signum(controller.getLeftY()) * Math.pow(controller.getLeftY(), 2);
-    double x2 = -Math.signum(controller.getRightX()) * Math.pow(controller.getRightX(), 2);
+    double x1 = Math.signum(controller.getLeftX()) * Math.pow(controller.getLeftX(), 2);
+    double y1 = Math.signum(controller.getLeftY()) * Math.pow(controller.getLeftY(), 2);
+    double x2 = Math.signum(controller.getRightX()) * Math.pow(controller.getRightX(), 2);
     double rightTrigger = controller.getRightTriggerAxis();
 
     if(rightTrigger > 0.5) {

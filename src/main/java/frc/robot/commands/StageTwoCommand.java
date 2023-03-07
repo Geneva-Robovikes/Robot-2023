@@ -5,28 +5,34 @@ import frc.robot.subsystems.StageTwoSubsystem;
 
 public class StageTwoCommand extends CommandBase {
 
-    private StageTwoSubsystem upperArmSubsystem;
+    private StageTwoSubsystem stageTwoSubsystem;
     private double speed;
 
     public StageTwoCommand(StageTwoSubsystem subsystem, double speed) {
-        upperArmSubsystem = subsystem;
+        stageTwoSubsystem = subsystem;
         this.speed = speed;
         addRequirements(subsystem);
     } 
 
     @Override
     public void initialize() {
-        upperArmSubsystem.setUpperMotor(speed);
+        stageTwoSubsystem.setUpperMotor(speed);
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        /*if (stageTwoSubsystem.getSwitchState()){
+            return true;
+        } else {*/
+        
+            return false;
+        //}
     }
+    //green larson
 
     @Override
     public void end(boolean interrupted) {
-        upperArmSubsystem.setUpperMotor(0);
+        stageTwoSubsystem.setUpperMotor(0);
     }
-    
+    //green larson
 }

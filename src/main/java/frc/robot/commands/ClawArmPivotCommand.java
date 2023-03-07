@@ -15,22 +15,21 @@ public class ClawArmPivotCommand extends CommandBase{
 
     @Override
     public void initialize() {
-        clawArmPivotSubsystem.turnArmMotor(speed);
+        clawArmPivotSubsystem.setArmMotor(speed);
     }
 
     @Override
     public boolean isFinished() {
-        if(clawArmPivotSubsystem.getSwitchState()) {
-            System.out.println("here");
+        /*if(clawArmPivotSubsystem.getSwitchState()) {
             return true;
-        } else {
+        } else { */
             return false;
-        }
+        //}
     }
 
     @Override
     public void end(boolean interrupted) {
-        clawArmPivotSubsystem.turnArmMotor(0);
+        clawArmPivotSubsystem.setArmMotor(0);
     }
 
 }
