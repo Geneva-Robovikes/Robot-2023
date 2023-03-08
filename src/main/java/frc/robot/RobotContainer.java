@@ -9,7 +9,6 @@ import frc.robot.commands.StageOneCommand;
 import frc.robot.commands.AutoDistance;
 import frc.robot.commands.ClawArmPivotCommand;
 import frc.robot.commands.ClawCommand;
-import frc.robot.commands.FullArmCommand;
 import frc.robot.commands.PivotClawCommand;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.commands.StageTwoCommand;
