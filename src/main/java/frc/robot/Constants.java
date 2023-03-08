@@ -23,6 +23,8 @@ public final class Constants {
   public static final double swerveWheelDiameter = 0.09677;
   public static final double swerveDriveGearRatio = 6.75;
   public static final double swerveTurnGearRatio = 150.0 / 7.0;
+  public static final double clawAngleGearRatio = 48.0;
+  public static final double armAngleGearRatio = 48.0 * (18 / 10) * (26 / 18);
   public static final double moduleMaxAngularVelocity = Math.PI;
   public static final double moduleMaxAngularAcceleration = 2 * Math.PI;
 }

@@ -111,10 +111,10 @@ public class RobotContainer {
     controlController.b().whileTrue(new ParallelCommandGroup(stageOneDownCommand, stageTwoDownCommand));
     controlController.rightBumper().whileTrue(clawArmUpCommand);
     controlController.leftBumper().whileTrue(clawArmDownCommand);
-    //driverController.start().whileTrue(clawOutCommand);
-    //controlController.back().whileTrue(clawInCommand);
-    //controlController.pov(0).whileTrue(clawUpCommand);
-    //controlController.pov(180).whileTrue(clawDownCommand);
+    controlController.start().whileTrue(clawOutCommand);
+    controlController.back().whileTrue(clawInCommand);
+    controlController.pov(0).whileTrue(clawUpCommand);
+    controlController.pov(180).whileTrue(clawDownCommand);
   }
 
   public Command getTeleopCommand() {

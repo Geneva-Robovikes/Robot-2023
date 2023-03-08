@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class ClawArmPivotSubsystem extends SubsystemBase {
     private WPI_TalonFX upperArmClawPivotMotorAAAA;
@@ -28,12 +29,6 @@ public class ClawArmPivotSubsystem extends SubsystemBase {
         upperArmClawPivotMotorAAAA.set(speed);
     }
 
-    /*public void putstuff() {
-        SmartDashboard.putData("1", clawArmLimitSwitchDown);
-        SmartDashboard.putData("2", clawArmLimitSwitchUp);
-
-    }*/
-
     public double getArmPosition() {
         return upperArmClawPivotMotorAAAA.getSelectedSensorPosition();
     }
@@ -50,4 +45,7 @@ public class ClawArmPivotSubsystem extends SubsystemBase {
         return clawArmLimitSwitchDown.get()|| clawArmLimitSwitchUp.get();
     }
 
+    public double getArmAngle() {
+        return upperArmClawPivotMotorAAAA.getSelectedSensorPosition() / Constants.falconEncoderResolution / Constants.clawAngleGearRatio * (2 * Math.PI);
+    }
 }

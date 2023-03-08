@@ -18,7 +18,6 @@ public class PivotClawCommand extends CommandBase {
         pivotClawSubsystem.setPivotMotor(speed);
     }
     
-    //green larson
     @Override
     public boolean isFinished() {
         if (pivotClawSubsystem.getSwitchState()){

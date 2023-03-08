@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 
 public class PivotClawSubsystem extends SubsystemBase {
@@ -20,10 +21,16 @@ public class PivotClawSubsystem extends SubsystemBase {
         pivotMotor = new WPI_TalonFX(9);
         pivotMotor.setNeutralMode(NeutralMode.Brake);
     }
+
     public void setPivotMotor(double speed){
         pivotMotor.set(ControlMode.PercentOutput, speed);
     }
+
     public boolean getSwitchState() {
-        return (pivotClawSubsystemLimitSwitch1.get()||pivotClawsubsystemLimitSwitch2.get());
+        return (pivotClawSubsystemLimitSwitch1.get() || pivotClawsubsystemLimitSwitch2.get());
+    }
+
+    public double getClawAngle() {
+        return pivotMotor.getSelectedSensorPosition() / Constants.falconEncoderResolution / Constants.clawAngleGearRatio * (2 * Math.PI);
     }
 }
