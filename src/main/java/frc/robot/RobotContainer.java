@@ -29,6 +29,7 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 //green larson
@@ -40,7 +41,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
  */
 public class RobotContainer {
   private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
-  //private final CommandXboxController controlController = new CommandXboxController(OperatorConstants.kControlControllerPort);
+  private final CommandXboxController controlController = new CommandXboxController(OperatorConstants.kControlControllerPort);
 
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
@@ -51,37 +52,39 @@ public class RobotContainer {
   /* ~~~ Subsystems ~~~ */
   private final StageOneSubsystem stageOneSubsystem = new StageOneSubsystem();
   private final StageTwoSubsystem stageTwoSubsystem = new StageTwoSubsystem();
-  //private final ClawArmPivotSubsystem clawArmPivotSubsystem = new ClawArmPivotSubsystem();
-  //private final PivotClawSubsystem pivotClawSubsystem = new PivotClawSubsystem();
-  //private final ClawSubsystem clawSubsystem = new ClawSubsystem();
+  public final ClawArmPivotSubsystem clawArmPivotSubsystem = new ClawArmPivotSubsystem();
+  private final PivotClawSubsystem pivotClawSubsystem = new PivotClawSubsystem();
+  private final ClawSubsystem clawSubsystem = new ClawSubsystem();
 
 
   /* ~~~~ Commands ~~~~ */
   //this is a guess. I do not remember the actual direction for this one.
-  //private final StageOneCommand stageOneUpCommand = new StageOneCommand(stageOneSubsystem, -.1);
-  //private final StageOneCommand stageOneDownCommand = new StageOneCommand(stageOneSubsystem, .1);
+  private final StageOneCommand stageOneUpCommand = new StageOneCommand(stageOneSubsystem, -.25732, true);
+  private final StageOneCommand stageOneDownCommand = new StageOneCommand(stageOneSubsystem, .25732, false);
 
-  //private final StageTwoCommand stageTwoUpCommand = new StageTwoCommand(stageTwoSubsystem, .1);
-  //private final StageTwoCommand stageTwoDownCommand = new StageTwoCommand(stageTwoSubsystem, -.1);
+  private final StageTwoCommand stageTwoUpCommand = new StageTwoCommand(stageTwoSubsystem, .25732, true);
+  private final StageTwoCommand stageTwoDownCommand = new StageTwoCommand(stageTwoSubsystem, -.25732, false);
 
-  /*
-  private final ClawArmPivotCommand clawArmUpCommand = new ClawArmPivotCommand(clawArmPivotSubsystem, .2);
-  private final ClawArmPivotCommand clawArmDownCommand = new ClawArmPivotCommand(clawArmPivotSubsystem, -.2);
+  
+  private final ClawArmPivotCommand clawArmUpCommand = new ClawArmPivotCommand(clawArmPivotSubsystem, .2, true);
+  private final ClawArmPivotCommand clawArmDownCommand = new ClawArmPivotCommand(clawArmPivotSubsystem, -.2, false);
 
   private final PivotClawCommand clawUpCommand = new PivotClawCommand(pivotClawSubsystem, -.1);
   private final PivotClawCommand clawDownCommand = new PivotClawCommand(pivotClawSubsystem, .1);
 
   private final ClawCommand clawInCommand = new ClawCommand(clawSubsystem, .25732);
   private final ClawCommand clawOutCommand = new ClawCommand(clawSubsystem, -.25732);
-  */
+  
 
-  private final FullArmCommand fullArmUpCommand = new FullArmCommand(stageOneSubsystem, stageTwoSubsystem, -.25, .25);
-  private final FullArmCommand fullArmDownCommand = new FullArmCommand(stageOneSubsystem, stageTwoSubsystem, .25, -.25);
+  //private final FullArmCommand fullArmUpCommand = new FullArmCommand(stageOneSubsystem, stageTwoSubsystem, -.25, .25);
+  //private final FullArmCommand fullArmDownCommand = new FullArmCommand(stageOneSubsystem, stageTwoSubsystem, .25, -.25);
 
   SendableChooser<String> autoChooser = new SendableChooser<>(); 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    //SmartDashboard.put (clawArmPivotSubsystem.getSwitchState());
     
     // Add new path to this chooser to select them from shuffleboard.
     autoChooser.setDefaultOption("Outtake 1", "Outtake 1");
@@ -98,23 +101,20 @@ public class RobotContainer {
     autoChooser.addOption("Long Path", "The Long Path");
     SmartDashboard.putData("Path Chooser", autoChooser);
     
-    //green larson
-    //green larson
     // Configure the trigger bindings
     configureBindings();
   }
 
-  //green larson
   //TODO: finalize button bindings
   private void configureBindings() {
-    /*controlController.x().whileTrue(fullArmUpCommand);
-    controlController.b().whileTrue(fullArmDownCommand);
+    controlController.x().whileTrue(new ParallelCommandGroup(stageOneUpCommand, stageTwoUpCommand));
+    controlController.b().whileTrue(new ParallelCommandGroup(stageOneDownCommand, stageTwoDownCommand));
     controlController.rightBumper().whileTrue(clawArmUpCommand);
     controlController.leftBumper().whileTrue(clawArmDownCommand);
-    driverController.start().whileTrue(clawOutCommand);
-    controlController.back().whileTrue(clawInCommand);
-    controlController.pov(0).whileTrue(clawUpCommand);
-    controlController.pov(180).whileTrue(clawDownCommand);*/
+    //driverController.start().whileTrue(clawOutCommand);
+    //controlController.back().whileTrue(clawInCommand);
+    //controlController.pov(0).whileTrue(clawUpCommand);
+    //controlController.pov(180).whileTrue(clawDownCommand);
   }
 
   public Command getTeleopCommand() {
@@ -139,16 +139,10 @@ public class RobotContainer {
         driveSubsystem::getPose, // Pose2d supplier
         driveSubsystem::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
         driveSubsystem.kinematics, // SwerveDriveKinematics
-
-        //originally 6, 0, 0
-        //tried 4.5, 0, .007
-        //green larson
         //new PIDConstants(5.7, .003, 0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
         //change this next line only
         //p up, i down, d up i guess
         new PIDConstants(6.5, 0.000, .07),
-        //d was originally .004 for turn, check that?
-        // IGNORE BELOW
         new PIDConstants(2.55, .01374, .008), // PID constants to correct for rotation error (used to create the rotation controller)
         driveSubsystem::setModuleStates, // Module states consumer used to output to the drive subsystem
         eventMap,

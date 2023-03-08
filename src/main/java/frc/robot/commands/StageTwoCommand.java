@@ -4,13 +4,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.StageTwoSubsystem;
 
 public class StageTwoCommand extends CommandBase {
-
     private StageTwoSubsystem stageTwoSubsystem;
     private double speed;
+    private boolean goingUp;
 
-    public StageTwoCommand(StageTwoSubsystem subsystem, double speed) {
+    public StageTwoCommand(StageTwoSubsystem subsystem, double speed, boolean goingUp) {
         stageTwoSubsystem = subsystem;
         this.speed = speed;
+        this.goingUp = goingUp;
         addRequirements(subsystem);
     } 
 
@@ -21,18 +22,14 @@ public class StageTwoCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        /*if (stageTwoSubsystem.getSwitchState()){
-            return true;
-        } else {*/
-        
-            return false;
-        //}
+        if(goingUp) {
+            return stageTwoSubsystem.getTopState();
+        }
+        return stageTwoSubsystem.getBottomState();
     }
-    //green larson
 
     @Override
     public void end(boolean interrupted) {
         stageTwoSubsystem.setUpperMotor(0);
     }
-    //green larson
 }

@@ -12,8 +12,8 @@ public class StageTwoSubsystem extends SubsystemBase{
     DigitalInput stageTwoLimitSwitchTop;
 
     public StageTwoSubsystem() {
-        stageTwoLimitSwitchBottom = new DigitalInput(6);
-        stageTwoLimitSwitchTop = new DigitalInput(7);
+        stageTwoLimitSwitchBottom = new DigitalInput(7);
+        stageTwoLimitSwitchTop = new DigitalInput(6);
         upperArmMotor = new WPI_TalonFX(10);
         upperArmMotor.setNeutralMode(NeutralMode.Brake);
     }
@@ -21,10 +21,16 @@ public class StageTwoSubsystem extends SubsystemBase{
     public void setUpperMotor(double speed) {
         upperArmMotor.set(speed);
     }
+
+    public boolean getTopState() {
+        return stageTwoLimitSwitchTop.get();
+    }
+
+    public boolean getBottomState() {
+        return stageTwoLimitSwitchBottom.get();
+    }
+
     public boolean getSwitchState() {
         return (stageTwoLimitSwitchBottom.get()||stageTwoLimitSwitchTop.get());
     }
 }
-
-//green larson//green larson
-//green larson

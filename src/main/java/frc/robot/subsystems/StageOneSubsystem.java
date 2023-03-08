@@ -23,8 +23,15 @@ public class StageOneSubsystem extends SubsystemBase {
     public void setarmExtendMotor(double value){
         armExtendMotor.set(ControlMode.PercentOutput, value);
     }
-// green larson
-// green larson
+
+    public boolean getTopState() {
+        return stageOneLimitSwitchTop.get();
+    }
+
+    public boolean getBottomState() {
+        return stageOneLimitSwitchBottom.get();
+    }
+
     public boolean getSwitchState() {
         return (stageOneLimitSwitchBottom.get()||stageOneLimitSwitchTop.get());
     }

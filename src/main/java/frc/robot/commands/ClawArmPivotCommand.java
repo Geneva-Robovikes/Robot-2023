@@ -6,11 +6,13 @@ import frc.robot.subsystems.ClawArmPivotSubsystem;
 public class ClawArmPivotCommand extends CommandBase{
     private ClawArmPivotSubsystem clawArmPivotSubsystem;
     private double speed;
+    boolean goingUp;
     
-    public ClawArmPivotCommand(ClawArmPivotSubsystem subsystem, double speed) {
+    public ClawArmPivotCommand(ClawArmPivotSubsystem subsystem, double speed, boolean goingUp) {
 
         clawArmPivotSubsystem = subsystem;
         this.speed = speed;
+        this.goingUp = goingUp;
     }
 
     @Override
@@ -20,11 +22,10 @@ public class ClawArmPivotCommand extends CommandBase{
 
     @Override
     public boolean isFinished() {
-        /*if(clawArmPivotSubsystem.getSwitchState()) {
-            return true;
-        } else { */
-            return false;
-        //}
+        if(goingUp) {
+            return clawArmPivotSubsystem.getUpSwitch();
+        }
+        return clawArmPivotSubsystem.getDownSwitch();
     }
 
     @Override
