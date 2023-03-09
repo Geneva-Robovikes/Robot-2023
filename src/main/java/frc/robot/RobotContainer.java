@@ -10,6 +10,7 @@ import frc.robot.commands.StageOneDistanceCommand;
 import frc.robot.commands.AutoDistance;
 import frc.robot.commands.ClawArmPivotCommand;
 import frc.robot.commands.ClawCommand;
+import frc.robot.commands.JoystickControlCommand;
 import frc.robot.commands.PivotClawCommand;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.commands.StageTwoCommand;
@@ -45,12 +46,10 @@ public class RobotContainer {
   private final CommandXboxController controlController = new CommandXboxController(OperatorConstants.kControlControllerPort);
 
   // The robot's subsystems and commands are defined here...
-  private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  private final TeleopCommand teleopCommand = new TeleopCommand(driveSubsystem, driverController);
-  private final AutoDistance autoDistance = new AutoDistance(driveSubsystem);
-
-
+  
+  
   /* ~~~ Subsystems ~~~ */
+  private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final StageOneSubsystem stageOneSubsystem = new StageOneSubsystem();
   private final StageTwoSubsystem stageTwoSubsystem = new StageTwoSubsystem();
   public final ClawArmPivotSubsystem clawArmPivotSubsystem = new ClawArmPivotSubsystem();
@@ -59,23 +58,17 @@ public class RobotContainer {
 
 
   /* ~~~~ Commands ~~~~ */
+  private final AutoDistance autoDistance = new AutoDistance(driveSubsystem);
+
   //this is a guess. I do not remember the actual direction for this one.
-  private final StageOneCommand stageOneUpCommand = new StageOneCommand(stageOneSubsystem, -.25732, true);
-  private final StageOneCommand stageOneDownCommand = new StageOneCommand(stageOneSubsystem, .25732, false);
+  private final StageOneCommand stageOneUpCommand = new StageOneCommand(stageOneSubsystem, -.5, true);
+  private final StageOneCommand stageOneDownCommand = new StageOneCommand(stageOneSubsystem, .5, false);
 
-  private final StageTwoCommand stageTwoUpCommand = new StageTwoCommand(stageTwoSubsystem, .25732, true);
-  private final StageTwoCommand stageTwoDownCommand = new StageTwoCommand(stageTwoSubsystem, -.25732, false);
-  private final StageTwoDistanceCommand stageTwoDistanceCommand = new StageTwoDistanceCommand(stageTwoSubsystem, .25732, 2048);
+  private final StageTwoCommand stageTwoUpCommand = new StageTwoCommand(stageTwoSubsystem, .5, true);
+  private final StageTwoCommand stageTwoDownCommand = new StageTwoCommand(stageTwoSubsystem, -.5, false);
   
-  private final ClawArmPivotCommand clawArmUpCommand = new ClawArmPivotCommand(clawArmPivotSubsystem, .2, true);
-  private final ClawArmPivotCommand clawArmDownCommand = new ClawArmPivotCommand(clawArmPivotSubsystem, -.2, false);
-
-  private final PivotClawCommand clawUpCommand = new PivotClawCommand(pivotClawSubsystem, -.1, true);
-  private final PivotClawCommand clawDownCommand = new PivotClawCommand(pivotClawSubsystem, .1, false);
-
-  private final ClawCommand clawInCommand = new ClawCommand(clawSubsystem, .25732);
-  private final ClawCommand clawOutCommand = new ClawCommand(clawSubsystem, -.25732);
-  
+  private final ClawCommand clawInCommand = new ClawCommand(clawSubsystem, .5);
+  private final ClawCommand clawOutCommand = new ClawCommand(clawSubsystem, -.5);
 
   //private final FullArmCommand fullArmUpCommand = new FullArmCommand(stageOneSubsystem, stageTwoSubsystem, -.25, .25);
   //private final FullArmCommand fullArmDownCommand = new FullArmCommand(stageOneSubsystem, stageTwoSubsystem, .25, -.25);
@@ -110,28 +103,27 @@ public class RobotContainer {
   private void configureBindings() {
     controlController.a().onTrue(new ParallelCommandGroup(
       new StageTwoDistanceCommand(stageTwoSubsystem, .25732, 20000),
-      new StageOneDistanceCommand(stageOneSubsystem, -.25732, 20000),
-      new ClawArmPivotCommand(clawArmPivotSubsystem, -0.3, false),
+      new StageOneDistanceCommand(stageOneSubsystem, -.25732, 30000),
+      new ClawArmPivotCommand(clawArmPivotSubsystem, -0.32, false),
       new PivotClawCommand(pivotClawSubsystem, -0.1, true)
     ));
     controlController.b().onTrue(new ParallelCommandGroup(
       new StageOneCommand(stageOneSubsystem, 0.25732, false),
       new StageTwoCommand(stageTwoSubsystem, -0.25732, false),
-      new ClawArmPivotCommand(clawArmPivotSubsystem, 0.3, true),
+      new ClawArmPivotCommand(clawArmPivotSubsystem, 0.32, true),
       new PivotClawCommand(pivotClawSubsystem, 0.1, false)
     ));
-    controlController.x().whileTrue(new ParallelCommandGroup(stageOneUpCommand, stageTwoUpCommand));
-    controlController.y().whileTrue(new ParallelCommandGroup(stageOneDownCommand, stageTwoDownCommand));
-    controlController.rightBumper().whileTrue(clawArmUpCommand);
-    controlController.leftBumper().whileTrue(clawArmDownCommand);
-    controlController.start().whileTrue(clawOutCommand);
-    controlController.back().whileTrue(clawInCommand);
-    controlController.pov(0).whileTrue(clawUpCommand);
-    controlController.pov(180).whileTrue(clawDownCommand);
+    controlController.rightBumper().whileTrue(new ParallelCommandGroup(stageOneUpCommand, stageTwoUpCommand));
+    controlController.leftBumper().whileTrue(new ParallelCommandGroup(stageOneDownCommand, stageTwoDownCommand));
+    controlController.rightTrigger().whileTrue(clawOutCommand);
+    controlController.leftTrigger().whileTrue(clawInCommand);
   }
 
   public Command getTeleopCommand() {
-    return teleopCommand;
+    return new ParallelCommandGroup(
+      new TeleopCommand(driveSubsystem, driverController),
+      new JoystickControlCommand(controlController, pivotClawSubsystem, clawArmPivotSubsystem, 0.4, 0.2)
+    );
   }
 
   public Command distanceTest() {

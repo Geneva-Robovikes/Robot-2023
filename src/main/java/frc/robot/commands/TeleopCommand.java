@@ -20,10 +20,15 @@ public class TeleopCommand extends CommandBase {
   private final double maxSpeedTheta = Math.PI;
   boolean isFieldCentric = true;
 
-  public TeleopCommand(DriveSubsystem driveSubsystem, CommandXboxController driveController, CommandXboxController controlController) {
+  public TeleopCommand(DriveSubsystem driveSubsystem, CommandXboxController driveController) {
     this.driveSubsystem = driveSubsystem;
     this.driveController = driveController;
     addRequirements(driveSubsystem);
+  }
+
+  @Override
+  public void initialize() {
+    driveSubsystem.resetDriveEncoders();
   }
 
   @Override

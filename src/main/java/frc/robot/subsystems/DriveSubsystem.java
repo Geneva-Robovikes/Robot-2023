@@ -152,6 +152,13 @@ public class DriveSubsystem extends SubsystemBase {
     gyro.reset();
   }
 
+  public void resetDriveEncoders() {
+    frontLeftModule.resetModule();
+    frontRightModule.resetModule();
+    backLeftModule.resetModule();
+    backRightModule.resetModule();
+  }
+
   public void resetOdometry(Pose2d pose) {
     System.out.println(pose + "first print");
 

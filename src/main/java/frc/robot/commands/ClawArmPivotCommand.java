@@ -9,7 +9,6 @@ public class ClawArmPivotCommand extends CommandBase{
     boolean goingUp;
     
     public ClawArmPivotCommand(ClawArmPivotSubsystem subsystem, double speed, boolean goingUp) {
-
         clawArmPivotSubsystem = subsystem;
         this.speed = speed;
         this.goingUp = goingUp;
@@ -17,6 +16,12 @@ public class ClawArmPivotCommand extends CommandBase{
 
     @Override
     public void initialize() {
+        clawArmPivotSubsystem.setControl(false);
+        clawArmPivotSubsystem.setArmMotor(speed);
+    }
+
+    @Override
+    public void execute() {
         clawArmPivotSubsystem.setArmMotor(speed);
     }
 
@@ -31,6 +36,7 @@ public class ClawArmPivotCommand extends CommandBase{
     @Override
     public void end(boolean interrupted) {
         clawArmPivotSubsystem.setArmMotor(0);
+        clawArmPivotSubsystem.setControl(true);
     }
 
 }

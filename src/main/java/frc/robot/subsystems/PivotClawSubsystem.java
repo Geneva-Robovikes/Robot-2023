@@ -14,6 +14,15 @@ public class PivotClawSubsystem extends SubsystemBase {
 
     DigitalInput pivotClawSubsystemLimitSwitch1;
     DigitalInput pivotClawSubsystemLimitSwitch2;
+    private boolean canControl = true;
+
+    public boolean getControl() {
+        return canControl;
+    }
+
+    public void setControl(boolean canControl) {
+        this.canControl = canControl;
+    }
 
     public PivotClawSubsystem(){
         pivotClawSubsystemLimitSwitch1 = new DigitalInput(2);

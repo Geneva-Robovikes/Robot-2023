@@ -12,10 +12,16 @@ public class PivotClawCommand extends CommandBase {
         pivotClawSubsystem = subsystem;
         this.speed = speed;
         this.goingUp = goingUp;
-        addRequirements(subsystem);
     }
+
     @Override
     public void initialize() {
+        pivotClawSubsystem.setControl(false);
+        pivotClawSubsystem.setPivotMotor(speed);
+    }
+    
+    @Override
+    public void execute() {
         pivotClawSubsystem.setPivotMotor(speed);
     }
     
@@ -31,5 +37,6 @@ public class PivotClawCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         pivotClawSubsystem.setPivotMotor(0);
+        pivotClawSubsystem.setControl(true);
     }
 }
