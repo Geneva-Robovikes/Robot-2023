@@ -33,4 +33,12 @@ public class StageTwoSubsystem extends SubsystemBase{
     public boolean getSwitchState() {
         return (stageTwoLimitSwitchBottom.get()||stageTwoLimitSwitchTop.get());
     }
+
+    public double getDistance() {
+        return upperArmMotor.getSelectedSensorPosition();
+    }
+
+    public void resetDistance() {
+        upperArmMotor.setSelectedSensorPosition(0);
+    }
 }

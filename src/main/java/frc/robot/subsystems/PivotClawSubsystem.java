@@ -13,11 +13,11 @@ public class PivotClawSubsystem extends SubsystemBase {
     private WPI_TalonFX pivotMotor;
 
     DigitalInput pivotClawSubsystemLimitSwitch1;
-    DigitalInput pivotClawsubsystemLimitSwitch2;
+    DigitalInput pivotClawSubsystemLimitSwitch2;
 
     public PivotClawSubsystem(){
         pivotClawSubsystemLimitSwitch1 = new DigitalInput(2);
-        pivotClawsubsystemLimitSwitch2 = new DigitalInput(3);
+        pivotClawSubsystemLimitSwitch2 = new DigitalInput(3);
         pivotMotor = new WPI_TalonFX(9);
         pivotMotor.setNeutralMode(NeutralMode.Brake);
     }
@@ -26,8 +26,16 @@ public class PivotClawSubsystem extends SubsystemBase {
         pivotMotor.set(ControlMode.PercentOutput, speed);
     }
 
+    public boolean getTopState() {
+        return pivotClawSubsystemLimitSwitch1.get();
+    }
+
+    public boolean getBottomState() {
+        return pivotClawSubsystemLimitSwitch2.get();
+    }
+
     public boolean getSwitchState() {
-        return (pivotClawSubsystemLimitSwitch1.get() || pivotClawsubsystemLimitSwitch2.get());
+        return (pivotClawSubsystemLimitSwitch1.get() || pivotClawSubsystemLimitSwitch2.get());
     }
 
     public double getClawAngle() {

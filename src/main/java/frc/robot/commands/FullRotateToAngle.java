@@ -7,19 +7,21 @@ import frc.robot.subsystems.PivotClawSubsystem;
 public class FullRotateToAngle extends CommandBase{
     private ClawArmPivotSubsystem clawArmPivotSubsystem;
     private PivotClawSubsystem pivotClawSubsystem;
-    private double speed;
+    private double clawSpeed;
+    private double armSpeed;
     boolean goingUp;
     
-    public FullRotateToAngle(ClawArmPivotSubsystem clawArmPivotSubsystem, PivotClawSubsystem pivotClawSubsystem, double speed, boolean goingUp) {
+    public FullRotateToAngle(ClawArmPivotSubsystem clawArmPivotSubsystem, PivotClawSubsystem pivotClawSubsystem, double clawSpeed, double armSpeed, boolean goingUp) {
         this.clawArmPivotSubsystem = clawArmPivotSubsystem;
         this.pivotClawSubsystem = pivotClawSubsystem;
-        this.speed = speed;
+        this.clawSpeed = clawSpeed;
+        this.armSpeed = armSpeed;
         this.goingUp = goingUp;
     }
 
     @Override
     public void initialize() {
-        clawArmPivotSubsystem.setArmMotor(speed);
+        clawArmPivotSubsystem.setArmMotor(armSpeed);
     }
 
     @Override

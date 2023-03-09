@@ -6,12 +6,14 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.StageOneCommand;
+import frc.robot.commands.StageOneDistanceCommand;
 import frc.robot.commands.AutoDistance;
 import frc.robot.commands.ClawArmPivotCommand;
 import frc.robot.commands.ClawCommand;
 import frc.robot.commands.PivotClawCommand;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.commands.StageTwoCommand;
+import frc.robot.commands.StageTwoDistanceCommand;
 import frc.robot.subsystems.StageOneSubsystem;
 import frc.robot.subsystems.ClawArmPivotSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
@@ -63,13 +65,13 @@ public class RobotContainer {
 
   private final StageTwoCommand stageTwoUpCommand = new StageTwoCommand(stageTwoSubsystem, .25732, true);
   private final StageTwoCommand stageTwoDownCommand = new StageTwoCommand(stageTwoSubsystem, -.25732, false);
-
+  private final StageTwoDistanceCommand stageTwoDistanceCommand = new StageTwoDistanceCommand(stageTwoSubsystem, .25732, 2048);
   
   private final ClawArmPivotCommand clawArmUpCommand = new ClawArmPivotCommand(clawArmPivotSubsystem, .2, true);
   private final ClawArmPivotCommand clawArmDownCommand = new ClawArmPivotCommand(clawArmPivotSubsystem, -.2, false);
 
-  private final PivotClawCommand clawUpCommand = new PivotClawCommand(pivotClawSubsystem, -.1);
-  private final PivotClawCommand clawDownCommand = new PivotClawCommand(pivotClawSubsystem, .1);
+  private final PivotClawCommand clawUpCommand = new PivotClawCommand(pivotClawSubsystem, -.1, true);
+  private final PivotClawCommand clawDownCommand = new PivotClawCommand(pivotClawSubsystem, .1, false);
 
   private final ClawCommand clawInCommand = new ClawCommand(clawSubsystem, .25732);
   private final ClawCommand clawOutCommand = new ClawCommand(clawSubsystem, -.25732);
@@ -106,8 +108,20 @@ public class RobotContainer {
 
   //TODO: finalize button bindings
   private void configureBindings() {
+    controlController.a().onTrue(new ParallelCommandGroup(
+      new StageTwoDistanceCommand(stageTwoSubsystem, .25732, 20000),
+      new StageOneDistanceCommand(stageOneSubsystem, -.25732, 20000),
+      new ClawArmPivotCommand(clawArmPivotSubsystem, -0.3, false),
+      new PivotClawCommand(pivotClawSubsystem, -0.1, true)
+    ));
+    controlController.b().onTrue(new ParallelCommandGroup(
+      new StageOneCommand(stageOneSubsystem, 0.25732, false),
+      new StageTwoCommand(stageTwoSubsystem, -0.25732, false),
+      new ClawArmPivotCommand(clawArmPivotSubsystem, 0.3, true),
+      new PivotClawCommand(pivotClawSubsystem, 0.1, false)
+    ));
     controlController.x().whileTrue(new ParallelCommandGroup(stageOneUpCommand, stageTwoUpCommand));
-    controlController.b().whileTrue(new ParallelCommandGroup(stageOneDownCommand, stageTwoDownCommand));
+    controlController.y().whileTrue(new ParallelCommandGroup(stageOneDownCommand, stageTwoDownCommand));
     controlController.rightBumper().whileTrue(clawArmUpCommand);
     controlController.leftBumper().whileTrue(clawArmDownCommand);
     controlController.start().whileTrue(clawOutCommand);

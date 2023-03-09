@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class StageOneSubsystem extends SubsystemBase { 
     private WPI_TalonFX armExtendMotor;
-    //green larson
     DigitalInput stageOneLimitSwitchBottom;
     DigitalInput stageOneLimitSwitchTop;
 
@@ -34,5 +33,13 @@ public class StageOneSubsystem extends SubsystemBase {
 
     public boolean getSwitchState() {
         return (stageOneLimitSwitchBottom.get()||stageOneLimitSwitchTop.get());
+    }
+
+    public double getDistance() {
+        return armExtendMotor.getSelectedSensorPosition();
+    }
+
+    public void resetDistance() {
+        armExtendMotor.setSelectedSensorPosition(0);
     }
 }

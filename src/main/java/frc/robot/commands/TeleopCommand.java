@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class TeleopCommand extends CommandBase {
   private final DriveSubsystem driveSubsystem;
-  private final CommandXboxController controller;
+  private final CommandXboxController driveController;
 
   //TODO: Test and get good values. All in m/s
   private final double maxSpeedX = 1;
@@ -20,18 +20,18 @@ public class TeleopCommand extends CommandBase {
   private final double maxSpeedTheta = Math.PI;
   boolean isFieldCentric = true;
 
-  public TeleopCommand(DriveSubsystem driveSubsystem, CommandXboxController controller) {
+  public TeleopCommand(DriveSubsystem driveSubsystem, CommandXboxController driveController, CommandXboxController controlController) {
     this.driveSubsystem = driveSubsystem;
-    this.controller = controller;
+    this.driveController = driveController;
     addRequirements(driveSubsystem);
   }
 
   @Override
   public void execute() {
-    double x1 = Math.signum(controller.getLeftX()) * Math.pow(controller.getLeftX(), 2);
-    double y1 = Math.signum(controller.getLeftY()) * Math.pow(controller.getLeftY(), 2);
-    double x2 = Math.signum(controller.getRightX()) * Math.pow(controller.getRightX(), 2);
-    double rightTrigger = controller.getRightTriggerAxis();
+    double x1 = Math.signum(driveController.getLeftX()) * Math.pow(driveController.getLeftX(), 2);
+    double y1 = Math.signum(driveController.getLeftY()) * Math.pow(driveController.getLeftY(), 2);
+    double x2 = Math.signum(driveController.getRightX()) * Math.pow(driveController.getRightX(), 2);
+    double rightTrigger = driveController.getRightTriggerAxis();
 
     if(rightTrigger > 0.5) {
       isFieldCentric = false;
@@ -39,7 +39,7 @@ public class TeleopCommand extends CommandBase {
       isFieldCentric = true;
     }
 
-    if(controller.y().getAsBoolean()) {
+    if(driveController.y().getAsBoolean()) {
       driveSubsystem.resetGyro();
     }
 
