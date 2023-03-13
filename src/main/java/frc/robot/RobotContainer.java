@@ -154,6 +154,7 @@ public class RobotContainer {
     Command collapse = new ParallelCommandGroup(new ClawArmPivotCommand(clawArmPivotSubsystem, 0.32, true), new PivotClawCommand(pivotClawSubsystem, 0.1, false), new StageOneCommand(stageOneSubsystem, 0.3, false), new StageTwoCommand(stageTwoSubsystem, -0.3, false));
 
     if(!autoChooser.getSelected().equals("Outtake 1")) {
+      /*
       PathPlannerTrajectory path = PathPlanner.loadPath("Straight Back", new PathConstraints(1,1));
 
       HashMap<String, Command> eventMap = new HashMap<>();
@@ -175,6 +176,7 @@ public class RobotContainer {
         true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
         driveSubsystem // The drive subsystem. Used to properly set the requirements of path following commands
       );
+      */
       //return new AutoBackUpCommand(driveSubsystem, 0.75, 4.25, true).andThen(new WaitCommand(0.5)).andThen(new AutoBackUpCommand(driveSubsystem, -0.75, 2, true));
       return startingPart.andThen(new ParallelCommandGroup(collapse, new AutoBackUpCommand(driveSubsystem, 0.6, 4.25, true))).andThen(new WaitCommand(0.5)).andThen(new AutoBackUpCommand(driveSubsystem, -0.6, 2, true)); 
     }
