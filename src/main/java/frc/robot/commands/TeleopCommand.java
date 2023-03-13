@@ -15,8 +15,8 @@ public class TeleopCommand extends CommandBase {
   private final CommandXboxController driveController;
 
   //TODO: Test and get good values. All in m/s
-  private final double maxSpeedX = 1;
-  private final double maxSpeedY = 1;
+  private final double maxSpeedX = 1.5;
+  private final double maxSpeedY = 1.5;
   private final double maxSpeedTheta = Math.PI;
   boolean isFieldCentric = true;
 
@@ -28,7 +28,7 @@ public class TeleopCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    driveSubsystem.resetDriveEncoders();
+    //driveSubsystem.resetDriveEncoders();
   }
 
   @Override

@@ -16,6 +16,13 @@ public class PivotClawSubsystem extends SubsystemBase {
     DigitalInput pivotClawSubsystemLimitSwitch2;
     private boolean canControl = true;
 
+    public PivotClawSubsystem(){
+        pivotClawSubsystemLimitSwitch1 = new DigitalInput(2);
+        pivotClawSubsystemLimitSwitch2 = new DigitalInput(3);
+        pivotMotor = new WPI_TalonFX(9);
+        pivotMotor.setNeutralMode(NeutralMode.Brake);
+    }
+
     public boolean getControl() {
         return canControl;
     }
@@ -24,19 +31,12 @@ public class PivotClawSubsystem extends SubsystemBase {
         this.canControl = canControl;
     }
 
-    public PivotClawSubsystem(){
-        pivotClawSubsystemLimitSwitch1 = new DigitalInput(2);
-        pivotClawSubsystemLimitSwitch2 = new DigitalInput(3);
-        pivotMotor = new WPI_TalonFX(9);
-        pivotMotor.setNeutralMode(NeutralMode.Brake);
-    }
-
     public void setPivotMotor(double speed){
         pivotMotor.set(ControlMode.PercentOutput, speed);
     }
 
     public boolean getTopState() {
-        return pivotClawSubsystemLimitSwitch1.get();
+        return !pivotClawSubsystemLimitSwitch1.get();
     }
 
     public boolean getBottomState() {
@@ -45,6 +45,14 @@ public class PivotClawSubsystem extends SubsystemBase {
 
     public boolean getSwitchState() {
         return (pivotClawSubsystemLimitSwitch1.get() || pivotClawSubsystemLimitSwitch2.get());
+    }
+
+    public double getDistance() {
+        return pivotMotor.getSelectedSensorPosition();
+    }
+    
+    public void resetEncoder() {
+        pivotMotor.setSelectedSensorPosition(0);
     }
 
     public double getClawAngle() {

@@ -85,10 +85,6 @@ public class DriveSubsystem extends SubsystemBase {
       frontLeftModule.getPosition(), frontRightModule.getPosition(),
       backLeftModule.getPosition(), backRightModule.getPosition()
     });
-
-    SmartDashboard.putNumber("X", odometry.getPoseMeters().getX());
-    SmartDashboard.putNumber("Y", odometry.getPoseMeters().getY());
-    SmartDashboard.putNumber("Angle", odometry.getPoseMeters().getRotation().getDegrees());
   }
 
   // Uncomment if the autobuilder doesn't work properly
@@ -170,7 +166,6 @@ public class DriveSubsystem extends SubsystemBase {
         backRightModule.getPosition()
       }, pose
     );
-    SmartDashboard.putString("Reset Pose", odometry.getPoseMeters().getTranslation().toString());
   }
 
   public Pose2d getPose() {

@@ -19,6 +19,7 @@ public class StageOneSubsystem extends SubsystemBase {
         armExtendMotor = new WPI_TalonFX(13);
         armExtendMotor.setNeutralMode(NeutralMode.Brake);
     }
+
     public void setarmExtendMotor(double value){
         armExtendMotor.set(ControlMode.PercentOutput, value);
     }

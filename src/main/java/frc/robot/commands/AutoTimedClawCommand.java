@@ -4,20 +4,17 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClawSubsystem;
 
-public class AutoClawCommand extends CommandBase  {
+public class AutoTimedClawCommand extends CommandBase  {
 
 private ClawSubsystem clawSubsystem;
 private double speed;
 private double waitTime;
-private double moveTime;
 private Timer timer = new Timer();
-private boolean started;
 
-    public AutoClawCommand(ClawSubsystem subsystem, double speed, double waitTime, double moveTime){
+    public AutoTimedClawCommand(ClawSubsystem subsystem, double speed, double waitTime){
         clawSubsystem = subsystem;
         this.speed = speed;
         this.waitTime = waitTime;
-        this.moveTime = moveTime;
         addRequirements(subsystem);
     }
 
@@ -28,20 +25,9 @@ private boolean started;
     }
 
     @Override
-    public void execute() {
-        if (timer.get() > moveTime && !started) {
-            started = true;
-            clawSubsystem.setClawMotor(0);
-            timer.reset();
-        } else if (started && timer.get() > waitTime) {
-            started = false;
-            clawSubsystem.setClawMotor(speed);
-            timer.reset();
-        }
-    }
-
-    @Override
     public boolean isFinished() {
+        if(timer.get() > waitTime)
+            return true;
         return false;
     }
     @Override
