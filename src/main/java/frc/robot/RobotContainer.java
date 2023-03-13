@@ -153,7 +153,7 @@ public class RobotContainer {
     Command collapse = new ParallelCommandGroup(new ClawArmPivotCommand(clawArmPivotSubsystem, 0.32, true), new PivotClawCommand(pivotClawSubsystem, 0.1, false), new StageOneCommand(stageOneSubsystem, 0.3, false), new StageTwoCommand(stageTwoSubsystem, -0.3, false));
 
     if(!autoChooser.getSelected().equals("Outtake 1")) {
-      PathPlannerTrajectory path = PathPlanner.loadPath("Straight Back", new PathConstraints(1,1));
+      PathPlannerTrajectory path = PathPlanner.loadPath("Straight Back", new PathConstraints(0.5,0.5));
 
       HashMap<String, Command> eventMap = new HashMap<>();
       //eventMap.put("Stop", stopCommand);
