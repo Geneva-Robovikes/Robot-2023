@@ -5,24 +5,29 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.DriveSubsystem;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class AutoBalance extends CommandBase {
   private final DriveSubsystem driveSubsystem;
-  private PIDController balancePID = new PIDController(1, 0, 0);
+  private final double tolerance;
+  private final double speed;
 
-  public AutoBalance(DriveSubsystem driveSubsystem) {
+  public AutoBalance(DriveSubsystem driveSubsystem, double speed, double tolerance) {
     this.driveSubsystem = driveSubsystem;
+    this.tolerance = tolerance;
+    this.speed = speed;
     addRequirements(driveSubsystem);
   }
 
   @Override
   public void execute() {
-    double currentAngle = driveSubsystem.getAngleAroundFieldY();
-    SmartDashboard.putNumber("Angle Around Field Y", currentAngle);
-    SmartDashboard.putNumber("Balance Velocity", balancePID.calculate(Math.sin(currentAngle), 0));
+    double currentYAngle = driveSubsystem.getGyroAngleY();
+
+    if(currentYAngle > tolerance) {
+      driveSubsystem.setModuleStatesFromSpeeds(speed, 0, 0, false);
+    } else {
+      driveSubsystem.setModuleStatesFromSpeeds(-speed, 0, 0, false);
+    }
   }
 
   @Override

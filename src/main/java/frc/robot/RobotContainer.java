@@ -8,6 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.StageOneCommand;
 import frc.robot.commands.StageOneDistanceCommand;
 import frc.robot.commands.AutoBackUpCommand;
+import frc.robot.commands.AutoBalance;
 import frc.robot.commands.AutoClawArmPivotCommand;
 import frc.robot.commands.AutoClawCommand;
 import frc.robot.commands.AutoDistance;
@@ -26,7 +27,6 @@ import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PivotClawSubsystem;
 import frc.robot.subsystems.StageTwoSubsystem;
-
 import java.util.HashMap;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -41,7 +41,6 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
-//green larson
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -59,7 +58,7 @@ public class RobotContainer {
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final StageOneSubsystem stageOneSubsystem = new StageOneSubsystem();
   private final StageTwoSubsystem stageTwoSubsystem = new StageTwoSubsystem();
-  public final ClawArmPivotSubsystem clawArmPivotSubsystem = new ClawArmPivotSubsystem();
+  private final ClawArmPivotSubsystem clawArmPivotSubsystem = new ClawArmPivotSubsystem();
   private final PivotClawSubsystem pivotClawSubsystem = new PivotClawSubsystem();
   private final ClawSubsystem clawSubsystem = new ClawSubsystem();
 
@@ -177,7 +176,7 @@ public class RobotContainer {
       );
       
       //return new AutoBackUpCommand(driveSubsystem, 0.75, 4.25, true).andThen(new WaitCommand(0.5)).andThen(new AutoBackUpCommand(driveSubsystem, -0.75, 2, true));
-      return startingPart.andThen(new ParallelCommandGroup(collapse, new AutoBackUpCommand(driveSubsystem, 0.6, 4.25, true))).andThen(new WaitCommand(0.5)).andThen(new AutoBackUpCommand(driveSubsystem, -0.6, 2, true)); 
+      return startingPart.andThen(new ParallelCommandGroup(collapse, new AutoBackUpCommand(driveSubsystem, 0.6, 4.25, true))).andThen(new WaitCommand(0.5)).andThen(new AutoBackUpCommand(driveSubsystem, -0.6, 2, true).andThen(new AutoBalance(driveSubsystem, 0.25, 10))); 
     }
 
     // Replace with outtake command.

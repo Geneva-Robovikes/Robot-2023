@@ -121,16 +121,6 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
-  public double getAngleAroundFieldY() {
-    double robotXAngle = Math.toRadians(gyro.getGyroAngleX());
-    double robotYAngle = Math.toRadians(gyro.getGyroAngleY());
-    double robotZAngle = Math.toRadians(gyro.getGyroAngleZ());
-
-    double angleAroundFieldY = robotYAngle * Math.sin(robotZAngle) + robotXAngle * Math.cos(robotZAngle);
-
-    return angleAroundFieldY;
-  }
-
   public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity, boolean isFieldCentric) {
     ChassisSpeeds speeds;
     if(isFieldCentric) {
@@ -174,6 +164,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   public Rotation2d getRotation2d() {
     return new Rotation2d(-gyro.getGyroAngleZ() / 57.295779513);
+  }
+
+  public double getGyroAngleY() {
+    return gyro.getGyroAngleY();
   }
 
   public void setModuleStates(SwerveModuleState[] moduleStates) {
