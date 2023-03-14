@@ -5,28 +5,60 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.DriveSubsystem;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class AutoBalance extends CommandBase {
   private final DriveSubsystem driveSubsystem;
+  private final Timer timer = new Timer();
   private final double tolerance;
-  private final double speed;
+  private final double balanceSpeed;
+  private final double driveSpeed;
+  private final double waitTime;
+  private boolean isOnScale = false;
+  private boolean balance = false;
 
-  public AutoBalance(DriveSubsystem driveSubsystem, double speed, double tolerance) {
+  public AutoBalance(DriveSubsystem driveSubsystem, double balanceSpeed, double driveSpeed,  double tolerance, double waitTime) {
     this.driveSubsystem = driveSubsystem;
     this.tolerance = tolerance;
-    this.speed = speed;
+    this.balanceSpeed = balanceSpeed;
+    this.driveSpeed = driveSpeed;
+    this.waitTime = waitTime;
     addRequirements(driveSubsystem);
   }
 
   @Override
   public void execute() {
     double currentYAngle = driveSubsystem.getGyroAngleY();
+    SmartDashboard.putNumber("Gyro Y Angle", currentYAngle);
+    SmartDashboard.putBoolean("Is On Scale", isOnScale);
+
+    if(!isOnScale && currentYAngle < (tolerance + 1) && currentYAngle > -(tolerance + 1)) {
+      driveSubsystem.setModuleStatesFromSpeeds(driveSpeed, 0, 0, false);
+      return;
+    } else {
+      isOnScale = true;
+      timer.start();
+    }
+
+    SmartDashboard.putNumber("Timer", timer.get());
+
+    if(isOnScale && !balance) {
+      driveSubsystem.setModuleStatesFromSpeeds(driveSpeed, 0, 0, false);
+      if (timer.get() > waitTime) {
+        balance = true;
+      } else {
+        return;
+      }
+    }
 
     if(currentYAngle > tolerance) {
-      driveSubsystem.setModuleStatesFromSpeeds(speed, 0, 0, false);
+      driveSubsystem.setModuleStatesFromSpeeds(balanceSpeed, 0, 0, false);
+    } else if(currentYAngle < -tolerance) {
+      driveSubsystem.setModuleStatesFromSpeeds(-balanceSpeed, 0, 0, false);
     } else {
-      driveSubsystem.setModuleStatesFromSpeeds(-speed, 0, 0, false);
+      driveSubsystem.stop();
     }
   }
 

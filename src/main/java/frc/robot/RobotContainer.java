@@ -121,6 +121,7 @@ public class RobotContainer {
       new ClawArmPivotCommand(clawArmPivotSubsystem, 0.32, true),
       new PivotClawCommand(pivotClawSubsystem, 0.1, false)
     ));
+    controlController.y().whileTrue(new AutoBalance(driveSubsystem, 0.225, 0.35, 5, 2.5));
     controlController.rightBumper().whileTrue(new ParallelCommandGroup(stageOneUpCommand, stageTwoUpCommand));
     controlController.leftBumper().whileTrue(new ParallelCommandGroup(stageOneDownCommand, stageTwoDownCommand));
     controlController.rightTrigger().whileTrue(clawOutCommand);
@@ -176,7 +177,7 @@ public class RobotContainer {
       );
       
       //return new AutoBackUpCommand(driveSubsystem, 0.75, 4.25, true).andThen(new WaitCommand(0.5)).andThen(new AutoBackUpCommand(driveSubsystem, -0.75, 2, true));
-      return startingPart.andThen(new ParallelCommandGroup(collapse, new AutoBackUpCommand(driveSubsystem, 0.6, 4.25, true))).andThen(new WaitCommand(0.5)).andThen(new AutoBackUpCommand(driveSubsystem, -0.6, 2, true).andThen(new AutoBalance(driveSubsystem, 0.25, 10))); 
+      return startingPart.andThen(new ParallelCommandGroup(collapse, new AutoBackUpCommand(driveSubsystem, 0.6, 4.25, true))).andThen(new WaitCommand(0.5)).andThen(new AutoBackUpCommand(driveSubsystem, -0.6, 2, true).andThen(new AutoBalance(driveSubsystem, 0.25, 0.35, 10, 0.5))); 
     }
 
     // Replace with outtake command.

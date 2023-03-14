@@ -170,6 +170,10 @@ public class DriveSubsystem extends SubsystemBase {
     return gyro.getGyroAngleY();
   }
 
+  public double getGyroRateY() {
+    return gyro.getGyroRateY();
+  }
+
   public void setModuleStates(SwerveModuleState[] moduleStates) {
     frontLeftModule.setDesiredState(moduleStates[0]);
     frontRightModule.setDesiredState(moduleStates[1]);
