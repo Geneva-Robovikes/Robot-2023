@@ -31,6 +31,10 @@ public class ClawSubsystem extends SubsystemBase {
         clawMotor.set(value);
     }
 
+    public double getClawMotorCurrent() {
+        return clawMotor.getOutputCurrent();
+    }
+
     public void setPivotMotor(double speed){
         pivotMotor.set(speed);
     }
