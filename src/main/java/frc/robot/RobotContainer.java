@@ -16,12 +16,14 @@ import frc.robot.commands.AutoPivotClawCommand;
 import frc.robot.commands.AutoTimedClawCommand;
 import frc.robot.commands.ClawArmPivotCommand;
 import frc.robot.commands.ClawCommand;
+import frc.robot.commands.FullArmCommand;
 import frc.robot.commands.JoystickControlCommand;
 import frc.robot.commands.PivotClawCommand;
 import frc.robot.commands.TeleopCommand;
 import frc.robot.commands.StageTwoCommand;
 import frc.robot.commands.StageTwoDistanceCommand;
 import frc.robot.subsystems.StageOneSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClawArmPivotSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -54,6 +56,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   
   /* ~~~ Subsystems ~~~ */
+  private final ArmSubsystem armSubsystem = new ArmSubsystem();
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final StageOneSubsystem stageOneSubsystem = new StageOneSubsystem();
   private final StageTwoSubsystem stageTwoSubsystem = new StageTwoSubsystem();
@@ -98,6 +101,7 @@ public class RobotContainer {
 
   /** Setup for controller buttons */
   private void configureBindings() {
+    /*
     controlController.a().whileTrue(new ParallelCommandGroup(
       new StageTwoDistanceCommand(stageTwoSubsystem, .25732, 20000),
       new StageOneDistanceCommand(stageOneSubsystem, -.25732, 30000),
@@ -110,9 +114,11 @@ public class RobotContainer {
       new ClawArmPivotCommand(clawArmPivotSubsystem, 0.32, true),
       new PivotClawCommand(pivotClawSubsystem, 0.1, false)
     ));
-    controlController.y().whileTrue(new AutoBalance(driveSubsystem, 0.225, 0.35, 5, 2.5));
-    controlController.rightBumper().whileTrue(new ParallelCommandGroup(stageOneUpCommand, stageTwoUpCommand));
-    controlController.leftBumper().whileTrue(new ParallelCommandGroup(stageOneDownCommand, stageTwoDownCommand));
+    */
+    //controlController.y().whileTrue(new AutoBalance(driveSubsystem, 0.225, 0.35, 5, 2.5));
+    controlController.y().whileTrue(new FullArmCommand(armSubsystem, 0.5));
+    controlController.a().whileTrue(new ParallelCommandGroup(stageOneUpCommand, stageTwoUpCommand));
+    controlController.b().whileTrue(new ParallelCommandGroup(stageOneDownCommand, stageTwoDownCommand));
     controlController.rightTrigger().whileTrue(clawOutCommand);
     controlController.leftTrigger().whileTrue(clawInCommand);
   }
@@ -124,7 +130,7 @@ public class RobotContainer {
   public Command getTeleopCommand() {
     return new ParallelCommandGroup(
       new TeleopCommand(driveSubsystem, driverController),
-      new JoystickControlCommand(controlController, pivotClawSubsystem, clawArmPivotSubsystem, 0.6, 0.2)
+      new JoystickControlCommand(controlController, armSubsystem, clawSubsystem, 0.6, 0.2)
     );
   }
 

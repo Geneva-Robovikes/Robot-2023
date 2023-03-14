@@ -43,10 +43,6 @@ public class PivotClawSubsystem extends SubsystemBase {
         return pivotClawSubsystemLimitSwitch2.get();
     }
 
-    public boolean getSwitchState() {
-        return (pivotClawSubsystemLimitSwitch1.get() || pivotClawSubsystemLimitSwitch2.get());
-    }
-
     public double getDistance() {
         return pivotMotor.getSelectedSensorPosition();
     }

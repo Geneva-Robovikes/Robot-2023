@@ -92,11 +92,11 @@ public class ArmSubsystem extends SubsystemBase{
         return armPivotMotor.getSelectedSensorPosition();
     }
 
-    public boolean getArmPivotUpSwitch() {
+    public boolean getArmPivotTopState() {
         return !clawArmLimitSwitchUp.get();
     }
 
-    public boolean getArmPivotDownSwitch() {
+    public boolean getArmPivotBottomState() {
         return clawArmLimitSwitchDown.get();
     }
 

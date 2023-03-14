@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.math.MathUtil;
@@ -14,10 +15,8 @@ public class TeleopCommand extends CommandBase {
   private final DriveSubsystem driveSubsystem;
   private final CommandXboxController driveController;
 
-  //TODO: Test and get good values. All in m/s
-  private final double maxSpeedX = 1.5;
-  private final double maxSpeedY = 1.5;
-  private final double maxSpeedTheta = Math.PI;
+  private final double maxSpeedXY = Constants.maxTranslationalDriveSpeed;
+  private final double maxSpeedTheta = Constants.maxRotationalDriveSpeed;
   boolean isFieldCentric = true;
 
   public TeleopCommand(DriveSubsystem driveSubsystem, CommandXboxController driveController) {
@@ -25,12 +24,7 @@ public class TeleopCommand extends CommandBase {
     this.driveController = driveController;
     addRequirements(driveSubsystem);
   }
-
-  @Override
-  public void initialize() {
-    //driveSubsystem.resetDriveEncoders();
-  }
-
+  
   @Override
   public void execute() {
     double x1 = Math.signum(driveController.getLeftX()) * Math.pow(driveController.getLeftX(), 2);
@@ -52,8 +46,8 @@ public class TeleopCommand extends CommandBase {
     y1 = MathUtil.applyDeadband(y1, OperatorConstants.controllerDeadzone);
     x2 = MathUtil.applyDeadband(x2, OperatorConstants.controllerDeadzone);
 
-    double vX = y1 * maxSpeedX;
-    double vY = x1 * maxSpeedY;
+    double vX = y1 * maxSpeedXY;
+    double vY = x1 * maxSpeedXY;
     double vTheta = x2 * maxSpeedTheta;
 
     driveSubsystem.setModuleStatesFromSpeeds(vX, vY, vTheta, isFieldCentric);

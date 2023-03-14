@@ -3,37 +3,24 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import frc.robot.Constants;
 
 public class SwerveModule {
     WPI_TalonFX driveMotor;
     WPI_TalonFX turnMotor;
 
-
-    //TODO: Tune to robot values
-    PIDController drivePID = new PIDController(3.1679, 0, 0);
-    //works with auto, teleop eh
-    //PIDController drivePID = new PIDController(.285, .5, 0);
-    //PIDController drivePID = new PIDController(0, 0, 0);
-
-    
+    //PIDController drivePID = new PIDController(3.1679, 0, 0);
+    ProfiledPIDController drivePID = new ProfiledPIDController(3.1679, 0, 0, new Constraints(Constants.maxModuleVelocity, Constants.maxModuleVelocity));
     PIDController turnPID = new PIDController(4.1807, 0, 0.23405);
-    //PIDController turnPID = new PIDController(3.5945, 0, 0.1507);
-    //PIDController turnPID = new PIDController(0, 0, 0);
-
-
-    //very scary it only works with auto!!!
-    //I think we might need separate auto/teleop ones? idk
-    //PIDController turnPID = new PIDController(4.3, 1.1, .5);
 
     SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(-0.095829, 2.7601, 0.71108);
     SimpleMotorFeedforward turnFeedForward = new SimpleMotorFeedforward(0.24959, 0.3754, 0.0068821);
-    //SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(0, 0, 0);
-    //SimpleMotorFeedforward turnFeedForward = new SimpleMotorFeedforward(0, 0, 0);
 
     public SwerveModule(int driveMotorIndex, int turnMotorIndex, boolean driveInverted, boolean turnInverted) {
         driveMotor = new WPI_TalonFX(driveMotorIndex);

@@ -27,4 +27,8 @@ public final class Constants {
   public static final double armAngleGearRatio = 48.0 * (18 / 10) * (26 / 18);
   public static final double moduleMaxAngularVelocity = Math.PI;
   public static final double moduleMaxAngularAcceleration = 2 * Math.PI;
+  public static final double maxModuleVelocity = 3;
+  public static final double maxModuleAcceleration = 2;
+  public static final double maxTranslationalDriveSpeed = 1.5;
+  public static final double maxRotationalDriveSpeed = Math.PI;
 }

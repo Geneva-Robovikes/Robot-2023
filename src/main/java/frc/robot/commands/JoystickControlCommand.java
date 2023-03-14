@@ -2,19 +2,19 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.ClawArmPivotSubsystem;
-import frc.robot.subsystems.PivotClawSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ClawSubsystem;
 
 public class JoystickControlCommand extends CommandBase {
-    private PivotClawSubsystem pivotClawSubsystem;
-    private ClawArmPivotSubsystem clawArmPivotSubsystem;
-    private CommandXboxController controller;
-    private double clawMaxSpeed; 
-    private double armMaxSpeed;
+    private final ArmSubsystem armSubsystem;
+    private final ClawSubsystem clawSubsystem;
+    private final CommandXboxController controller;
+    private final double clawMaxSpeed; 
+    private final double armMaxSpeed;
 
-    public JoystickControlCommand (CommandXboxController controller, PivotClawSubsystem subsystem, ClawArmPivotSubsystem subsystem2, double armMaxSpeed, double clawMaxSpeed){
-        pivotClawSubsystem = subsystem;
-        clawArmPivotSubsystem = subsystem2;
+    public JoystickControlCommand (CommandXboxController controller, ArmSubsystem armSubsystem, ClawSubsystem clawSubsystem, double armMaxSpeed, double clawMaxSpeed){
+        this.armSubsystem = armSubsystem;
+        this.clawSubsystem = clawSubsystem;
         this.clawMaxSpeed = clawMaxSpeed;
         this.armMaxSpeed = armMaxSpeed;
         this.controller = controller;
@@ -25,15 +25,15 @@ public class JoystickControlCommand extends CommandBase {
         double leftY = controller.getRightY();
         double rightY = controller.getLeftY();
 
-        if(((!pivotClawSubsystem.getTopState() && leftY < 0) || (!pivotClawSubsystem.getBottomState() && leftY > 0)) && pivotClawSubsystem.getControl())
-            pivotClawSubsystem.setPivotMotor(leftY * clawMaxSpeed);
+        if(((!clawSubsystem.getPivotTopState() && leftY < 0) || (!clawSubsystem.getPivotBottomState() && leftY > 0)))
+            clawSubsystem.setPivotMotor(leftY * clawMaxSpeed);
         else
-            pivotClawSubsystem.setPivotMotor(0);
+            clawSubsystem.setPivotMotor(0);
         
-        if(((!clawArmPivotSubsystem.getUpSwitch() && rightY < 0) || (!clawArmPivotSubsystem.getDownSwitch() && rightY > 0)) && clawArmPivotSubsystem.getControl())
-            clawArmPivotSubsystem.setArmMotor(-rightY * armMaxSpeed);
+        if(((!armSubsystem.getArmPivotTopState() && rightY < 0) || (!armSubsystem.getArmPivotBottomState() && rightY > 0)))
+            armSubsystem.setArmPivotMotor(-rightY * armMaxSpeed);
         else
-            clawArmPivotSubsystem.setArmMotor(0);
+            armSubsystem.setArmPivotMotor(0);
     }
     
     @Override
@@ -43,7 +43,7 @@ public class JoystickControlCommand extends CommandBase {
     
     @Override
     public void end(boolean interrupted) {
-        pivotClawSubsystem.setPivotMotor(0);
-        clawArmPivotSubsystem.setArmMotor(0);
+        clawSubsystem.setPivotMotor(0);
+        armSubsystem.setArmPivotMotor(0);
     }
 }
