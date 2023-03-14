@@ -74,8 +74,8 @@ public class RobotContainer {
   private final StageTwoCommand stageTwoUpCommand = new StageTwoCommand(stageTwoSubsystem, .5, true);
   private final StageTwoCommand stageTwoDownCommand = new StageTwoCommand(stageTwoSubsystem, -.5, false);
   
-  private final ClawCommand clawInCommand = new ClawCommand(clawSubsystem, .5);
-  private final ClawCommand clawOutCommand = new ClawCommand(clawSubsystem, -.5);
+  private final ClawCommand clawInCommand = new ClawCommand(clawSubsystem, .5, 50);
+  private final ClawCommand clawOutCommand = new ClawCommand(clawSubsystem, -.5 ,50);
 
   //private final FullArmCommand fullArmUpCommand = new FullArmCommand(stageOneSubsystem, stageTwoSubsystem, -.25, .25);
   //private final FullArmCommand fullArmDownCommand = new FullArmCommand(stageOneSubsystem, stageTwoSubsystem, .25, -.25);
