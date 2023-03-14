@@ -145,7 +145,6 @@ public class RobotContainer {
     if(autoChooser.getSelected().equals("Third Level Cube")) {
       startingPart = new ParallelCommandGroup(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.32, 198864), new AutoPivotClawCommand(pivotClawSubsystem, -0.1, 40000)).andThen(new AutoTimedClawCommand(clawSubsystem, 0.5, 0.25));
     } else if (autoChooser.getSelected().equals("Third Level Cone")) {
-      //startingPart = new ParallelCommandGroup(new ParallelRaceGroup(new ParallelCommandGroup(new StageTwoDistanceCommand(stageTwoSubsystem, 0.3, 243000), new StageOneDistanceCommand(stageOneSubsystem, -0.3, 243000) ,new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.32, 198864), new AutoPivotClawCommand(pivotClawSubsystem, -0.1, 40000)), new AutoClawCommand(clawSubsystem, -0.5, 1, 0.15)).andThen(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.2, 30000).andThen(new ClawCommand(clawSubsystem, 0.5))));
       startingPart = new ParallelCommandGroup(new ParallelRaceGroup(new ParallelCommandGroup(new StageTwoCommand(stageTwoSubsystem, 0.3, true), new StageOneCommand(stageOneSubsystem, -0.3, true) ,new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.32, 198864), new AutoPivotClawCommand(pivotClawSubsystem, -0.1, 40000)), new AutoClawCommand(clawSubsystem, -0.5, 1, 0.15)).andThen(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.2, 30000).andThen(new AutoTimedClawCommand(clawSubsystem, 0.5, 0.25))));
     } else {
       startingPart = new ParallelRaceGroup(new ParallelCommandGroup(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.32, 198864), new AutoPivotClawCommand(pivotClawSubsystem, -0.1, 40000)), new AutoClawCommand(clawSubsystem, -0.5, 1, 0.15)).andThen(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.2, 30000).andThen(new AutoTimedClawCommand(clawSubsystem, 0.5, 0.25)));
@@ -157,18 +156,18 @@ public class RobotContainer {
       PathPlannerTrajectory path = PathPlanner.loadPath("Straight Back", new PathConstraints(0.5,0.5));
 
       HashMap<String, Command> eventMap = new HashMap<>();
-      //eventMap.put("Stop", stopCommand);
-      //eventMap.put("Intake", IntakeCommand());    <-- Uncomment when these commands exist
-      //eventMap.put("Outtake", OuttakeCommand());  <--
+      //eventMap.put("Stop", stopCommand);            <-- Uncomment when these commands exist
+      //eventMap.put("Intake", IntakeCommand());      <--
+      //eventMap.put("Outtake", OuttakeCommand());    <--
+      //eventMap.put("Lower Arm", LowerArmCommand()); <--
+      //eventMap.put("Raise Arm", RaiseArmCommand()); <--
+      //eventMap.put("Balance", BalanceCommand());    <--
   
       SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
         driveSubsystem::getPose, // Pose2d supplier
         driveSubsystem::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
         driveSubsystem.kinematics, // SwerveDriveKinematics
-        //new PIDConstants(5.7, .003, 0), // PID constants to correct for translation error (used to create the X and Y PID controllers)
-        //change this next line only
-        //p up, i down, d up i guess
-        new PIDConstants(6.5, 0.000, .07),
+        new PIDConstants(6.5, 0.000, .07), // PID constants to correct for translation error (used to create the X and Y PID controllers)
         new PIDConstants(2.55, .01374, .008), // PID constants to correct for rotation error (used to create the rotation controller)
         driveSubsystem::setModuleStates, // Module states consumer used to output to the drive subsystem
         eventMap,
@@ -177,28 +176,10 @@ public class RobotContainer {
       );
       
       return autoBuilder.fullAuto(path);
-      //return new AutoBackUpCommand(driveSubsystem, 0.75, 4.25, true).andThen(new WaitCommand(0.5)).andThen(new AutoBackUpCommand(driveSubsystem, -0.75, 2, true));
       //return startingPart.andThen(new ParallelCommandGroup(collapse, new AutoBackUpCommand(driveSubsystem, 0.6, 4.25, true))).andThen(new WaitCommand(0.5)).andThen(new AutoBackUpCommand(driveSubsystem, -0.6, 2, true).andThen(new AutoBalance(driveSubsystem, 0.225, 0.35, 5, 2.5))); 
     }
 
-    // Replace with outtake command.
+    // Replace with outtake one command.
     return null;
-
-    /*
-    // Uncomment if autobuilder does not work properly.
-    PathPlannerTrajectory trajectory = PathPlanner.loadPath(autoChooser.getSelected(),  new PathConstraints(1.5,2));
- 
-    HashMap<String, Command> eventMap = new HashMap<>();
-    //eventMap.put("Intake", IntakeCommand());    <-- Uncomment when these commands exist
-    //eventMap.put("Outtake", OuttakeCommand());  <--
- 
-    FollowPathWithEvents command = new FollowPathWithEvents(
-      driveSubsystem.followTrajectoryCommand(trajectory, true),
-      trajectory.getMarkers(),
-      eventMap
-    );
-
-    return command;
-    */
   }
 }
