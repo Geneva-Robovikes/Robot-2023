@@ -88,9 +88,11 @@ public class RobotContainer {
     autoChooser.setDefaultOption("Third Level Cube", "Third Level Cube");
     autoChooser.addOption("Third Level Cone", "Third Level Cone");
     autoChooser.addOption("Second Level Cone", "Second Level Cone");
+    autoChooser.addOption("Top 1.5 Object Scale", "T1.5S");
     autoChooser.addOption("Top 2 Object Scale", "T2S");
     autoChooser.addOption("Top 2 Object", "T2");
     autoChooser.addOption("Top 3 Object", "T3");
+    autoChooser.addOption("Bottom 1.5 Object Scale", "B1.5S");
     autoChooser.addOption("Bottom 2 Object Scale", "B2S");
     autoChooser.addOption("Bottom 2 Object", "B2");
     SmartDashboard.putData("Auto Chooser", autoChooser);
