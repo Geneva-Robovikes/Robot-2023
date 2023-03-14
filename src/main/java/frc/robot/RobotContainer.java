@@ -16,6 +16,7 @@ import frc.robot.commands.AutoPivotClawCommand;
 import frc.robot.commands.AutoTimedClawCommand;
 import frc.robot.commands.ClawArmPivotCommand;
 import frc.robot.commands.ClawCommand;
+import frc.robot.commands.ControllerRumbleCommand;
 import frc.robot.commands.FullArmCommand;
 import frc.robot.commands.JoystickControlCommand;
 import frc.robot.commands.PivotClawCommand;
@@ -67,13 +68,6 @@ public class RobotContainer {
 
   /* ~~~~ Commands ~~~~ */
   private final AutoDistance autoDistance = new AutoDistance(driveSubsystem);
-
-  private final StageOneCommand stageOneUpCommand = new StageOneCommand(stageOneSubsystem, -.5, true);
-  private final StageOneCommand stageOneDownCommand = new StageOneCommand(stageOneSubsystem, .5, false);
-
-  private final StageTwoCommand stageTwoUpCommand = new StageTwoCommand(stageTwoSubsystem, .5, true);
-  private final StageTwoCommand stageTwoDownCommand = new StageTwoCommand(stageTwoSubsystem, -.5, false);
-  
   private final ClawCommand clawInCommand = new ClawCommand(clawSubsystem, .5, 50);
   private final ClawCommand clawOutCommand = new ClawCommand(clawSubsystem, -.5 ,50);
 
@@ -118,11 +112,10 @@ public class RobotContainer {
     ));
     */
     //controlController.y().whileTrue(new AutoBalance(driveSubsystem, 0.225, 0.35, 5, 2.5));
-    controlController.y().whileTrue(new FullArmCommand(armSubsystem, 0.5));
-    controlController.a().whileTrue(new ParallelCommandGroup(stageOneUpCommand, stageTwoUpCommand));
-    controlController.b().whileTrue(new ParallelCommandGroup(stageOneDownCommand, stageTwoDownCommand));
+    controlController.a().whileTrue(new FullArmCommand(armSubsystem, 0.5));
+    controlController.b().whileTrue(new FullArmCommand(armSubsystem, 0.5));
     controlController.rightTrigger().whileTrue(clawOutCommand);
-    controlController.leftTrigger().whileTrue(clawInCommand);
+    controlController.leftTrigger().whileTrue(clawInCommand.andThen(new ControllerRumbleCommand(controlController, 0.5, 0.5)));
   }
 
   /** 
