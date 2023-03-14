@@ -1,51 +1,57 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.StageOneSubsystem;
-import frc.robot.subsystems.StageTwoSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 
 public class FullArmCommand extends CommandBase {
-    StageOneSubsystem stageOneSubsystem;
-    StageTwoSubsystem stageTwoSubsystem;
-    double speedOne;
-    double speedTwo;
-    //green larson
+    private final ArmSubsystem armSubsystem;
+    private final double speed;
+    private boolean upperStopped;
+    private boolean lowerStopped;
 
-    public FullArmCommand(StageOneSubsystem stageOneSubsystem, StageTwoSubsystem stageTwoSubsystem, double speedOne, double speedTwo) {
-        this.stageOneSubsystem = stageOneSubsystem;
-        this.stageTwoSubsystem = stageTwoSubsystem;
-        this.speedOne = speedOne;
-        this.speedTwo = speedTwo;
+    public FullArmCommand(ArmSubsystem armSubsystem, double speed) {
+        this.armSubsystem = armSubsystem;
+        this.speed = speed;
     }
 
     @Override
     public void initialize() {
-        stageOneSubsystem.setarmExtendMotor(speedOne);
-        stageTwoSubsystem.setUpperMotor(speedTwo);
-    }
-
-    @Override
-    public boolean isFinished() {
-        //return stageOneSubsystem.getSwitchState()&&stageTwoSubsystem.getSwitchState();
-        return false;
+        armSubsystem.setUpperExensionMotor(speed);
+        armSubsystem.setLowerExtensionMotor(speed);
     }
 
     @Override
     public void execute() {
-        /*if(stageOneSubsystem.getSwitchState()) {
-            stageOneSubsystem.setarmExtendMotor(0);
+        if(speed > 0) {
+            if(armSubsystem.getUpperExensionTopState()) {
+                armSubsystem.setUpperExensionMotor(0);
+                upperStopped = true;
+            }
+            if(armSubsystem.getLowerExtensionTopState()) {
+                armSubsystem.setLowerExtensionMotor(0);
+                lowerStopped = true;
+            }
+        } else {
+            if(armSubsystem.getUpperExensionBottomState()) {
+                armSubsystem.setUpperExensionMotor(0);
+                upperStopped = true;
+            }
+            if(armSubsystem.getLowerExtensionBottomState()) {
+                armSubsystem.setLowerExtensionMotor(0);
+                lowerStopped = true;
+            }
         }
-        if(stageTwoSubsystem.getSwitchState()) {
-            stageTwoSubsystem.setUpperMotor(0);
-        }*/
     }
 
-    //green larson
-    //green larson
+    @Override
+    public boolean isFinished() {
+        if(upperStopped && lowerStopped) return true;
+        return false;
+    }
+
     @Override
     public void end(boolean interrupted) {
-        stageOneSubsystem.setarmExtendMotor(0);
-        stageTwoSubsystem.setUpperMotor(0);
+        armSubsystem.setUpperExensionMotor(0);
+        armSubsystem.setLowerExtensionMotor(0);
     }
-    //green larson
 }

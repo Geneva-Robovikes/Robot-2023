@@ -53,7 +53,6 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
   
-  
   /* ~~~ Subsystems ~~~ */
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final StageOneSubsystem stageOneSubsystem = new StageOneSubsystem();
@@ -66,7 +65,6 @@ public class RobotContainer {
   /* ~~~~ Commands ~~~~ */
   private final AutoDistance autoDistance = new AutoDistance(driveSubsystem);
 
-  //this is a guess. I do not remember the actual direction for this one.
   private final StageOneCommand stageOneUpCommand = new StageOneCommand(stageOneSubsystem, -.5, true);
   private final StageOneCommand stageOneDownCommand = new StageOneCommand(stageOneSubsystem, .5, false);
 
@@ -82,10 +80,7 @@ public class RobotContainer {
   SendableChooser<String> autoChooser = new SendableChooser<>(); 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-
-    //SmartDashboard.put (clawArmPivotSubsystem.getSwitchState());
-    
+  public RobotContainer() {    
     // Add new path to this chooser to select them from shuffleboard.
     autoChooser.setDefaultOption("Third Level Cube", "Third Level Cube");
     autoChooser.addOption("Third Level Cone", "Third Level Cone");
@@ -94,20 +89,14 @@ public class RobotContainer {
     autoChooser.addOption("Top 2 Object", "T2");
     autoChooser.addOption("Top 3 Object", "T3");
     autoChooser.addOption("Bottom 2 Object Scale", "B2S");
-    autoChooser.addOption("Bottom 2 Object", "B2");
-    autoChooser.addOption("Test Path 1", "Test Path 1");
-    autoChooser.addOption("Test Path 2", "Test Path 2");
-    autoChooser.addOption("180", "Test Path 3");
-    autoChooser.addOption("Just 180", "Just 180");
-    autoChooser.addOption("To Cone", "To Cone");
-    autoChooser.addOption("Long Path", "The Long Path");*/
+    autoChooser.addOption("Bottom 2 Object", "B2"); */
     SmartDashboard.putData("Auto Chooser", autoChooser);
     
     // Configure the trigger bindings
     configureBindings();
   }
 
-  //TODO: finalize button bindings
+  /** Setup for controller buttons */
   private void configureBindings() {
     controlController.a().whileTrue(new ParallelCommandGroup(
       new StageTwoDistanceCommand(stageTwoSubsystem, .25732, 20000),
@@ -128,6 +117,10 @@ public class RobotContainer {
     controlController.leftTrigger().whileTrue(clawInCommand);
   }
 
+  /** 
+   * Returns the command to run in teleop control. Usually sends the command to Robot.java teleop init.
+   * @return the command to run in Teleop.
+   */
   public Command getTeleopCommand() {
     return new ParallelCommandGroup(
       new TeleopCommand(driveSubsystem, driverController),
@@ -139,6 +132,10 @@ public class RobotContainer {
     return autoDistance;
   }
 
+  /** 
+   * Returns the command to run in autonomous control. Usually sends the command to Robot.java autonomous init.
+   * @return the command to run in autonomous.
+   */
   public Command getAutonomousCommand() {
 
     Command startingPart;

@@ -13,7 +13,6 @@ public class StageOneSubsystem extends SubsystemBase {
     DigitalInput stageOneLimitSwitchTop;
 
     public StageOneSubsystem () {
-        //TODO: fix all of these they're weird. this one is actually incorrect.
         stageOneLimitSwitchBottom = new DigitalInput(4);
         stageOneLimitSwitchTop = new DigitalInput(5);
         armExtendMotor = new WPI_TalonFX(13);
