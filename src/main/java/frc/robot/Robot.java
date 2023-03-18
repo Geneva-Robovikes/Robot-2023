@@ -70,6 +70,7 @@ public class Robot extends TimedRobot {
     songList = new String[] {
       "ThroughTheFireAndFlames.chrp",
       "auuugh.chrp"
+      "fnaf.chrp"
     };
     songselection = 0;
     lastButton = 0;
