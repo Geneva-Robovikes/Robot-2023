@@ -68,9 +68,7 @@ public class Robot extends TimedRobot {
 
     //10 song max
     songList = new String[] {
-      "ThroughTheFireAndFlames.chrp",
-      "auuugh.chrp"
-      "fnaf.chrp"
+      "fnaf.chrp",
     };
     songselection = 0;
     lastButton = 0;
@@ -106,7 +104,7 @@ public class Robot extends TimedRobot {
 
   
   public void robotInit() {
-    orchestra.loadMusic("ThroughTheFireAndFlames.chrp");
+    orchestra.loadMusic("fnaf.chrp");
     orchestra.stop();
     
     orchestra.stop();
@@ -119,6 +117,8 @@ public class Robot extends TimedRobot {
     orchestra.addInstrument(motor6);
     orchestra.addInstrument(motor7);
     orchestra.stop();
+
+    orchestra.play();
   }
 
   @Override
