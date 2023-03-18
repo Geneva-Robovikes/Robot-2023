@@ -59,17 +59,18 @@ public class RobotContainer {
   /* ~~~ Subsystems ~~~ */
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  private final StageOneSubsystem stageOneSubsystem = new StageOneSubsystem();
-  private final StageTwoSubsystem stageTwoSubsystem = new StageTwoSubsystem();
-  private final ClawArmPivotSubsystem clawArmPivotSubsystem = new ClawArmPivotSubsystem();
-  private final PivotClawSubsystem pivotClawSubsystem = new PivotClawSubsystem();
   private final ClawSubsystem clawSubsystem = new ClawSubsystem();
+  //private final StageOneSubsystem stageOneSubsystem = new StageOneSubsystem();
+  //private final StageTwoSubsystem stageTwoSubsystem = new StageTwoSubsystem();
+  //private final ClawArmPivotSubsystem clawArmPivotSubsystem = new ClawArmPivotSubsystem();
+  //private final PivotClawSubsystem pivotClawSubsystem = new PivotClawSubsystem();
 
 
   /* ~~~~ Commands ~~~~ */
   private final AutoDistance autoDistance = new AutoDistance(driveSubsystem);
-  private final ClawCommand clawInCommand = new ClawCommand(clawSubsystem, .5, 50);
-  private final ClawCommand clawOutCommand = new ClawCommand(clawSubsystem, -.5 ,50);
+  private final ClawCommand clawInCommand = new ClawCommand(clawSubsystem, -.5, 25, .25);
+  private final ClawCommand clawOutCommand = new ClawCommand(clawSubsystem, .5 ,25, .25);
+  private final FullArmCommand fullArmCommand = new FullArmCommand(armSubsystem, 0);
 
   //private final FullArmCommand fullArmUpCommand = new FullArmCommand(stageOneSubsystem, stageTwoSubsystem, -.25, .25);
   //private final FullArmCommand fullArmDownCommand = new FullArmCommand(stageOneSubsystem, stageTwoSubsystem, .25, -.25);
@@ -95,6 +96,13 @@ public class RobotContainer {
     configureBindings();
   }
 
+  public void checkLimitSwitch() {
+    SmartDashboard.putBoolean("1-down", armSubsystem.getLowerExtensionBottomState());
+    SmartDashboard.putBoolean("1-up", armSubsystem.getLowerExtensionTopState());
+    SmartDashboard.putBoolean("2-down", armSubsystem.getUpperExensionBottomState());
+    SmartDashboard.putBoolean("2-up", armSubsystem.getUpperExensionTopState());
+  }
+
   /** Setup for controller buttons */
   private void configureBindings() {
     /*
@@ -112,8 +120,8 @@ public class RobotContainer {
     ));
     */
     //controlController.y().whileTrue(new AutoBalance(driveSubsystem, 0.225, 0.35, 5, 2.5));
-    controlController.a().whileTrue(new FullArmCommand(armSubsystem, 0.5));
-    controlController.b().whileTrue(new FullArmCommand(armSubsystem, 0.5));
+    controlController.rightBumper().whileTrue(new FullArmCommand(armSubsystem, 0.5));
+    controlController.leftBumper().whileTrue(new FullArmCommand(armSubsystem, -0.5));
     controlController.rightTrigger().whileTrue(clawOutCommand);
     controlController.leftTrigger().whileTrue(clawInCommand.andThen(new ControllerRumbleCommand(controlController, 0.5, 0.5)));
   }
@@ -125,7 +133,7 @@ public class RobotContainer {
   public Command getTeleopCommand() {
     return new ParallelCommandGroup(
       new TeleopCommand(driveSubsystem, driverController),
-      new JoystickControlCommand(controlController, armSubsystem, clawSubsystem, 0.6, 0.2)
+      new JoystickControlCommand(controlController, armSubsystem, clawSubsystem, 0.6, 0.6)
     );
   }
 
@@ -141,14 +149,14 @@ public class RobotContainer {
 
     Command startingPart;
     if(autoChooser.getSelected().equals("Third Level Cube")) {
-      startingPart = new ParallelCommandGroup(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.32, 198864), new AutoPivotClawCommand(pivotClawSubsystem, -0.1, 40000)).andThen(new AutoTimedClawCommand(clawSubsystem, 0.5, 0.25));
+      //startingPart = new ParallelCommandGroup(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.32, 198864), new AutoPivotClawCommand(pivotClawSubsystem, -0.1, 40000)).andThen(new AutoTimedClawCommand(clawSubsystem, 0.5, 0.25));
     } else if (autoChooser.getSelected().equals("Third Level Cone")) {
-      startingPart = new ParallelCommandGroup(new ParallelRaceGroup(new ParallelCommandGroup(new StageTwoCommand(stageTwoSubsystem, 0.3, true), new StageOneCommand(stageOneSubsystem, -0.3, true) ,new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.32, 198864), new AutoPivotClawCommand(pivotClawSubsystem, -0.1, 40000)), new AutoClawCommand(clawSubsystem, -0.5, 1, 0.15)).andThen(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.2, 30000).andThen(new AutoTimedClawCommand(clawSubsystem, 0.5, 0.25))));
+      //startingPart = new ParallelCommandGroup(new ParallelRaceGroup(new ParallelCommandGroup(new StageTwoCommand(stageTwoSubsystem, 0.3, true), new StageOneCommand(stageOneSubsystem, -0.3, true) ,new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.32, 198864), new AutoPivotClawCommand(pivotClawSubsystem, -0.1, 40000)), new AutoClawCommand(clawSubsystem, -0.5, 1, 0.15)).andThen(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.2, 30000).andThen(new AutoTimedClawCommand(clawSubsystem, 0.5, 0.25))));
     } else {
-      startingPart = new ParallelRaceGroup(new ParallelCommandGroup(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.32, 198864), new AutoPivotClawCommand(pivotClawSubsystem, -0.1, 40000)), new AutoClawCommand(clawSubsystem, -0.5, 1, 0.15)).andThen(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.2, 30000).andThen(new AutoTimedClawCommand(clawSubsystem, 0.5, 0.25)));
+      //startingPart = new ParallelRaceGroup(new ParallelCommandGroup(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.32, 198864), new AutoPivotClawCommand(pivotClawSubsystem, -0.1, 40000)), new AutoClawCommand(clawSubsystem, -0.5, 1, 0.15)).andThen(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.2, 30000).andThen(new AutoTimedClawCommand(clawSubsystem, 0.5, 0.25)));
     }
 
-    Command collapse = new ParallelCommandGroup(new ClawArmPivotCommand(clawArmPivotSubsystem, 0.32, true), new PivotClawCommand(pivotClawSubsystem, 0.1, false), new StageOneCommand(stageOneSubsystem, 0.3, false), new StageTwoCommand(stageTwoSubsystem, -0.3, false));
+    //Command collapse = new ParallelCommandGroup(new ClawArmPivotCommand(clawArmPivotSubsystem, 0.32, true), new PivotClawCommand(pivotClawSubsystem, 0.1, false), new StageOneCommand(stageOneSubsystem, 0.3, false), new StageTwoCommand(stageTwoSubsystem, -0.3, false));
 
     if(!autoChooser.getSelected().equals("Outtake 1")) {
       PathPlannerTrajectory path = PathPlanner.loadPath("Straight Back", new PathConstraints(0.5,0.5));
@@ -173,8 +181,9 @@ public class RobotContainer {
         driveSubsystem // The drive subsystem. Used to properly set the requirements of path following commands
       );
       
-      return autoBuilder.fullAuto(path);
+      //return autoBuilder.fullAuto(path);
       //return startingPart.andThen(new ParallelCommandGroup(collapse, new AutoBackUpCommand(driveSubsystem, 0.6, 4.25, true))).andThen(new WaitCommand(0.5)).andThen(new AutoBackUpCommand(driveSubsystem, -0.6, 2, true).andThen(new AutoBalance(driveSubsystem, 0.225, 0.35, 5, 2.5))); 
+      //return new AutoBackUpCommand(driveSubsystem, .4, 2, false).andThen(new AutoBalance(driveSubsystem, .225, .35, 5, 2.5));
     }
 
     // Replace with outtake one command.

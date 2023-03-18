@@ -12,8 +12,8 @@ public class StageTwoSubsystem extends SubsystemBase{
     DigitalInput stageTwoLimitSwitchTop;
 
     public StageTwoSubsystem() {
-        stageTwoLimitSwitchBottom = new DigitalInput(7);
-        stageTwoLimitSwitchTop = new DigitalInput(6);
+        //stageTwoLimitSwitchBottom = new DigitalInput(7);
+        //stageTwoLimitSwitchTop = new DigitalInput(6);
         upperArmMotor = new WPI_TalonFX(10);
         upperArmMotor.setNeutralMode(NeutralMode.Brake);
     }

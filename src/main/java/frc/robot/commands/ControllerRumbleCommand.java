@@ -19,6 +19,7 @@ public class ControllerRumbleCommand extends CommandBase  {
 
     @Override
     public void initialize() {
+        timer.reset();
         controller.getHID().setRumble(RumbleType.kBothRumble, intensity);
         timer.start();
     }

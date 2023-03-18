@@ -32,7 +32,7 @@ public class ArmSubsystem extends SubsystemBase{
         stageTwoLimitSwitchTop = new DigitalInput(6);
         stageTwoLimitSwitchBottom = new DigitalInput(7);
 
-        upperExtensionMotor.setInverted(true);
+        lowerExtensionMotor.setInverted(true);
 
         upperExtensionMotor.setNeutralMode(NeutralMode.Brake);
         lowerExtensionMotor.setNeutralMode(NeutralMode.Brake);
@@ -45,11 +45,11 @@ public class ArmSubsystem extends SubsystemBase{
     }
 
     public boolean getUpperExensionTopState() {
-        return stageTwoLimitSwitchTop.get();
+        return !stageTwoLimitSwitchTop.get();
     }
 
     public boolean getUpperExensionBottomState() {
-        return stageTwoLimitSwitchBottom.get();
+        return !stageTwoLimitSwitchBottom.get();
     }
 
     public double getUpperExensionDistance() {
@@ -65,11 +65,11 @@ public class ArmSubsystem extends SubsystemBase{
     }
 
     public boolean getLowerExtensionTopState() {
-        return stageOneLimitSwitchTop.get();
+        return !stageOneLimitSwitchTop.get();
     }
 
     public boolean getLowerExtensionBottomState() {
-        return stageOneLimitSwitchBottom.get();
+        return !stageOneLimitSwitchBottom.get();
     }
 
     public double getLowerExtensionDistance() {
@@ -97,7 +97,7 @@ public class ArmSubsystem extends SubsystemBase{
     }
 
     public boolean getArmPivotBottomState() {
-        return clawArmLimitSwitchDown.get();
+        return !clawArmLimitSwitchDown.get();
     }
 
     public double getArmPivotAngle() {

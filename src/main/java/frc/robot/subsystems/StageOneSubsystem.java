@@ -13,8 +13,8 @@ public class StageOneSubsystem extends SubsystemBase {
     DigitalInput stageOneLimitSwitchTop;
 
     public StageOneSubsystem () {
-        stageOneLimitSwitchBottom = new DigitalInput(4);
-        stageOneLimitSwitchTop = new DigitalInput(5);
+        //stageOneLimitSwitchBottom = new DigitalInput(4);
+        //stageOneLimitSwitchTop = new DigitalInput(5);
         armExtendMotor = new WPI_TalonFX(13);
         armExtendMotor.setNeutralMode(NeutralMode.Brake);
     }

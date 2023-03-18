@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -32,6 +33,7 @@ public class ClawSubsystem extends SubsystemBase {
     }
 
     public double getClawMotorCurrent() {
+        SmartDashboard.putNumber("Neo Current", clawMotor.getOutputCurrent());
         return clawMotor.getOutputCurrent();
     }
 
@@ -44,7 +46,7 @@ public class ClawSubsystem extends SubsystemBase {
     }
 
     public boolean getPivotBottomState() {
-        return pivotLimitSwitchBottom.get();
+        return !pivotLimitSwitchBottom.get();
     }
 
     public double getPivotDistance() {

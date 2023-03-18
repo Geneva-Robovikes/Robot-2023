@@ -16,6 +16,8 @@ public class FullArmCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        upperStopped = false;
+        lowerStopped = false;
         armSubsystem.setUpperExensionMotor(speed);
         armSubsystem.setLowerExtensionMotor(speed);
     }

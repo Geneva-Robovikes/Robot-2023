@@ -8,17 +8,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ClawArmPivotSubsystem extends SubsystemBase {
-    private WPI_TalonFX upperArmClawPivotMotorAAAA;
+    private WPI_TalonFX upperArmClawPivotMotor;
     DigitalInput clawArmLimitSwitchUp;
     DigitalInput clawArmLimitSwitchDown;
     boolean canControl = true;
     
     public ClawArmPivotSubsystem(){
         //TODO: set to real input
-        clawArmLimitSwitchUp = new DigitalInput(0);
-        clawArmLimitSwitchDown = new DigitalInput(1);
-        upperArmClawPivotMotorAAAA = new WPI_TalonFX(12);
-        upperArmClawPivotMotorAAAA.setNeutralMode(NeutralMode.Brake);
+        //clawArmLimitSwitchUp = new DigitalInput(0);
+        //clawArmLimitSwitchDown = new DigitalInput(1);
+        upperArmClawPivotMotor = new WPI_TalonFX(12);
+        upperArmClawPivotMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     public void setControl(boolean canControl) {
@@ -30,15 +30,15 @@ public class ClawArmPivotSubsystem extends SubsystemBase {
     }
 
     public void setArmMotor(double speed) {
-        upperArmClawPivotMotorAAAA.set(speed);
+        upperArmClawPivotMotor.set(speed);
     }
 
     public void resetEncoder() {
-        upperArmClawPivotMotorAAAA.setSelectedSensorPosition(0);
+        upperArmClawPivotMotor.setSelectedSensorPosition(0);
     }
 
     public double getArmPosition() {
-        return upperArmClawPivotMotorAAAA.getSelectedSensorPosition();
+        return upperArmClawPivotMotor.getSelectedSensorPosition();
     }
 
     public boolean getUpSwitch() {
@@ -54,6 +54,6 @@ public class ClawArmPivotSubsystem extends SubsystemBase {
     }
 
     public double getArmAngle() {
-        return upperArmClawPivotMotorAAAA.getSelectedSensorPosition() / Constants.falconEncoderResolution / Constants.clawAngleGearRatio * (2 * Math.PI);
+        return upperArmClawPivotMotor.getSelectedSensorPosition() / Constants.falconEncoderResolution / Constants.clawAngleGearRatio * (2 * Math.PI);
     }
 }
