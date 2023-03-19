@@ -1,42 +1,40 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ClawArmPivotSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 
 public class ClawArmPivotCommand extends CommandBase{
-    private ClawArmPivotSubsystem clawArmPivotSubsystem;
+    private ArmSubsystem armSubsystem;
     private double speed;
     boolean goingUp;
     
-    public ClawArmPivotCommand(ClawArmPivotSubsystem subsystem, double speed, boolean goingUp) {
-        clawArmPivotSubsystem = subsystem;
+    public ClawArmPivotCommand(ArmSubsystem subsystem, double speed, boolean goingUp) {
+        armSubsystem = subsystem;
         this.speed = speed;
         this.goingUp = goingUp;
     }
 
     @Override
     public void initialize() {
-        clawArmPivotSubsystem.setControl(false);
-        clawArmPivotSubsystem.setArmMotor(speed);
+        armSubsystem.setArmPivotMotor(speed);
     }
 
     @Override
     public void execute() {
-        clawArmPivotSubsystem.setArmMotor(speed);
+        armSubsystem.setArmPivotMotor(speed);
     }
 
     @Override
     public boolean isFinished() {
         if(goingUp) {
-            return clawArmPivotSubsystem.getUpSwitch();
+            return armSubsystem.getArmPivotTopState();
         }
-        return clawArmPivotSubsystem.getDownSwitch();
+        return armSubsystem.getArmPivotBottomState();
     }
 
     @Override
     public void end(boolean interrupted) {
-        clawArmPivotSubsystem.setArmMotor(0);
-        clawArmPivotSubsystem.setControl(true);
+        armSubsystem.setArmPivotMotor(0);
     }
 
 }

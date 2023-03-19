@@ -69,7 +69,7 @@ public class RobotContainer {
   /* ~~~~ Commands ~~~~ */
   private final AutoDistance autoDistance = new AutoDistance(driveSubsystem);
   private final ClawCommand clawInCommand = new ClawCommand(clawSubsystem, -.5, 25, .25);
-  private final ClawCommand clawOutCommand = new ClawCommand(clawSubsystem, .5 ,25, .25);
+  private final ClawCommand clawOutCommand = new ClawCommand(clawSubsystem, 1 ,25, .25);
   private final FullArmCommand fullArmCommand = new FullArmCommand(armSubsystem, 0);
 
   //private final FullArmCommand fullArmUpCommand = new FullArmCommand(stageOneSubsystem, stageTwoSubsystem, -.25, .25);
@@ -101,25 +101,28 @@ public class RobotContainer {
     SmartDashboard.putBoolean("1-up", armSubsystem.getLowerExtensionTopState());
     SmartDashboard.putBoolean("2-down", armSubsystem.getUpperExensionBottomState());
     SmartDashboard.putBoolean("2-up", armSubsystem.getUpperExensionTopState());
+    SmartDashboard.putBoolean("Arm Down", armSubsystem.getArmPivotBottomState());
+    SmartDashboard.putBoolean("Arm Up", armSubsystem.getArmPivotTopState());
+    SmartDashboard.putBoolean("Claw Down", clawSubsystem.getPivotBottomState());
+    SmartDashboard.putBoolean("Claw Up", clawSubsystem.getPivotTopState());
+  }
+
+  public void encoderTest() {
+    SmartDashboard.putNumber("claw pivot distance", clawSubsystem.getPivotDistance());
+    SmartDashboard.putNumber("arm pivot distance", armSubsystem.getArmPivotPosition());
+    SmartDashboard.putNumber("First Stage distance", armSubsystem.getLowerExtensionDistance());
+    SmartDashboard.putNumber("Second Stage distance", armSubsystem.getUpperExensionDistance());
   }
 
   /** Setup for controller buttons */
   private void configureBindings() {
-    /*
-    controlController.a().whileTrue(new ParallelCommandGroup(
-      new StageTwoDistanceCommand(stageTwoSubsystem, .25732, 20000),
-      new StageOneDistanceCommand(stageOneSubsystem, -.25732, 30000),
-      new ClawArmPivotCommand(clawArmPivotSubsystem, -0.32, false),
-      new PivotClawCommand(pivotClawSubsystem, 0.1, true)
-    ));
-    controlController.b().whileTrue(new ParallelCommandGroup(
-      new StageOneCommand(stageOneSubsystem, 0.25732, false),
-      new StageTwoCommand(stageTwoSubsystem, -0.25732, false),
-      new ClawArmPivotCommand(clawArmPivotSubsystem, 0.32, true),
-      new PivotClawCommand(pivotClawSubsystem, 0.1, false)
-    ));
-    */
     //controlController.y().whileTrue(new AutoBalance(driveSubsystem, 0.225, 0.35, 5, 2.5));
+    controlController.a().whileTrue(new ParallelCommandGroup(
+      new StageTwoDistanceCommand(armSubsystem, .25, 35000),
+      new StageOneDistanceCommand(armSubsystem, .25, 32000),
+      new ClawArmPivotCommand(armSubsystem, -0.4, false),
+      new PivotClawCommand(clawSubsystem, -0.2, true)
+    ));
     controlController.rightBumper().whileTrue(new FullArmCommand(armSubsystem, 0.5));
     controlController.leftBumper().whileTrue(new FullArmCommand(armSubsystem, -0.5));
     controlController.rightTrigger().whileTrue(clawOutCommand);
@@ -150,6 +153,7 @@ public class RobotContainer {
     Command startingPart;
     if(autoChooser.getSelected().equals("Third Level Cube")) {
       //startingPart = new ParallelCommandGroup(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.32, 198864), new AutoPivotClawCommand(pivotClawSubsystem, -0.1, 40000)).andThen(new AutoTimedClawCommand(clawSubsystem, 0.5, 0.25));
+      startingPart = new ParallelCommandGroup(new AutoClawArmPivotCommand(armSubsystem, 0, 0), new AutoPivotClawCommand(clawSubsystem, 0, 0)).andThen(new AutoTimedClawCommand(clawSubsystem, .5, .25));
     } else if (autoChooser.getSelected().equals("Third Level Cone")) {
       //startingPart = new ParallelCommandGroup(new ParallelRaceGroup(new ParallelCommandGroup(new StageTwoCommand(stageTwoSubsystem, 0.3, true), new StageOneCommand(stageOneSubsystem, -0.3, true) ,new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.32, 198864), new AutoPivotClawCommand(pivotClawSubsystem, -0.1, 40000)), new AutoClawCommand(clawSubsystem, -0.5, 1, 0.15)).andThen(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.2, 30000).andThen(new AutoTimedClawCommand(clawSubsystem, 0.5, 0.25))));
     } else {

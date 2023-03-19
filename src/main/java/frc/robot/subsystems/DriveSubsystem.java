@@ -130,7 +130,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
     //Set max speed/max velocity here
-    SwerveDriveKinematics.desaturateWheelSpeeds(states, 3);
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, 2.5);
     setModuleStates(states);
   }
 
