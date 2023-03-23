@@ -30,17 +30,24 @@ import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PivotClawSubsystem;
 import frc.robot.subsystems.StageTwoSubsystem;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -68,9 +75,8 @@ public class RobotContainer {
 
   /* ~~~~ Commands ~~~~ */
   private final AutoDistance autoDistance = new AutoDistance(driveSubsystem);
-  private final ClawCommand clawInCommand = new ClawCommand(clawSubsystem, -.5, 25, .25);
-  private final ClawCommand clawOutCommand = new ClawCommand(clawSubsystem, 1 ,25, .25);
-  private final FullArmCommand fullArmCommand = new FullArmCommand(armSubsystem, 0);
+  private final ClawCommand clawInCommand = new ClawCommand(clawSubsystem, -.5, 35, .25);
+  private final ClawCommand clawOutCommand = new ClawCommand(clawSubsystem, 1 , 50, .25);
 
   //private final FullArmCommand fullArmUpCommand = new FullArmCommand(stageOneSubsystem, stageTwoSubsystem, -.25, .25);
   //private final FullArmCommand fullArmDownCommand = new FullArmCommand(stageOneSubsystem, stageTwoSubsystem, .25, -.25);
@@ -80,9 +86,8 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {    
     // Add new path to this chooser to select them from shuffleboard.
-    autoChooser.setDefaultOption("Third Level Cube", "Third Level Cube");
-    autoChooser.addOption("Third Level Cone", "Third Level Cone");
-    autoChooser.addOption("Second Level Cone", "Second Level Cone");
+    autoChooser.setDefaultOption("Outtake 1", "Outtake 1");
+    autoChooser.addOption("Outtake 1 Balance", "Outtake 1 Balance");
     autoChooser.addOption("Top 1.5 Object Scale", "T1.5S");
     autoChooser.addOption("Top 2 Object Scale", "T2S");
     autoChooser.addOption("Top 2 Object", "T2");
@@ -105,6 +110,9 @@ public class RobotContainer {
     SmartDashboard.putBoolean("Arm Up", armSubsystem.getArmPivotTopState());
     SmartDashboard.putBoolean("Claw Down", clawSubsystem.getPivotBottomState());
     SmartDashboard.putBoolean("Claw Up", clawSubsystem.getPivotTopState());
+    SmartDashboard.putNumber("x", controlController.getLeftX());
+    SmartDashboard.putNumber("y", controlController.getLeftY());
+    SmartDashboard.putNumber("gyro", driveSubsystem.getGyroAngleY());
   }
 
   public void encoderTest() {
@@ -117,14 +125,32 @@ public class RobotContainer {
   /** Setup for controller buttons */
   private void configureBindings() {
     //controlController.y().whileTrue(new AutoBalance(driveSubsystem, 0.225, 0.35, 5, 2.5));
+
     controlController.a().whileTrue(new ParallelCommandGroup(
-      new StageTwoDistanceCommand(armSubsystem, .25, 35000),
-      new StageOneDistanceCommand(armSubsystem, .25, 32000),
+      new StageTwoDistanceCommand(armSubsystem, .25, 44000),
+      new StageOneDistanceCommand(armSubsystem, .25, 33000),
       new ClawArmPivotCommand(armSubsystem, -0.4, false),
       new PivotClawCommand(clawSubsystem, -0.2, true)
     ));
-    controlController.rightBumper().whileTrue(new FullArmCommand(armSubsystem, 0.5));
-    controlController.leftBumper().whileTrue(new FullArmCommand(armSubsystem, -0.5));
+
+    controlController.b().whileTrue(new ParallelCommandGroup(
+      new StageTwoDistanceCommand(armSubsystem, .25, 37000),
+      new StageOneDistanceCommand(armSubsystem, .25, 27000),
+      new ClawArmPivotCommand(armSubsystem, -0.4, false),
+      new PivotClawCommand(clawSubsystem, -0.2, true)
+    ).andThen(new ParallelCommandGroup(
+      new AutoClawArmPivotCommand(armSubsystem, 0.2, 30000),
+      new AutoPivotClawCommand(clawSubsystem, .2, 15000))
+    ));
+
+    controlController.y().whileTrue(new ParallelCommandGroup(
+      new FullArmCommand(armSubsystem, -0.5),
+      new ClawArmPivotCommand(armSubsystem, 0.4, true),
+      new PivotClawCommand(clawSubsystem, 0.2, false)
+    ));
+
+    controlController.rightBumper().whileTrue(new FullArmCommand(armSubsystem, 0.75));
+    controlController.leftBumper().whileTrue(new FullArmCommand(armSubsystem, -0.75));
     controlController.rightTrigger().whileTrue(clawOutCommand);
     controlController.leftTrigger().whileTrue(clawInCommand.andThen(new ControllerRumbleCommand(controlController, 0.5, 0.5)));
   }
@@ -149,48 +175,73 @@ public class RobotContainer {
    * @return the command to run in autonomous.
    */
   public Command getAutonomousCommand() {
+    if(autoChooser.getSelected().equals("Outtake 1")) {
+      return new ParallelCommandGroup(
+        new FullArmCommand(armSubsystem, 0.5),
+        new AutoClawArmPivotCommand(armSubsystem, -0.4, 115000)
+        ).andThen(new AutoClawCommand(clawSubsystem, 1, 0.5)
+        ).andThen(new ParallelCommandGroup(
+        new FullArmCommand(armSubsystem, -0.5),
+        new ClawArmPivotCommand(armSubsystem, 0.6, true),
+        new PivotClawCommand(clawSubsystem, 0.27, false)
+        ).andThen(new AutoBackUpCommand(driveSubsystem, -0.6, 4.25, true)));
+  } else if(autoChooser.getSelected().equals("Outtake 1 Balance")) {
+    return new ParallelCommandGroup(
+      new FullArmCommand(armSubsystem, 0.75),
+      new AutoClawArmPivotCommand(armSubsystem, -0.4, 115000)
+      ).andThen(new AutoClawCommand(clawSubsystem, 1, 0.5)
+      ).andThen(new ParallelCommandGroup(
+      new FullArmCommand(armSubsystem, -0.75),
+      new ClawArmPivotCommand(armSubsystem, 0.6, true),
+      new PivotClawCommand(clawSubsystem, 0.27, false)
+      ).andThen(new AutoBackUpCommand(driveSubsystem, -0.6, 4, true)
+      ).andThen(new AutoBalance(driveSubsystem, 0.225, 0.35, 5, 2.5)));
+}
 
-    Command startingPart;
-    if(autoChooser.getSelected().equals("Third Level Cube")) {
-      //startingPart = new ParallelCommandGroup(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.32, 198864), new AutoPivotClawCommand(pivotClawSubsystem, -0.1, 40000)).andThen(new AutoTimedClawCommand(clawSubsystem, 0.5, 0.25));
-      startingPart = new ParallelCommandGroup(new AutoClawArmPivotCommand(armSubsystem, 0, 0), new AutoPivotClawCommand(clawSubsystem, 0, 0)).andThen(new AutoTimedClawCommand(clawSubsystem, .5, .25));
-    } else if (autoChooser.getSelected().equals("Third Level Cone")) {
-      //startingPart = new ParallelCommandGroup(new ParallelRaceGroup(new ParallelCommandGroup(new StageTwoCommand(stageTwoSubsystem, 0.3, true), new StageOneCommand(stageOneSubsystem, -0.3, true) ,new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.32, 198864), new AutoPivotClawCommand(pivotClawSubsystem, -0.1, 40000)), new AutoClawCommand(clawSubsystem, -0.5, 1, 0.15)).andThen(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.2, 30000).andThen(new AutoTimedClawCommand(clawSubsystem, 0.5, 0.25))));
-    } else {
-      //startingPart = new ParallelRaceGroup(new ParallelCommandGroup(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.32, 198864), new AutoPivotClawCommand(pivotClawSubsystem, -0.1, 40000)), new AutoClawCommand(clawSubsystem, -0.5, 1, 0.15)).andThen(new AutoClawArmPivotCommand(clawArmPivotSubsystem, -0.2, 30000).andThen(new AutoTimedClawCommand(clawSubsystem, 0.5, 0.25)));
-    }
-
-    //Command collapse = new ParallelCommandGroup(new ClawArmPivotCommand(clawArmPivotSubsystem, 0.32, true), new PivotClawCommand(pivotClawSubsystem, 0.1, false), new StageOneCommand(stageOneSubsystem, 0.3, false), new StageTwoCommand(stageTwoSubsystem, -0.3, false));
-
-    if(!autoChooser.getSelected().equals("Outtake 1")) {
-      PathPlannerTrajectory path = PathPlanner.loadPath("Straight Back", new PathConstraints(0.5,0.5));
-
+    if(!autoChooser.getSelected().equals("Outtake 1") && !autoChooser.getSelected().equals("Outtake 1 Balance")) { 
+      ArrayList<PathPlannerTrajectory> path = new ArrayList<>(PathPlanner.loadPathGroup(autoChooser.getSelected(), 1, 0.5));
+      
       HashMap<String, Command> eventMap = new HashMap<>();
-      //eventMap.put("Stop", stopCommand);            <-- Uncomment when these commands exist
-      //eventMap.put("Intake", IntakeCommand());      <--
-      //eventMap.put("Outtake", OuttakeCommand());    <--
-      //eventMap.put("Lower Arm", LowerArmCommand()); <--
-      //eventMap.put("Raise Arm", RaiseArmCommand()); <--
-      //eventMap.put("Balance", BalanceCommand());    <--
+      eventMap.put("Cone Outtake", new AutoClawCommand(clawSubsystem, 1, 0.5));
+      eventMap.put("Cube Outtake", new AutoClawCommand(clawSubsystem, 1, 0.75));
+      eventMap.put("Intake", new ClawCommand(clawSubsystem, -0.5, 25, 0.25));
+      eventMap.put("Lower Arm", new ParallelCommandGroup(
+        new StageTwoDistanceCommand(armSubsystem, .25, 44000),
+        new StageOneDistanceCommand(armSubsystem, .25, 33000),
+        new ClawArmPivotCommand(armSubsystem, -0.6, false),
+        new PivotClawCommand(clawSubsystem, -0.27, true)
+      ));
+      eventMap.put("Raise Arm", new ParallelCommandGroup(
+        new FullArmCommand(armSubsystem, -0.5),
+        new ClawArmPivotCommand(armSubsystem, 0.6, true),
+        new PivotClawCommand(clawSubsystem, 0.27, false)
+      ));
+      eventMap.put("Place Cube",  new ParallelCommandGroup(
+        new AutoClawArmPivotCommand(armSubsystem, -0.4, 115000),
+        new AutoPivotClawCommand(clawSubsystem, -0.35, 97500)
+      ));
+      eventMap.put("Place Cone", new ParallelCommandGroup(
+        new FullArmCommand(armSubsystem, 0.5),
+        new AutoClawArmPivotCommand(armSubsystem, -0.4, 115000)
+      ));
   
       SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
         driveSubsystem::getPose, // Pose2d supplier
         driveSubsystem::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
         driveSubsystem.kinematics, // SwerveDriveKinematics
-        new PIDConstants(6.5, 0.000, .07), // PID constants to correct for translation error (used to create the X and Y PID controllers)
-        new PIDConstants(2.55, .01374, .008), // PID constants to correct for rotation error (used to create the rotation controller)
+        new PIDConstants(3.1679, 0, 0),
+        new PIDConstants(4.1807, 0, 0.23405),
+        //new PIDConstants(6.5, 0.000, .07), // PID constants to correct for translation error (used to create the X and Y PID controllers)
+        //new PIDConstants(2.55, .01374, .008), // PID constants to correct for rotation error (used to create the rotation controller)
         driveSubsystem::setModuleStates, // Module states consumer used to output to the drive subsystem
         eventMap,
         true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
         driveSubsystem // The drive subsystem. Used to properly set the requirements of path following commands
       );
       
-      //return autoBuilder.fullAuto(path);
-      //return startingPart.andThen(new ParallelCommandGroup(collapse, new AutoBackUpCommand(driveSubsystem, 0.6, 4.25, true))).andThen(new WaitCommand(0.5)).andThen(new AutoBackUpCommand(driveSubsystem, -0.6, 2, true).andThen(new AutoBalance(driveSubsystem, 0.225, 0.35, 5, 2.5))); 
-      //return new AutoBackUpCommand(driveSubsystem, .4, 2, false).andThen(new AutoBalance(driveSubsystem, .225, .35, 5, 2.5));
+      return autoBuilder.fullAuto(path);
     }
 
-    // Replace with outtake one command.
     return null;
   }
 }

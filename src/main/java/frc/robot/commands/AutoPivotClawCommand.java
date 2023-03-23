@@ -43,6 +43,13 @@ public class AutoPivotClawCommand extends CommandBase {
     public boolean isFinished() {
         //return Math.abs(pivotClawSubsystem.getDistance()) > distance;
         return Math.abs(clawSubsystem.getPivotDistance()) > distance;
+
+        //untested.
+        /*if(speed<0) {
+            return clawSubsystem.getPivotBottomState() || Math.abs(clawSubsystem.getPivotDistance()) > distance;
+        } else {
+            return clawSubsystem.getPivotBottomState() || Math.abs(clawSubsystem.getPivotDistance()) > distance;
+        }*/
     }
     
     @Override

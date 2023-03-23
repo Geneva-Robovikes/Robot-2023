@@ -7,8 +7,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.362032058590057,
-        "y": 4.41682801075799
+        "x": 2.140778327358182,
+        "y": 4.558863163527854
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -17,8 +17,35 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "Outtake"
+          "Place Cone",
+          "Cone Outtake",
+          "Raise Arm"
         ],
+        "executionBehavior": "sequential",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 3.3136402150666897,
+        "y": 4.620055957669168
+      },
+      "prevControl": {
+        "x": 2.5225996353799416,
+        "y": 4.615768888578089
+      },
+      "nextControl": {
+        "x": 3.7113875358465394,
+        "y": 4.62221156167832
+      },
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
@@ -26,16 +53,16 @@
     },
     {
       "anchorPoint": {
-        "x": 6.463372354293904,
-        "y": 4.58891221896934
+        "x": 6.465069113344334,
+        "y": 4.579260761574959
       },
       "prevControl": {
-        "x": 4.670828518759006,
-        "y": 4.646273621706457
+        "x": 5.485984407083318,
+        "y": 4.569061962551407
       },
       "nextControl": {
-        "x": 4.670828518759006,
-        "y": 4.646273621706457
+        "x": 5.485984407083318,
+        "y": 4.569061962551407
       },
       "holonomicAngle": 0.0,
       "isReversal": true,
@@ -53,12 +80,37 @@
     },
     {
       "anchorPoint": {
-        "x": 1.7884180312188895,
-        "y": 4.431168361442269
+        "x": 4.017357347691795,
+        "y": 4.63025475669272
       },
       "prevControl": {
-        "x": 2.4910952147485697,
-        "y": 4.6606139723907365
+        "x": 4.5374960978929595,
+        "y": 4.620055957669168
+      },
+      "nextControl": {
+        "x": 3.507107685386795,
+        "y": 4.640259652032033
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 1.896007150792928,
+        "y": 4.395682379151018
+      },
+      "prevControl": {
+        "x": 2.171374724428838,
+        "y": 4.609857158645615
       },
       "nextControl": null,
       "holonomicAngle": 180.0,
@@ -68,13 +120,37 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "Outtake"
+          "Place Cube",
+          "Cube Outtake",
+          "Raise Arm"
         ],
-        "executionBehavior": "parallel",
+        "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 0
       }
     }
   ],
-  "markers": []
+  "maxVelocity": 2.0,
+  "maxAcceleration": 1.0,
+  "isReversed": null,
+  "markers": [
+    {
+      "position": 1.0,
+      "names": [
+        "Lower Arm"
+      ]
+    },
+    {
+      "position": 2.109090909090833,
+      "names": [
+        "Raise Arm"
+      ]
+    },
+    {
+      "position": 1.793939393939425,
+      "names": [
+        "Intake"
+      ]
+    }
+  ]
 }

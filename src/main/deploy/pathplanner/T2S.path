@@ -17,7 +17,7 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "Outtake"
+          "Cone Outtake"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
@@ -71,7 +71,7 @@
       "isStopPoint": true,
       "stopEvent": {
         "names": [
-          "Outtake"
+          "Cube Outtake"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",

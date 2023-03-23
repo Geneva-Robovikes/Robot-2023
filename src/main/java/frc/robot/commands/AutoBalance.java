@@ -35,7 +35,7 @@ public class AutoBalance extends CommandBase {
     SmartDashboard.putBoolean("Is On Scale", isOnScale);
 
     if(!isOnScale && currentYAngle < (tolerance + 1) && currentYAngle > -(tolerance + 1)) {
-      driveSubsystem.setModuleStatesFromSpeeds(driveSpeed, 0, 0, false);
+      driveSubsystem.setModuleStatesFromSpeeds(driveSpeed, 0, 0, true);
       return;
     } else {
       isOnScale = true;
@@ -45,7 +45,7 @@ public class AutoBalance extends CommandBase {
     SmartDashboard.putNumber("Timer", timer.get());
 
     if(isOnScale && !balance) {
-      driveSubsystem.setModuleStatesFromSpeeds(driveSpeed, 0, 0, false);
+      driveSubsystem.setModuleStatesFromSpeeds(driveSpeed, 0, 0, true);
       if (timer.get() > waitTime) {
         balance = true;
       } else {
@@ -54,9 +54,9 @@ public class AutoBalance extends CommandBase {
     }
 
     if(currentYAngle > tolerance) {
-      driveSubsystem.setModuleStatesFromSpeeds(balanceSpeed, 0, 0, false);
+      driveSubsystem.setModuleStatesFromSpeeds(-balanceSpeed, 0, 0, true);
     } else if(currentYAngle < -tolerance) {
-      driveSubsystem.setModuleStatesFromSpeeds(-balanceSpeed, 0, 0, false);
+      driveSubsystem.setModuleStatesFromSpeeds(balanceSpeed, 0, 0, true);
     } else {
       driveSubsystem.stop();
     }

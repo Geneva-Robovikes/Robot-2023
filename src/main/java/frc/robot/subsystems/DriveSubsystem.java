@@ -59,12 +59,6 @@ public class DriveSubsystem extends SubsystemBase {
   public DriveSubsystem() {
     gyro.calibrate();
     //gyro.reset();
-    SmartDashboard.putNumber("Path kP", 6);
-    SmartDashboard.putNumber("Path kI", 0);
-    SmartDashboard.putNumber("Path kD", 0);
-    SmartDashboard.putNumber("Rotational Path kP", 2.55);
-    SmartDashboard.putNumber("Rotational Path kI", .01374);
-    SmartDashboard.putNumber("Rotational Path kD", .004);
     setDefaultCommand(new StopCommand(this));
   }
 
@@ -88,12 +82,12 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   // Uncomment if the autobuilder doesn't work properly
-  public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
-    /*gyro.reset();
+  /*public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
+    gyro.reset();
     frontLeftModule.resetModule();
     frontRightModule.resetModule();
     backLeftModule.resetModule();
-    backRightModule.resetModule();*/
+    backRightModule.resetModule();
     return new SequentialCommandGroup(
       new InstantCommand(() -> {
         // Reset odometry for the first path you run during auto
@@ -119,18 +113,18 @@ public class DriveSubsystem extends SubsystemBase {
         this // Requires this drive subsystem
       )
     );
-  }
+  }*/
 
   public void setModuleStatesFromSpeeds(double xVelocity, double yVelocity, double angularVelocity, boolean isFieldCentric) {
     ChassisSpeeds speeds;
     if(isFieldCentric) {
-      speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, yVelocity, angularVelocity, getRotation2d());
+      speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocity, -yVelocity, angularVelocity, getRotation2d());
     } else {
-      speeds = new ChassisSpeeds(xVelocity, yVelocity, angularVelocity);
+      speeds = new ChassisSpeeds(xVelocity, -yVelocity, angularVelocity);
     }
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
     //Set max speed/max velocity here
-    SwerveDriveKinematics.desaturateWheelSpeeds(states, 2.5);
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, 3);
     setModuleStates(states);
   }
 
@@ -138,16 +132,7 @@ public class DriveSubsystem extends SubsystemBase {
     gyro.reset();
   }
 
-  public void resetDriveEncoders() {
-    frontLeftModule.resetModule();
-    frontRightModule.resetModule();
-    backLeftModule.resetModule();
-    backRightModule.resetModule();
-  }
-
   public void resetOdometry(Pose2d pose) {
-    System.out.println(pose + "first print");
-
     odometry.resetPosition(getRotation2d(), 
       new SwerveModulePosition[] {
         frontLeftModule.getPosition(),
