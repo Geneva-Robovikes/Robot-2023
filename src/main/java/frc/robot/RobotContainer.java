@@ -58,7 +58,6 @@ public class RobotContainer {
 
 
   /* ~~~~ Commands ~~~~ */
-  private final AutoDistance autoDistance = new AutoDistance(driveSubsystem);
   private final ClawCommand clawInCommand = new ClawCommand(clawSubsystem, -.5, 35, .25);
   private final ClawCommand clawOutCommand = new ClawCommand(clawSubsystem, 1 , 50, .25);
 
