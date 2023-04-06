@@ -8,7 +8,6 @@ import frc.robot.Constants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -29,9 +28,7 @@ public class TeleopCommand extends CommandBase {
   @Override
   public void execute() {
     double x1 = Math.signum(driveController.getLeftX()) * Math.pow(driveController.getLeftX(), 2);
-    //SmartDashboard.putNumber("x", driveController.getLeftX());
     double y1 = Math.signum(-driveController.getLeftY()) * Math.pow(driveController.getLeftY(), 2);
-    //SmartDashboard.putNumber("y", driveController.getLeftY());
     double x2 = Math.signum(-driveController.getRightX()) * Math.pow(driveController.getRightX(), 2);
     double rightTrigger = driveController.getRightTriggerAxis();
 
