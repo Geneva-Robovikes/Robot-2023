@@ -175,6 +175,7 @@ public class RobotContainer {
    * @return the command to run in autonomous.
    */
   public Command getAutonomousCommand() {
+    driveSubsystem.resetGyro();
     if(autoChooser.getSelected().equals("Outtake 1")) {
       return new ParallelCommandGroup(
         new FullArmCommand(armSubsystem, 0.5),
@@ -186,6 +187,7 @@ public class RobotContainer {
         new PivotClawCommand(clawSubsystem, 0.27, false)
         ).andThen(new AutoBackUpCommand(driveSubsystem, -0.6, 4.25, true)));
   } else if(autoChooser.getSelected().equals("Outtake 1 Balance")) {
+    driveSubsystem.resetGyro();
     return new ParallelCommandGroup(
       new FullArmCommand(armSubsystem, 0.75),
       new AutoClawArmPivotCommand(armSubsystem, -0.4, 115000)
@@ -194,9 +196,24 @@ public class RobotContainer {
       new FullArmCommand(armSubsystem, -0.75),
       new ClawArmPivotCommand(armSubsystem, 0.6, true),
       new PivotClawCommand(clawSubsystem, 0.27, false)
-      ).andThen(new AutoBackUpCommand(driveSubsystem, -0.6, 4, true)
-      ).andThen(new AutoBalance(driveSubsystem, 0.225, 0.35, 5, 2.5)));
-}
+      ).andThen(new WaitCommand(0.5)
+      ).andThen(new AutoBalance(driveSubsystem, -0.225, -0.45, 5, 1.75))
+    );
+  }
+  /*if(autoChooser.getSelected().equals("Outtake 1 Cone Balance")) {
+    driveSubsystem.resetGyro();
+    return new ParallelCommandGroup(
+      new FullArmCommand(armSubsystem, 0.75),
+      new AutoClawArmPivotCommand(armSubsystem, -0.4, 115000)
+      ).andThen(new AutoClawCommand(clawSubsystem, .75, 0.5)
+      ).andThen(new ParallelCommandGroup(
+      new FullArmCommand(armSubsystem, -0.75),
+      new ClawArmPivotCommand(armSubsystem, 0.6, true),
+      new PivotClawCommand(clawSubsystem, 0.27, false)
+      /*).andThen(new AutoBackUpCommand(driveSubsystem, -0.6, 4, true)
+      ).andThen(new WaitCommand(1) */
+       //).andThen(new AutoBalance(driveSubsystem, -0.225, -0.45, 5, 1.75)));
+  //}
 
     if(!autoChooser.getSelected().equals("Outtake 1") && !autoChooser.getSelected().equals("Outtake 1 Balance")) { 
       ArrayList<PathPlannerTrajectory> path = new ArrayList<>(PathPlanner.loadPathGroup(autoChooser.getSelected(), 1, 0.5));

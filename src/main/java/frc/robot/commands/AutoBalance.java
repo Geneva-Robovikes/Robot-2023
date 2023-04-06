@@ -34,6 +34,10 @@ public class AutoBalance extends CommandBase {
     SmartDashboard.putNumber("Gyro Y Angle", currentYAngle);
     SmartDashboard.putBoolean("Is On Scale", isOnScale);
 
+    if(timer.get() > 7) {
+      driveSubsystem.setModuleStatesFromSpeeds(0, 0, 0, true);
+    }
+
     if(!isOnScale && currentYAngle < (tolerance + 1) && currentYAngle > -(tolerance + 1)) {
       driveSubsystem.setModuleStatesFromSpeeds(driveSpeed, 0, 0, true);
       return;
@@ -48,14 +52,15 @@ public class AutoBalance extends CommandBase {
       driveSubsystem.setModuleStatesFromSpeeds(driveSpeed, 0, 0, true);
       if (timer.get() > waitTime) {
         balance = true;
+        timer.stop();
       } else {
         return;
       }
     }
 
-    if(currentYAngle > tolerance) {
+    if(-currentYAngle > tolerance) {
       driveSubsystem.setModuleStatesFromSpeeds(-balanceSpeed, 0, 0, true);
-    } else if(currentYAngle < -tolerance) {
+    } else if(-currentYAngle < -tolerance) {
       driveSubsystem.setModuleStatesFromSpeeds(balanceSpeed, 0, 0, true);
     } else {
       driveSubsystem.stop();

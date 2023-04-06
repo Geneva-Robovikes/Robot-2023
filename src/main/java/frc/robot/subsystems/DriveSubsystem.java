@@ -74,6 +74,7 @@ public class DriveSubsystem extends SubsystemBase {
   
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("gyro y", gyro.getGyroAngleY());
     odometry.update(getRotation2d(),
     new SwerveModulePosition[] {
       frontLeftModule.getPosition(), frontRightModule.getPosition(),
