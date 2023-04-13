@@ -8,6 +8,12 @@ public class StageTwoDistanceCommand extends CommandBase {
     private double speed;
     private double distance;
 
+    /**
+     * Moves the second elevator stage to the secified position.
+     * @param subsystem the arm subsystem
+     * @param speed the speed to move the stage at. Must be between -1.0 and 1.0
+     * @param distance the distance to stop at in encoder units
+     */
     public StageTwoDistanceCommand(ArmSubsystem subsystem, double speed, double distance) {
         armSubsystem = subsystem;
         this.speed = speed;

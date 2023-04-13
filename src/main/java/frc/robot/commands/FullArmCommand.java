@@ -9,6 +9,11 @@ public class FullArmCommand extends CommandBase {
     private boolean upperStopped;
     private boolean lowerStopped;
 
+    /**
+     * Command that moves both stages of the elevator at the specified speed.
+     * @param armSubsystem the arm subsystem
+     * @param speed the speed to move the elevator at
+     */
     public FullArmCommand(ArmSubsystem armSubsystem, double speed) {
         this.armSubsystem = armSubsystem;
         this.speed = speed;

@@ -8,6 +8,12 @@ public class PivotClawCommand extends CommandBase {
     private double speed; 
     private boolean goingUp;
 
+    /**
+     * Command to pivot the claw at the specified speed until it hits a limit switch.
+     * @param subsystem the claw subsystem
+     * @param speed the speed to rotate the claw at. Must be between -1.0 and 1.0
+     * @param goingUp true if the claw is rotating up. Must be set correctly to stop at the correct switch
+     */
     public PivotClawCommand (ClawSubsystem subsystem, double speed, boolean goingUp){
         clawSubsystem = subsystem;
         this.speed = speed;

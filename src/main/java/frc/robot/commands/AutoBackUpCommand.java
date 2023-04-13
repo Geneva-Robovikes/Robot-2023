@@ -15,6 +15,13 @@ public class AutoBackUpCommand extends CommandBase {
   private double initialX;
   private boolean isFieldCentric;
 
+  /**
+   * Command to drive up the robot to a specific distance.
+   * @param driveSubsystem the drive subsystem
+   * @param speed the speed to drive the robot at
+   * @param distance the distance to move the robot
+   * @param isFieldCentric true for field centric drive, false for robot
+   */
   public AutoBackUpCommand(DriveSubsystem driveSubsystem, double speed, double distance, boolean isFieldCentric) {
     this.driveSubsystem = driveSubsystem;
     this.distance = distance;

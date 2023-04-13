@@ -11,6 +11,12 @@ private double speed;
 private double waitTime;
 private Timer timer = new Timer();
 
+    /**
+     * Command that starts the claw intake and stops after the specified time.
+     * @param subsystem the claw subsystem
+     * @param speed the speed to set the intake motor. Must be between -1.0 and 1.0
+     * @param waitTime the time to run the intake for
+     */
     public AutoClawCommand(ClawSubsystem subsystem, double speed, double waitTime){
         clawSubsystem = subsystem;
         this.speed = speed;

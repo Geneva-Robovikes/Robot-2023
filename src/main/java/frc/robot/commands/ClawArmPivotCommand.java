@@ -8,6 +8,12 @@ public class ClawArmPivotCommand extends CommandBase{
     private double speed;
     boolean goingUp;
     
+    /**
+     * Command that pivots the claw arm at the specified speed, stopping at the limit switches.
+     * @param subsystem the arm subsystem
+     * @param speed the speed to set the arm rotation. Must be between -1.0 and 1.0
+     * @param goingUp True if the arm is going up. Must be correct for the switches to stop at the correct locations
+     */
     public ClawArmPivotCommand(ArmSubsystem subsystem, double speed, boolean goingUp) {
         armSubsystem = subsystem;
         this.speed = speed;

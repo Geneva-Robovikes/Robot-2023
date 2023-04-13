@@ -7,13 +7,13 @@ public class AutoClawArmPivotCommand extends CommandBase{
     private ArmSubsystem armSubsystem;
     private double speed;
     private double distance;
-    
-    /*public AutoClawArmPivotCommand(ClawArmPivotSubsystem subsystem, double speed, double distance) {
-        clawArmPivotSubsystem = subsystem;
-        this.speed = speed;
-        this.distance = distance;
-    }*/
 
+    /**
+     * Command to pivot the claw arm to a specific distance.
+     * @param subsystem the arm subsystem
+     * @param speed the speed to rotate the arm. Must be between -1.0 and 1.0
+     * @param distance the distance to rotate the arm to in encoder units
+     */
     public AutoClawArmPivotCommand(ArmSubsystem subsystem, double speed, double distance) {
         this.armSubsystem = subsystem;
         this.speed = speed;

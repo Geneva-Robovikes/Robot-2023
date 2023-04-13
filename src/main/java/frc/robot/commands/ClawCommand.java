@@ -12,6 +12,13 @@ public class ClawCommand extends CommandBase  {
     private final double delay;
     private final double speed;
 
+    /**
+     * Command that starts the intake, stopping at the specified current limit after the specified delay.
+     * @param subsystem the claw subsystem
+     * @param speed the speed to set the intake
+     * @param currentLimit the limit in amps to stop the motor at
+     * @param delay the time to wait until the current limit kicks in
+     */
     public ClawCommand(ClawSubsystem subsystem, double speed, double currentLimit, double delay){
         clawSubsystem = subsystem;
         this.speed = speed;

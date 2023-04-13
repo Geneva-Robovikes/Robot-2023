@@ -19,6 +19,14 @@ public class AutoBalance extends CommandBase {
   private boolean isOnScale = false;
   private boolean balance = false;
 
+  /**
+   * Command to automaically balance on the charge station.
+   * @param driveSubsystem the drive subsystem
+   * @param balanceSpeed the speed when attemting to balance
+   * @param driveSpeed the speed when approaching the charge station
+   * @param tolerance the angle tolerance to consider balanced
+   * @param waitTime the time to wait before switching from the drive ot balance speeds
+   */
   public AutoBalance(DriveSubsystem driveSubsystem, double balanceSpeed, double driveSpeed,  double tolerance, double waitTime) {
     this.driveSubsystem = driveSubsystem;
     this.tolerance = tolerance;

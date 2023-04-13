@@ -13,6 +13,14 @@ public class JoystickControlCommand extends CommandBase {
     private final double clawMaxSpeed; 
     private final double armMaxSpeed;
 
+    /**
+     * Command that converts controller joystick inputs to arm, claw, and elevator motions.
+     * @param controller the controller to get input from
+     * @param armSubsystem the arm subsystem
+     * @param clawSubsystem the claw subsystem
+     * @param armMaxSpeed the max speed for the arm. Must be between 0.0 and 1.0
+     * @param clawMaxSpeed the max speed for the claw roation. Must be between 0.0 and 1.0
+     */
     public JoystickControlCommand (CommandXboxController controller, ArmSubsystem armSubsystem, ClawSubsystem clawSubsystem, double armMaxSpeed, double clawMaxSpeed){
         this.armSubsystem = armSubsystem;
         this.clawSubsystem = clawSubsystem;

@@ -19,6 +19,11 @@ public class TeleopCommand extends CommandBase {
   private final double maxSpeedTheta = Constants.maxRotationalDriveSpeed;
   boolean isFieldCentric = true;
 
+  /**
+   * Drives the robot based off the controller inputs.
+   * @param driveSubsystem the drive subsystem
+   * @param driveController the controller to take input from
+   */
   public TeleopCommand(DriveSubsystem driveSubsystem, CommandXboxController driveController) {
     this.driveSubsystem = driveSubsystem;
     this.driveController = driveController;
@@ -27,11 +32,13 @@ public class TeleopCommand extends CommandBase {
   
   @Override
   public void execute() {
+    // Squares inputs so fine movements are easier to make
     double x1 = Math.signum(driveController.getLeftX()) * Math.pow(driveController.getLeftX(), 2);
     double y1 = Math.signum(-driveController.getLeftY()) * Math.pow(driveController.getLeftY(), 2);
     double x2 = Math.signum(-driveController.getRightX()) * Math.pow(driveController.getRightX(), 2);
     double rightTrigger = driveController.getRightTriggerAxis();
 
+    // If the right controller is pressed, drive switches to robot centric
     if(rightTrigger > 0.5) {
       isFieldCentric = false;
     } else {
@@ -42,14 +49,17 @@ public class TeleopCommand extends CommandBase {
       driveSubsystem.resetGyro();
     }
 
+    // Applies a deadzone to the controller inpts
     x1 = MathUtil.applyDeadband(x1, OperatorConstants.controllerDeadzone);
     y1 = MathUtil.applyDeadband(y1, OperatorConstants.controllerDeadzone);
     x2 = MathUtil.applyDeadband(x2, OperatorConstants.controllerDeadzone);
 
+    // Switches inputs to speeds in meters per second
     double vX = y1 * maxSpeedXY;
     double vY = x1 * maxSpeedXY;
     double vTheta = x2 * maxSpeedTheta;
 
+    // Sets the drive speeds
     driveSubsystem.setModuleStatesFromSpeeds(vX, vY, vTheta, isFieldCentric);
   }
 
