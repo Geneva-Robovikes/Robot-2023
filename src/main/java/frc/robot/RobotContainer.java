@@ -51,24 +51,16 @@ public class RobotContainer {
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final ClawSubsystem clawSubsystem = new ClawSubsystem();
-  //private final StageOneSubsystem stageOneSubsystem = new StageOneSubsystem();
-  //private final StageTwoSubsystem stageTwoSubsystem = new StageTwoSubsystem();
-  //private final ClawArmPivotSubsystem clawArmPivotSubsystem = new ClawArmPivotSubsystem();
-  //private final PivotClawSubsystem pivotClawSubsystem = new PivotClawSubsystem();
-
 
   /* ~~~~ Commands ~~~~ */
   private final ClawCommand clawInCommand = new ClawCommand(clawSubsystem, -.5, 35, .25);
   private final ClawCommand clawOutCommand = new ClawCommand(clawSubsystem, 1 , 50, .25);
 
-  //private final FullArmCommand fullArmUpCommand = new FullArmCommand(stageOneSubsystem, stageTwoSubsystem, -.25, .25);
-  //private final FullArmCommand fullArmDownCommand = new FullArmCommand(stageOneSubsystem, stageTwoSubsystem, .25, -.25);
-
   SendableChooser<String> autoChooser = new SendableChooser<>(); 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {    
-    // Add new path to this chooser to select them from shuffleboard.
+    // Add new auto paths to this chooser to select them from shuffleboard.
     autoChooser.setDefaultOption("Outtake 1", "Outtake 1");
     autoChooser.addOption("Outtake 1 Balance", "Outtake 1 Balance");
     autoChooser.addOption("Top 1.5 Object Scale", "T1.5S");
@@ -84,6 +76,9 @@ public class RobotContainer {
     configureBindings();
   }
 
+  /**
+   * Adds all limit switches to shuffleboard
+   */
   public void checkLimitSwitch() {
     SmartDashboard.putBoolean("1-down", armSubsystem.getLowerExtensionBottomState());
     SmartDashboard.putBoolean("1-up", armSubsystem.getLowerExtensionTopState());
@@ -98,6 +93,9 @@ public class RobotContainer {
     SmartDashboard.putNumber("gyro", driveSubsystem.getGyroAngleY());
   }
 
+  /**
+   * Puts encoder values on shuffleboard
+   */
   public void encoderTest() {
     SmartDashboard.putNumber("claw pivot distance", clawSubsystem.getPivotDistance());
     SmartDashboard.putNumber("arm pivot distance", armSubsystem.getArmPivotPosition());
@@ -130,6 +128,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     driveSubsystem.resetGyro();
+
+    //Small scary sequence of commands for putting one thing on the top level
     if(autoChooser.getSelected().equals("Outtake 1")) {
       return new ParallelCommandGroup(
         new FullArmCommand(armSubsystem, 0.5),
@@ -140,38 +140,32 @@ public class RobotContainer {
         new ClawArmPivotCommand(armSubsystem, 0.6, true),
         new PivotClawCommand(clawSubsystem, 0.27, false)
         ).andThen(new AutoBackUpCommand(driveSubsystem, -0.6, 4.25, true)));
-  } else if(autoChooser.getSelected().equals("Outtake 1 Balance")) {
-    driveSubsystem.resetGyro();
-    return new ParallelCommandGroup(
-      new FullArmCommand(armSubsystem, 0.75),
-      new AutoClawArmPivotCommand(armSubsystem, -0.4, 115000)
-      ).andThen(new AutoClawCommand(clawSubsystem, 1, 0.5)
-      ).andThen(new ParallelCommandGroup(
-      new FullArmCommand(armSubsystem, -0.75),
-      new ClawArmPivotCommand(armSubsystem, 0.6, true),
-      new PivotClawCommand(clawSubsystem, 0.27, false)
-      ).andThen(new WaitCommand(0.5)
-      ).andThen(new AutoBalance(driveSubsystem, -0.225, -0.45, 5, 1.75))
-    );
-  }
-  /*if(autoChooser.getSelected().equals("Outtake 1 Cone Balance")) {
-    driveSubsystem.resetGyro();
-    return new ParallelCommandGroup(
-      new FullArmCommand(armSubsystem, 0.75),
-      new AutoClawArmPivotCommand(armSubsystem, -0.4, 115000)
-      ).andThen(new AutoClawCommand(clawSubsystem, .75, 0.5)
-      ).andThen(new ParallelCommandGroup(
-      new FullArmCommand(armSubsystem, -0.75),
-      new ClawArmPivotCommand(armSubsystem, 0.6, true),
-      new PivotClawCommand(clawSubsystem, 0.27, false)
-      /*).andThen(new AutoBackUpCommand(driveSubsystem, -0.6, 4, true)
-      ).andThen(new WaitCommand(1) */
-       //).andThen(new AutoBalance(driveSubsystem, -0.225, -0.45, 5, 1.75)));
-  //}
+    }
 
+    // Big scary sequence of commands for putting one thing on the top level and balancing
+    else if(autoChooser.getSelected().equals("Outtake 1 Balance")) {
+      driveSubsystem.resetGyro();
+      return new ParallelCommandGroup(
+        new FullArmCommand(armSubsystem, 0.75),
+        new AutoClawArmPivotCommand(armSubsystem, -0.4, 115000)
+        ).andThen(new AutoClawCommand(clawSubsystem, 1, 0.5)
+        ).andThen(new ParallelCommandGroup(
+        new FullArmCommand(armSubsystem, -0.75),
+        new ClawArmPivotCommand(armSubsystem, 0.6, true),
+        new PivotClawCommand(clawSubsystem, 0.27, false)
+        ).andThen(new WaitCommand(0.5)
+        ).andThen(new AutoBalance(driveSubsystem, -0.225, -0.45, 5, 1.75))
+      );
+    }
+
+    // Makes sure the selected auto is a valid path
     if(!autoChooser.getSelected().equals("Outtake 1") && !autoChooser.getSelected().equals("Outtake 1 Balance")) { 
+
+      // Creates the path from the path file that was selected from shuffleboard
       ArrayList<PathPlannerTrajectory> path = new ArrayList<>(PathPlanner.loadPathGroup(autoChooser.getSelected(), 1, 0.5));
       
+      // Creates the hashmap to put all the commands onto.
+      // Anything used in path planner must be declred here to function.
       HashMap<String, Command> eventMap = new HashMap<>();
       eventMap.put("Cone Outtake", new AutoClawCommand(clawSubsystem, 1, 0.5));
       eventMap.put("Cube Outtake", new AutoClawCommand(clawSubsystem, 1, 0.75));
@@ -196,6 +190,8 @@ public class RobotContainer {
         new AutoClawArmPivotCommand(armSubsystem, -0.4, 115000)
       ));
   
+      // The auto builder is used to create a full autonomus routine.
+      // This will combine paths and commands into a full sequence.
       SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
         driveSubsystem::getPose, // Pose2d supplier
         driveSubsystem::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
