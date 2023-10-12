@@ -16,7 +16,7 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kControlControllerPort = 1;
-    public static final double controllerDeadzone = 0.02;
+    public static final double controllerDeadzone = 0.1;
   }
 
   public static final int falconEncoderResolution = 2048;

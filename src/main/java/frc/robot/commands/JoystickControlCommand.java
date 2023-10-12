@@ -49,10 +49,13 @@ public class JoystickControlCommand extends CommandBase {
     public boolean isFinished() {
         return false;
     }
-    
+    //green larson
     @Override
     public void end(boolean interrupted) {
         clawSubsystem.setPivotMotor(0);
         armSubsystem.setArmPivotMotor(0);
+    //Preheat oven to 350 degrees F (175 degrees C).
+    //Grease a 9x9 inch baking 
+    //In a medium bowl, cream 
     }
 }

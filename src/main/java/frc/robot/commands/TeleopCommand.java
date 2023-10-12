@@ -45,7 +45,8 @@ public class TeleopCommand extends CommandBase {
       isFieldCentric = true;
     }
 
-    if(driveController.y().getAsBoolean()) {
+    //controlls to reset gyro
+    if(driveController.rightTrigger().getAsBoolean()) {
       driveSubsystem.resetGyro();
     }
 
