@@ -145,7 +145,8 @@ public class RobotContainer {
     // Big scary sequence of commands for putting one thing on the top level and balancing
     else if(autoChooser.getSelected().equals("Outtake 1 Balance")) {
       driveSubsystem.resetGyro();
-      return new ParallelCommandGroup(
+      return new AutoBalance(driveSubsystem, -0.225, -0.45, 5, 1.75);
+      /*return new ParallelCommandGroup(
         new FullArmCommand(armSubsystem, 0.75),
         new AutoClawArmPivotCommand(armSubsystem, -0.4, 115000)
         ).andThen(new AutoClawCommand(clawSubsystem, 1, 0.5)
@@ -155,7 +156,7 @@ public class RobotContainer {
         new PivotClawCommand(clawSubsystem, 0.27, false)
         ).andThen(new WaitCommand(0.5)
         ).andThen(new AutoBalance(driveSubsystem, -0.225, -0.45, 5, 1.75))
-      );
+      );*/
     }
 
     // Makes sure the selected auto is a valid path
@@ -181,6 +182,7 @@ public class RobotContainer {
         new ClawArmPivotCommand(armSubsystem, 0.6, true),
         new PivotClawCommand(clawSubsystem, 0.27, false)
       ));
+      
       eventMap.put("Place Cube",  new ParallelCommandGroup(
         new AutoClawArmPivotCommand(armSubsystem, -0.4, 115000),
         new AutoPivotClawCommand(clawSubsystem, -0.35, 97500)
@@ -189,6 +191,9 @@ public class RobotContainer {
         new FullArmCommand(armSubsystem, 0.5),
         new AutoClawArmPivotCommand(armSubsystem, -0.4, 115000)
       ));
+
+
+
   
       // The auto builder is used to create a full autonomus routine.
       // This will combine paths and commands into a full sequence.

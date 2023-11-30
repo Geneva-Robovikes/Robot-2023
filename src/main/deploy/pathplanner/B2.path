@@ -17,9 +17,11 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "Outtake"
+          "Place Cone",
+          "Cone Outtake",
+          "Raise Arm"
         ],
-        "executionBehavior": "parallel",
+        "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 0
       }
@@ -44,7 +46,9 @@
       "isStopPoint": true,
       "stopEvent": {
         "names": [
-          "Intake"
+          "Lower Arm",
+          "Intake",
+          "Raise Arm"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
